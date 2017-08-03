@@ -15,11 +15,11 @@ exports.command = function(message) {
 
     app.bans.push(new UserBan(user.id, user.username, message.author.id, message.author.username, count));
 
-    message.guild.member(user).ban().catch(function (error) {
+    message.guild.member(user).ban().catch(function(error) {
       app.logChannel.sendMessage(`Error banning ${user} ${user.username}`);
       logger.error(`Error banning ${user.toString()} ${user} ${user.username}.`, error);
     });
 
     data.flushBans();
   });
-}
+};

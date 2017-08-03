@@ -17,4 +17,4 @@ exports.command = function(message) {
     logger.info(`${message.author.toString()} has cleared all warnings for ${user.toString()} [${count}].`);
     app.logChannel.sendMessage(`${message.author.toString()} has cleared all warnings for ${user.toString()} [${count}].`);
   });
-}
+};

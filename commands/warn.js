@@ -23,4 +23,4 @@ exports.command = function(message) {
     }
 
   });
-}
+};

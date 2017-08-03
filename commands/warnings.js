@@ -6,4 +6,4 @@ exports.command = function(message) {
     var warnings = app.warnings.filter(x => x.id == user.id && !x.cleared);
     message.channel.sendMessage(`${user}, you have ${warnings.length} total warnings.`);
   });
-}
+};

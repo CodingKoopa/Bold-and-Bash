@@ -13,10 +13,10 @@ var cachedTriggers = [];
 var client = new discord.Client();
 
 function findArray(haystack, arr) {
-    return arr.some(function (v) {
-        return haystack.indexOf(v) >= 0;
-    });
-};
+  return arr.some(function(v) {
+    return haystack.indexOf(v) >= 0;
+  });
+}
 
 process.on('unhandledRejection', function onError(err) {
   throw err;
@@ -40,7 +40,10 @@ client.on("guildMemberRemove", (member) => {
 
 // Output the stats for app.stats every 24 hours.
 // Server is in UTC mode, 11:30 EST would be 03:30 UTC.
-schedule.scheduleJob({ hour: 3, minute: 30 }, function(){
+schedule.scheduleJob({
+  hour: 3,
+  minute: 30
+}, function() {
   logger.info(`Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`);
   app.logChannel.sendMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`);
 
@@ -51,7 +54,9 @@ schedule.scheduleJob({ hour: 3, minute: 30 }, function(){
 });
 
 client.on('message', message => {
-  if (message.author.bot && message.content.startsWith('.ban') == false) { return; }
+  if (message.author.bot && message.content.startsWith('.ban') == false) {
+    return;
+  }
 
   if (message.guild == null) {
     // We want to log PM attempts.
@@ -70,11 +75,16 @@ client.on('message', message => {
     let cachedModule = cachedModules[`${cmd}.js`];
     let cachedModuleType = 'Command';
     // Check by the quotes in the configuration.
-    if (cachedModule == null) { cachedModule = config.quotes[cmd]; cachedModuleType = 'Quote'; }
+    if (cachedModule == null) {
+      cachedModule = config.quotes[cmd];
+      cachedModuleType = 'Quote';
+    }
 
     if (cachedModule) {
       // Check access permissions.
-      if (cachedModule.roles != undefined && findArray(message.member.roles.map(function(x) { return x.name; }), cachedModule.roles) == false) {
+      if (cachedModule.roles != undefined && findArray(message.member.roles.map(function(x) {
+          return x.name;
+        }), cachedModule.roles) == false) {
         app.logChannel.sendMessage(`${message.author} attempted to use admin command: ${message.content}`);
         logger.info(`${message.author.username} ${message.author} attempted to use admin command: ${message.content}`);
         return false;
@@ -89,7 +99,9 @@ client.on('message', message => {
         } else if (cachedModuleType == 'Quote') {
           cachedModules['quote.js'].command(message, cachedModule.reply);
         }
-      } catch (err) { logger.error(err); }
+      } catch (err) {
+        logger.error(err);
+      }
 
       // Warn after running command?
       try {
@@ -97,12 +109,16 @@ client.on('message', message => {
         if (cmd != 'warn' && cachedModule.warn == true) {
           // Access check to see if the user has privilages to warn.
           let warnCommand = cachedModules['warn.js'];
-          if (findArray(message.member.roles.map(function(x) { return x.name; }), warnCommand.roles)) {
+          if (findArray(message.member.roles.map(function(x) {
+              return x.name;
+            }), warnCommand.roles)) {
             // They are allowed to warn because they are in warn's roles.
             warnCommand.command(message);
           }
         }
-      } catch (err) { logger.error(err); }
+      } catch (err) {
+        logger.error(err);
+      }
 
     } else {
       // Not a valid command.
@@ -110,14 +126,18 @@ client.on('message', message => {
   } else if (message.author.bot == false) {
     // This is a normal channel message.
     cachedTriggers.forEach(function(trigger) {
-        if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) { return x.name; }), trigger.roles)) {
-          if (trigger.trigger(message) == true) {
-              logger.debug(`${message.author.username} ${message.author} [Channel: ${message.channel}] triggered: ${message.content}`);
-              try {
-                trigger.execute(message);
-              } catch (err) { logger.error(err); }
+      if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) {
+          return x.name;
+        }), trigger.roles)) {
+        if (trigger.trigger(message) == true) {
+          logger.debug(`${message.author.username} ${message.author} [Channel: ${message.channel}] triggered: ${message.content}`);
+          try {
+            trigger.execute(message);
+          } catch (err) {
+            logger.error(err);
           }
         }
+      }
     });
   }
 });
@@ -158,5 +178,5 @@ if (config.clientLoginToken) {
   logger.info('Startup completed. Established connection to Discord.');
 } else {
   logger.error('Cannot establish connection to Discord. Client login token is not defined.');
-  throw('MISSING_CLIENT_LOGIN_TOKEN');
+  throw ('MISSING_CLIENT_LOGIN_TOKEN');
 }
