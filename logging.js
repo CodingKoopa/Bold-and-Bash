@@ -51,7 +51,7 @@ if (config.enableConsoleLogging === true) {
 }
 
 // Run at midnight every day.
-schedule.scheduleJob('00 00 * * * *', function() {
+schedule.scheduleJob('00 00 00 * * *', function() {
   logger.info(`Winston logger daily scheduled job activated.`);
   logger.transports.file = generateFileTransport();
   logger.info(`Switched to new log file: ${logger.transports.file.filename}`);
