@@ -3,6 +3,7 @@ var app = require('./app.js');
 var logger = require('./logging.js');
 
 function readWarnings() {
+  logger.info('Reading warnings.');
   // Load the warnings file into the bans variable.
   fs.readFile('./data/discordWarnings.json', 'utf8', function(err, data) {
     if (err && err.code === 'ENOENT') {
@@ -17,6 +18,7 @@ function readWarnings() {
 }
 
 function readBans() {
+  logger.info('Reading bans.');
   // Load the ban file into the bans variable.
   fs.readFile('./data/discordBans.json', 'utf8', function(err, data) {
     if (err && err.code === 'ENOENT') {

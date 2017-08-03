@@ -8,6 +8,8 @@ const logger = require('./logging.js');
 const app = require('./app.js');
 const data = require('./data.js');
 
+logger.info(`KoopaBot Version ${require('./package.json').version} Starting.`);
+
 var cachedModules = [];
 var cachedTriggers = [];
 var client = new discord.Client();
@@ -25,6 +27,10 @@ process.on('unhandledRejection', function onError(err) {
 client.on('ready', () => {
   // Initalize app channels.
   app.logChannel = client.channels.get(config.logChannel);
+  if (!app.logChannel) {
+    logger.error("Logging channel not found.");
+    throw ('LOG_CHANNEL_NOT_FOUND');
+  }
   app.guild = app.logChannel.guild;
 
   logger.info('Bot is now online and connected to server.');
@@ -144,6 +150,7 @@ client.on('message', message => {
 
 // Cache all command modules.
 cachedModules = [];
+logger.info("Loading Command Modules.");
 require("fs").readdirSync('./commands/').forEach(function(file) {
   // Load the module if it's a script.
   if (path.extname(file) == '.js') {
@@ -158,6 +165,7 @@ require("fs").readdirSync('./commands/').forEach(function(file) {
 
 // Cache all triggers.
 cachedTriggers = [];
+logger.info("Loading Triggers.");
 require("fs").readdirSync('./triggers/').forEach(function(file) {
   // Load the trigger if it's a script.
   if (path.extname(file) == '.js') {
