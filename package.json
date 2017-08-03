@@ -1,15 +1,14 @@
 {
-  "name": "citra-discord-bot",
-  "version": "1.0.0",
-  "description": "Citra bot for Discord",
-  "author": "chris062689 <chris062689@gmail.com>",
+  "name": "koopabot",
+  "version": "0.1",
+  "description": "Discord bot.",
+  "author": "TheKoopaKingdom <thekoopakingdom@gmail.com>",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development node server.js",
     "start-prod": "cross-env NODE_ENV=production node server.js"
   },
   "preferGlobal": true,
   "private": true,
-  "subdomain": "citra-emu",
   "analyze": true,
   "license": "GPL-2.0+",
   "dependencies": {
