@@ -1,26 +1,18 @@
 const config = require('config');
 const winston = require('winston');
+require('winston-daily-rotate-file');
 const logdna = require('logdna');
 const ip = require('ip');
 const os = require("os");
-const schedule = require('node-schedule');
-
-function padNumber(string) {
-  return ('0' + string).slice(-2);
-}
-
-function generateFileTransport() {
-  const date = new Date();
-  return new winston.transports.File({
-    filename: `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}.log`,
-    level: 'debug'
-  });
-}
 
 winston.emitErrs = true;
 const logger = new winston.Logger({
   transports: [
-    generateFileTransport()
+    new winston.transports.DailyRotateFile({
+      level: 'debug',
+      filename: 'logs/log',
+      prepend: true
+    })
   ],
   handleExceptions: true,
   humanReadableUnhandledException: true,
@@ -49,12 +41,5 @@ if (config.enableConsoleLogging === true) {
     colorize: true
   });
 }
-
-// Run at midnight every day.
-schedule.scheduleJob('00 00 00 * * *', function() {
-  logger.info(`Winston logger daily scheduled job activated.`);
-  logger.transports.file = generateFileTransport();
-  logger.info(`Switched to new log file: ${logger.transports.file.filename}`);
-});
 
 module.exports = logger;

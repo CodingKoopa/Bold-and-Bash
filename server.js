@@ -28,7 +28,7 @@ client.on('ready', () => {
   // Initalize app channels.
   app.logChannel = client.channels.get(config.logChannel);
   if (typeof app.logChannel === 'undefined') {
-    logger.error(`Logging channel ${app.logChannel} not found.`);
+    logger.error(`Logging channel #${config.logChannel} not found.`);
     throw ('LOG_CHANNEL_NOT_FOUND');
   }
   app.guild = app.logChannel.guild;
