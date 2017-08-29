@@ -48,7 +48,7 @@ class Command {
       common.sendErrorMessage(errorMessage, message);
       // Everything is good, run the command.
     } else
-      this.callback(message, args);
+      this.callback(args, message);
   }
 
 }
