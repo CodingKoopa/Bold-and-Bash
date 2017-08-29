@@ -17,7 +17,7 @@ class Command {
     if (this.roles != undefined && common.findArray(message.member.roles.map(role => role.name), this.roles) == false) {
       logMessage = `${message.author.username} (${message.author}) attempted to use staff command ${this.name} with arguments ${args}.`;
       logger.info(logMessage);
-      common.sendErrorMessage(`Error: Permission denied. This command can only be used by: \`${this.roles}.\``, message);
+      common.sendErrorMessage(`Permission denied. This command can only be used by: \`${this.roles}\`.`, message);
       app.logChannel.sendMessage(logMessage);
     }
     // Check if the user is looking for help.
