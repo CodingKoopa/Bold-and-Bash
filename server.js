@@ -24,6 +24,11 @@ process.on('unhandledRejection', function onError(err) {
   throw err;
 });
 
+process.on("SIGINT", () => {
+  logger.info('Shutting down.');
+  process.exit();
+});
+
 client.on('ready', () => {
   // Initalize app channels.
   app.logChannel = client.channels.get(config.logChannel);
