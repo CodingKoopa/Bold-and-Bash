@@ -11,7 +11,7 @@ const data = require('./data.js');
 
 logger.info(`KoopaBot Version ${require('./package.json').version} Starting.`);
 
-var cachedModules = [];
+var commandList = [];
 var cachedTriggers = [];
 var client = new discord.Client();
 
@@ -27,7 +27,7 @@ process.on("SIGINT", () => {
 client.on('ready', () => {
   // Initalize app channels.
   app.logChannel = client.channels.get(config.logChannel);
-  if (typeof app.logChannel === 'undefined') {
+  if (typeof app.logChannel == 'undefined') {
     logger.error(`Logging channel #${config.logChannel} not found.`);
     throw ('LOG_CHANNEL_NOT_FOUND');
   }
@@ -105,9 +105,9 @@ client.on('message', message => {
   }
 });
 
-// Cache all command modules.
-cachedModules = [];
+// Load all command modules.
 logger.info("Loading Command Modules.");
+commandList = [];
 require("fs").readdirSync('./commands/').forEach(function(file) {
   // Load the module if it's a script.
   if (path.extname(file) == '.js') {
@@ -115,7 +115,7 @@ require("fs").readdirSync('./commands/').forEach(function(file) {
       logger.info(`Did not load disabled module: ${file}`);
     } else {
       logger.info(`Loaded module: ${file}`);
-      cachedModules[file] = require(`./commands/${file}`);
+      commandList.push(require(`./commands/${file}`).command);
     }
   }
 });
