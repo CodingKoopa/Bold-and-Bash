@@ -4,6 +4,7 @@ const path = require('path');
 const config = require('config');
 const schedule = require('node-schedule');
 
+const common = require('./common.js');
 const logger = require('./logging.js');
 const app = require('./app.js');
 const data = require('./data.js');
@@ -13,12 +14,6 @@ logger.info(`KoopaBot Version ${require('./package.json').version} Starting.`);
 var cachedModules = [];
 var cachedTriggers = [];
 var client = new discord.Client();
-
-function findArray(haystack, arr) {
-  return arr.some(function(v) {
-    return haystack.indexOf(v) >= 0;
-  });
-}
 
 process.on('unhandledRejection', function onError(err) {
   throw err;
@@ -80,64 +75,21 @@ client.on('message', message => {
   logger.verbose(`${message.author.username} ${message.author} [Channel: ${message.channel.name} ${message.channel}]: ${message.content}`);
 
   if (message.content.startsWith(config.commandPrefix)) {
-    let cmd = message.content.split(' ')[0].slice(1);
+    const splitMessage = message.content.split(' ');
+    const enteredCommand = splitMessage[0].slice(config.commandPrefix.length);
+    const args = splitMessage.slice(1, splitMessage.length);
+    logger.info(`Command entered: ${enteredCommand} with args ${args}.`);
 
-    // Check by the name of the command.
-    let cachedModule = cachedModules[`${cmd}.js`];
-    let cachedModuleType = 'Command';
-    // Check by the quotes in the configuration.
-    if (cachedModule == null) {
-      cachedModule = config.quotes[cmd];
-      cachedModuleType = 'Quote';
-    }
+    const index = commandList.map(command => command.name).indexOf(enteredCommand);
+    if (index >= 0)
+      commandList[index].execute(message, args);
+    else
+      common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
 
-    if (cachedModule) {
-      // Check access permissions.
-      if (cachedModule.roles != undefined && findArray(message.member.roles.map(function(x) {
-          return x.name;
-        }), cachedModule.roles) == false) {
-        app.logChannel.sendMessage(`${message.author} attempted to use admin command: ${message.content}`);
-        logger.info(`${message.author.username} ${message.author} attempted to use admin command: ${message.content}`);
-        return false;
-      }
-
-      logger.info(`${message.author.username} ${message.author} [Channel: ${message.channel}] executed command: ${message.content}`);
-      message.delete();
-
-      try {
-        if (cachedModuleType == 'Command') {
-          cachedModule.command(message);
-        } else if (cachedModuleType == 'Quote') {
-          cachedModules['quote.js'].command(message, cachedModule.reply);
-        }
-      } catch (err) {
-        logger.error(err);
-      }
-
-      // Warn after running command?
-      try {
-        // Check if the command requires a warning.
-        if (cmd != 'warn' && cachedModule.warn == true) {
-          // Access check to see if the user has privilages to warn.
-          let warnCommand = cachedModules['warn.js'];
-          if (findArray(message.member.roles.map(function(x) {
-              return x.name;
-            }), warnCommand.roles)) {
-            // They are allowed to warn because they are in warn's roles.
-            warnCommand.command(message);
-          }
-        }
-      } catch (err) {
-        logger.error(err);
-      }
-
-    } else {
-      // Not a valid command.
-    }
   } else if (message.author.bot == false) {
     // This is a normal channel message.
     cachedTriggers.forEach(function(trigger) {
-      if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) {
+      if (trigger.roles == undefined || common.findArray(message.member.roles.map(function(x) {
           return x.name;
         }), trigger.roles)) {
         if (trigger.trigger(message) == true) {
