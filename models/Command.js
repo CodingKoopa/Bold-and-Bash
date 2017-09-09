@@ -30,12 +30,8 @@ class Command {
     this.args.forEach((argument, index) => {
       // If the argument expects a mention, make sure the passed argument is one.
       if (argument.isMention && passedArguments[index] != mentions[argument.mentionIndex])
-      {
-        console.log("Mention missing.");
         mentionMissing = true;
-      }
     });
-    console.log("Reuturning " + mentionMissing);
     return mentionMissing;
   }
 
