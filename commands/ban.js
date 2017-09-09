@@ -2,24 +2,39 @@ var discord = require('discord.js');
 var app = require('../app.js');
 var data = require('../data.js');
 var logger = require('../logging.js');
-var UserBan = require('../models/UserBan.js');
+var sendErrorMessage = require('../common.js').sendErrorMessage;
+const Command = require('../models/Command.js');
+const Argument = require('../models/Argument.js');
+const UserBan = require('../models/UserBan.js');
 
-exports.roles = ['Admins', 'Moderators', 'CitraBot'];
-exports.command = function(message) {
+const description = 'Bans a user from the server.';
+// TODO: ban reason, and timed bans
+const argument = [new Argument('user', 'The user to be banned.', true)];
+const roles = require('../common.js').staffRoles;
+const callback = function(args, message) {
+  // It's easier to grab the user from the message object than the args.
   message.mentions.users.map((user) => {
-    var count = app.warnings.filter(x => x.id == user.id && !x.cleared).length || 0;
+    const count = app.warnings.filter(x => x.id == user.id &&
+      !x.cleared).length || 0;
 
-    message.channel.sendMessage(`${user} ${user.username}, You will now be banned from this channel.`);
-    logger.info(`${message.author.toString()} has banned ${user.toString()} ${user} ${user.username}.`);
-    app.logChannel.sendMessage(`${message.author} has banned ${user} ${user.username} [${count}].`);
+    const authorInfo = `${message.author.username} (${message.author})`;
+    const userInfo = `${user.username} (${user})`;
+    const logMessage = `${authorInfo} has banned ${userInfo} (${count} warnings).`;
+    logger.info(logMessage);
+    message.channel.sendMessage(`${message.author} banning ${user} (${user.username}) from this \
+server.`);
+    app.logChannel.sendMessage(logMessage);
 
-    app.bans.push(new UserBan(user.id, user.username, message.author.id, message.author.username, count));
+    app.bans.push(new UserBan(user.id, user.username, message.author.id, message.author.username,
+      count));
 
-    message.guild.member(user).ban().catch(function(error) {
-      app.logChannel.sendMessage(`Error banning ${user} ${user.username}`);
-      logger.error(`Error banning ${user.toString()} ${user} ${user.username}.`, error);
+    message.guild.member(user).ban().catch(error => {
+      app.logChannel.sendMessage(`Error banning ${userInfo}. Error: \`\`\`${error}\`\`\``);
+      logger.error(`Error banning ${userInfo}. Error: ${error}`);
     });
 
     data.flushBans();
   });
 };
+
+exports.command = new Command('ban', description, argument, roles, callback);
