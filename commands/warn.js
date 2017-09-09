@@ -2,25 +2,44 @@ var discord = require('discord.js');
 var app = require('../app.js');
 var data = require('../data.js');
 var logger = require('../logging.js');
+const common = require('../common.js');
+const Command = require('../models/Command.js');
+const Argument = require('../models/Argument.js');
 var UserWarning = require('../models/UserWarning.js');
 
-exports.roles = ['Admins', 'Moderators'];
-exports.command = function(message) {
+const description = 'Warns a user.';
+const args = [new Argument('user', 'The user to be warned.', true, true),
+              new Argument('reason', 'The reason why the user is being warned.', false)];
+const callback = function(args, message) {
+  var reason = args[1];
   message.mentions.users.map((user) => {
-    var count = app.warnings.filter(x => x.id == user.id && !x.cleared).length || 0;
-    message.channel.sendMessage(`${user} You have been warned. Additional infractions may result in a ban.`);
+    const count = app.warnings.filter(x => x.id == user.id && !x.cleared).length || 0;
+    const newCount = count + 1;
 
-    logger.info(`${message.author.username} ${message.author} has warned ${user.username} ${user} [${count} + 1].`);
-    app.logChannel.sendMessage(`${message.author} has warned ${user} [${count} + 1].`);
+    const authorInfo = `${message.author.username} (${message.author})`;
+    const userInfo = `${user.username} (${user})`;
+    const logMessage = `${authorInfo} has warned ${user.username} ${user} (${newCount} warnings).`;
+    logger.info(logMessage);
+    app.logChannel.send(logMessage);
+    message.channel.send(`${message.author} warning ${userInfo}.`);
 
-    app.warnings.push(new UserWarning(user.id, user.username, message.author.id, message.author.username, count));
-    data.flushWarnings();
-
-    app.stats.warnings += 1;
-
-    if (count + 1 >= 3) {
-      app.logChannel.sendMessage(`.ban ${user}`);
+    if (typeof reason != undefined) {
+      args[1] = "";
+      message.channel.send(`${user} You have been warned. Additional infractions may result \
+in a ban.`);
+    } else {
+      message.channel.send(`${user} You have been warned for ${args[1]}. Additional \
+infractions may result in a ban.`);
     }
 
+    app.warnings.push(new UserWarning(user.id, user.username, args[1], message.author.id,
+      message.author.username));
+    data.flushWarnings();
+    app.stats.warnings++;
+
+    if (newCount >= 3)
+      require('./ban.js').ban(user, message);
   });
 };
+
+module.exports.command = new Command('warn', description, args, common.staffRoles, callback);

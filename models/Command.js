@@ -8,20 +8,38 @@ class Command {
     this.name = name;
     this.description = description;
     this.args = args;
-    // this.numRequiredArguments = this.args.map(argument => {
-    //   if (argument.required == true)
-    //     return argument;
-    // }).length;
     this.numRequiredArguments = 0;
-    this.args.map(argument => {
+    this.args.forEach(argument => {
       if (argument.required == true)
         this.numRequiredArguments++;
+    });
+    var mentionIndex = 0;
+    this.args.forEach((argument, index, args) => {
+      if (argument.isMention){
+        args[index].mentionIndex = mentionIndex;
+        mentionIndex++;
+      }
     });
     this.roles = roles;
     this.callback = callback;
   }
 
-  execute(message, args) {
+  isMentionMissing(message, passedArguments) {
+    const mentions = message.mentions.users.map(user => user.toString());
+    var mentionMissing = false;
+    this.args.forEach((argument, index) => {
+      // If the argument expects a mention, make sure the passed argument is one.
+      if (argument.isMention && passedArguments[index] != mentions[argument.mentionIndex])
+      {
+        console.log("Mention missing.");
+        mentionMissing = true;
+      }
+    });
+    console.log("Reuturning " + mentionMissing);
+    return mentionMissing;
+  }
+
+  execute(message, passedArguments) {
     const seeHelpMessage = `See \`${require('config').commandPrefix}${this.name} --help\` for \
 usage.`;
     // Check if the user is allowed to use the command.
@@ -29,19 +47,26 @@ usage.`;
       this.roles) == false) {
       // TODO: handle no arguments.
       const logMessage = `${message.author.username} (${message.author}) attempted to use staff \
-command ${this.name} with arguments ${args}.`;
+command ${this.name} with arguments ${passedArguments}.`;
       logger.info(logMessage);
       common.sendErrorMessage(`Permission denied. This command can only be used by: \
 \`${this.roles}\`.`, message);
       app.logChannel.sendMessage(logMessage);
-    } else if (args[0] != undefined && args[0].toLowerCase() == '--help') {
+    } else if (passedArguments[0] != undefined && passedArguments[0].toLowerCase() == '--help') {
       const description = `**Description**: ${this.description}.\n`;
       var usage = `**Usage**: \`${require('config').commandPrefix}${this.name} [--help] `;
       // arguments is reserved.
       var argumentList = '';
       this.args.map(argument => {
         usage += `${argument.shortName} `;
-        argumentList += `\`${argument.shortName}\`: ${argument.explanation}\n`;
+        argumentList += `\`${argument.shortName}\``;
+        if (argument.required && argument.isMention)
+          argumentList += ' (Mention)';
+        else if (!argument.required && argument.isMention)
+          argumentList += ' (Optional Mention)';
+        else if (!argument.required && !argument.isMention)
+          argumentList += ' (Optional)';
+        argumentList += `: ${argument.explanation}\n`;
       });
       // Close the mini code block.
       usage += '`';
@@ -52,15 +77,17 @@ command ${this.name} with arguments ${args}.`;
       message.reply(`here's the command help for \`${this.name}\`:`, {
         embed: helpEmbed
       });
-    } else if (args.length < this.numRequiredArguments) {
+    } else if (passedArguments.length < this.numRequiredArguments) {
       common.sendErrorMessage(`Too little arguments. At least ${this.numRequiredArguments} needed, \
-given ${args.length}. ${seeHelpMessage}`, message);
-    } else if (args.length > this.args.length) {
+given ${passedArguments.length}. ${seeHelpMessage}`, message);
+    } else if (passedArguments.length > this.args.length) {
       common.sendErrorMessage(`Too many arguments. No more than ${this.args.length} accepted, \
-given ${args.length}. ${seeHelpMessage}`, message);
+given ${passedArguments.length}. ${seeHelpMessage}`, message);
       // Everything is good, run the command.
+    } else if (this.isMentionMissing(message, passedArguments)) {
+      common.sendErrorMessage('Expected mention(s), but one or more were not found.', message);
     } else {
-      const res = this.callback(args, message);
+      const res = this.callback(passedArguments, message);
       // If nothing was returned, the command succeded, and the original message can be deleted.
       if (!res)
       {
@@ -76,7 +103,6 @@ Error: ${error}.`);
         common.sendErrorMessage(res);
     }
   }
-
 }
 
 module.exports = Command;
