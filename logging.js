@@ -12,7 +12,7 @@ function padNumber(string) {
 function generateFileTransport() {
   const date = new Date();
   return new winston.transports.File({
-    filename: `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}.log`,
+    filename: `logs/${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}.log`,
     level: 'debug'
   });
 }
