@@ -75,7 +75,7 @@ client.on('message', message => {
   logger.verbose(`${message.author.username} ${message.author} [Channel: ${message.channel.name} ${message.channel}]: ${message.content}`);
 
   if (message.content.startsWith(config.commandPrefix)) {
-    const splitMessage = message.content.split(' ');
+    const splitMessage = message.content.match(/([\w|.|@|#|<|>]+)|("[^"]+")/g);
     const enteredCommand = splitMessage[0].slice(config.commandPrefix.length);
     const args = splitMessage.slice(1, splitMessage.length);
     logger.info(`Command entered: ${enteredCommand} with args ${args}.`);

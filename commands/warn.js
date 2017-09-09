@@ -23,7 +23,7 @@ const callback = function(args, message) {
     app.logChannel.send(logMessage);
     message.channel.send(`${message.author} warning ${userInfo}.`);
 
-    if (typeof reason == undefined) {
+    if (typeof reason == 'undefined') {
       args[1] = "";
       message.channel.send(`${user} You have been warned. Additional infractions may result \
 in a ban.`);
