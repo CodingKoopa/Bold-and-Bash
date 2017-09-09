@@ -8,20 +8,33 @@ class Command {
     this.name = name;
     this.description = description;
     this.args = args;
+    // this.numRequiredArguments = this.args.map(argument => {
+    //   if (argument.required == true)
+    //     return argument;
+    // }).length;
+    this.numRequiredArguments = 0;
+    this.args.map(argument => {
+      if (argument.required == true)
+        this.numRequiredArguments++;
+    });
     this.roles = roles;
     this.callback = callback;
   }
 
   execute(message, args) {
+    const seeHelpMessage = `See \`${require('config').commandPrefix}${this.name} --help\` for \
+usage.`;
     // Check if the user is allowed to use the command.
-    if (this.roles != undefined && common.findArray(message.member.roles.map(role => role.name), this.roles) == false) {
-      logMessage = `${message.author.username} (${message.author}) attempted to use staff command ${this.name} with arguments ${args}.`;
+    if (this.roles != undefined && common.findArray(message.member.roles.map(role => role.name),
+      this.roles) == false) {
+      // TODO: handle no arguments.
+      const logMessage = `${message.author.username} (${message.author}) attempted to use staff \
+command ${this.name} with arguments ${args}.`;
       logger.info(logMessage);
-      common.sendErrorMessage(`Permission denied. This command can only be used by: \`${this.roles}\`.`, message);
+      common.sendErrorMessage(`Permission denied. This command can only be used by: \
+\`${this.roles}\`.`, message);
       app.logChannel.sendMessage(logMessage);
-    }
-    // Check if the user is looking for help.
-    else if (args[0] != undefined && args[0].toLowerCase() == '--help') {
+    } else if (args[0] != undefined && args[0].toLowerCase() == '--help') {
       const description = `**Description**: ${this.description}.\n`;
       var usage = `**Usage**: \`${require('config').commandPrefix}${this.name} [--help] `;
       // arguments is reserved.
@@ -39,16 +52,29 @@ class Command {
       message.reply(`here's the command help for \`${this.name}\`:`, {
         embed: helpEmbed
       });
-    }
-    // Check if the number of arguments is correct.
-    // TODO: Optional/mandatory params.
-    else if (args.length < this.args.length) {
-      // Don't use reply because it adds a comma.
-      const errorMessage = `Error: Too little arguments. Expected ${this.args.length}, given ${args.length}. See \`${require('config').commandPrefix}${this.name} --help\` for usage.`;
-      common.sendErrorMessage(errorMessage, message);
+    } else if (args.length < this.numRequiredArguments) {
+      common.sendErrorMessage(`Too little arguments. At least ${this.numRequiredArguments} needed, \
+given ${args.length}. ${seeHelpMessage}`, message);
+    } else if (args.length > this.args.length) {
+      common.sendErrorMessage(`Too many arguments. No more than ${this.args.length} accepted, \
+given ${args.length}. ${seeHelpMessage}`, message);
       // Everything is good, run the command.
-    } else
-      this.callback(args, message);
+    } else {
+      const res = this.callback(args, message);
+      // If nothing was returned, the command succeded, and the original message can be deleted.
+      if (!res)
+      {
+        try {
+          message.delete();
+        }
+        catch(error) {
+          logger.error(`Failed to delete message, check if bot has message management permissions. \
+Error: ${error}.`);
+        }
+      }
+      else
+        common.sendErrorMessage(res);
+    }
   }
 
 }
