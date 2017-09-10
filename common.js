@@ -5,8 +5,7 @@ function findArray(haystack, arr) {
 }
 
 function sendErrorMessage(error, message) {
-  const errorMessage = `${message.author} :rotating_light: Error: ${error}`;
-  message.channel.send(errorMessage);
+  message.channel.send(`${message.author} :rotating_light: Error: ${error}`);
 }
 
 const staffRoles = ['Admins', 'Moderators'];

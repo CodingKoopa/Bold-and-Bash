@@ -48,7 +48,7 @@ command ${this.name} with arguments ${passedArguments}.`;
       common.sendErrorMessage(`Permission denied. This command can only be used by: \
 \`${this.roles}\`.`, message);
       app.logChannel.sendMessage(logMessage);
-    } else if (passedArguments[0] != undefined && passedArguments[0].toLowerCase() == '--help') {
+    } else if (passedArguments[0] && passedArguments[0].toLowerCase() == '--help') {
       const description = `**Description**: ${this.description}.\n`;
       var usage = `**Usage**: \`${require('config').commandPrefix}${this.name} [--help] `;
       // arguments is reserved.
@@ -83,20 +83,19 @@ given ${passedArguments.length}. ${seeHelpMessage}`, message);
     } else if (this.isMentionMissing(message, passedArguments)) {
       common.sendErrorMessage('Expected mention(s), but one or more were not found.', message);
     } else {
-      const res = this.callback(passedArguments, message);
-      // If nothing was returned, the command succeded, and the original message can be deleted.
-      if (!res)
-      {
+      try {
+        // This callback can throw an exception if something goes wrong.
+        this.callback(passedArguments, message);
         try {
           message.delete();
         }
         catch(error) {
           logger.error(`Failed to delete message, check if bot has message management permissions. \
-Error: ${error}.`);
+  Error: ${error}.`);
         }
+      } catch (error) {
+        common.sendErrorMessage(error, message);
       }
-      else
-        common.sendErrorMessage(res);
     }
   }
 }
