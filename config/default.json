@@ -1,14 +1,10 @@
 {
-  "logdnaKey": "",
-  "enableLogdnaLogging": false,
-  "enableConsoleLogging": true,
-
   "commandPrefix": ".",
   "logChannel": null,
   "clientLoginToken": null,
 
   "pmReply": "Please refer to our **Frequently Asked Questions**. <https://citra-emu.org/wiki/faq/>",
-  
+
   "quotes": {
     "faq": { "reply": "Please refer to our **Frequently Asked Questions**. <https://citra-emu.org/wiki/faq/>" },
     "requirements": { "reply": "Please refer to our **Frequently Asked Questions**. The only requirements for Citra is a GPU that supports at least OpenGL 3.3 and a 64-bit OS, but you definitely want a processor with the highest possible performance per core. <https://citra-emu.org/wiki/faq/>"},

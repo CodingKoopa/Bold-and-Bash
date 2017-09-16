@@ -3,58 +3,45 @@ const winston = require('winston');
 const logdna = require('logdna');
 const ip = require('ip');
 const os = require("os");
-const schedule = require('node-schedule');
+require('winston-daily-rotate-file');
 
-function padNumber(string) {
-  return ('0' + string).slice(-2);
-}
-
-function generateFileTransport() {
-  const date = new Date();
-  return new winston.transports.File({
-    filename: `logs/${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}.log`,
-    level: 'debug'
-  });
+// This is outside of the DailyRotateFile constructor because the log serialization only supports
+// the timestamp being a function, and not the level.
+function formatLevel(level) {
+  // 7: The length of the longest level (verbose).
+  return '[' + level + ']' + ' '.repeat(7 - level.length);
 }
 
 winston.emitErrs = true;
 const logger = new winston.Logger({
   transports: [
-    generateFileTransport()
+    new winston.transports.Console({
+      level: 'silly',
+      colorize: true
+    }),
+    new winston.transports.DailyRotateFile({
+      formatter: function(options) {
+        return formatLevel(options.level) + ' ' + options.timestamp() + ' ' +
+          options.message;
+      },
+      timestamp: function() {
+        const date = new Date();
+        var hours = date.getHours();
+        const str = '[' + hours + ':' + date.getMinutes() + ' ' + (hours < 13 ? 'AM' : 'PM') + ']';
+        // 10: The length of the longest time ([AA:BB CC]).
+        return str + ' '.repeat(10 - str.length);
+      },
+      json: false,
+      level: 'debug',
+      something: 'test',
+      filename: 'logs/log',
+      prepend: true
+    })
   ],
   handleExceptions: true,
   humanReadableUnhandledException: true,
   exitOnError: false,
   meta: true,
-});
-
-if (config.enableLogdnaLogging === true && config.logdnaKey) {
-  // Setup logging for LogDNA cloud logging.
-  logger.add(winston.transports.Logdna, {
-    level: 'info',
-    index_meta: true,
-    key: config.logdnaKey,
-    ip: ip.address(),
-    hostname: os.hostname(),
-    app: 'services-services'
-  });
-  logger.debug('[logging] Started LogDNA winston transport.');
-} else if (config.enableLogdna === true) {
-  throw "Attempted to enable LogDNA transport without a key!";
-}
-
-if (config.enableConsoleLogging === true) {
-  logger.add(winston.transports.Console, {
-    level: 'silly',
-    colorize: true
-  });
-}
-
-// Run at midnight every day.
-schedule.scheduleJob('00 00 00 * * *', function() {
-  logger.info(`Winston logger daily scheduled job activated.`);
-  logger.transports.file = generateFileTransport();
-  logger.info(`Switched to new log file: ${logger.transports.file.filename}`);
 });
 
 module.exports = logger;
