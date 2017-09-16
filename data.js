@@ -2,14 +2,18 @@ var fs = require('fs');
 var app = require('./app.js');
 var logger = require('./logging.js');
 
-function readWarnings() {
+function readWarnings()
+{
   logger.info('Reading warnings.');
   // Load the warnings file into the bans variable.
-  fs.readFile('./data/discordWarnings.json', 'utf8', function(err, data) {
-    if (err && err.code === 'ENOENT') {
+  fs.readFile('./data/discordWarnings.json', 'utf8', function(err, data)
+  {
+    if (err && err.code === 'ENOENT')
+    {
       return;
     }
-    if (err) {
+    if (err)
+    {
       logger.error(err);
     }
     app.warnings = JSON.parse(data);
@@ -17,14 +21,18 @@ function readWarnings() {
   });
 }
 
-function readBans() {
+function readBans()
+{
   logger.info('Reading bans.');
   // Load the ban file into the bans variable.
-  fs.readFile('./data/discordBans.json', 'utf8', function(err, data) {
-    if (err && err.code === 'ENOENT') {
+  fs.readFile('./data/discordBans.json', 'utf8', function(err, data)
+  {
+    if (err && err.code === 'ENOENT')
+    {
       return;
     }
-    if (err) {
+    if (err)
+    {
       logger.error(err);
     }
     app.bans = JSON.parse(data);
@@ -32,18 +40,22 @@ function readBans() {
   });
 }
 
-function flushWarnings() {
+function flushWarnings()
+{
   var warningsJson = JSON.stringify(app.warnings, null, 4);
   if (!fs.existsSync('./data/')) fs.mkdirSync('./data/');
-  fs.writeFile('./data/discordWarnings.json', warningsJson, 'utf8', function(err) {
+  fs.writeFile('./data/discordWarnings.json', warningsJson, 'utf8', function(err)
+  {
     if (err) return console.log(err);
   });
 }
 
-function flushBans() {
+function flushBans()
+{
   var bansJson = JSON.stringify(app.bans, null, 4);
   if (!fs.existsSync('./data/')) fs.mkdirSync('./data/');
-  fs.writeFile('./data/discordBans.json', bansJson, 'utf8', function(err) {
+  fs.writeFile('./data/discordBans.json', bansJson, 'utf8', function(err)
+  {
     if (err) return console.log(err);
   });
 }

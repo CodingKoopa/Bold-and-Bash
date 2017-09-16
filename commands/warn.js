@@ -8,26 +8,34 @@ var UserWarning = require('../models/UserWarning.js');
 
 const description = 'Warns a user.';
 const args = [new Argument('user', 'The user to be warned.', true, true),
-              new Argument('reason', 'The reason why the user is being warned.', false)];
+  new Argument('reason', 'The reason why the user is being warned.', false)
+];
 const roles = require('../common.js').staffRoles;
-const callback = function(args, message) {
+const callback = function(args, message)
+{
   var reason = args[1];
-  message.mentions.users.map((user) => {
+  message.mentions.users.map((user) =>
+  {
     const authorInfo = `${message.author.username} (${message.author})`;
     const userInfo = `${user.username} (${user})`;
     const count = app.warnings.filter(x => x.id == user.id && !x.cleared).length || 0;
     const newCount = count + 1;
-    const logMessage = `${authorInfo} has warned ${user.username} ${user} (${newCount} warnings).`;
+    const logMessage =
+      `${authorInfo} has warned ${user.username} ${user} (${newCount} warnings).`;
     logger.info(logMessage);
     app.logChannel.send(logMessage);
     message.channel.send(`${message.author} warning ${userInfo}.`);
-    if (!reason) {
+    if (!reason)
+    {
       args[1] = "";
-      message.channel.send(`${user} You have been warned. Additional infractions may result \
-in a ban.`);
-    } else {
-      message.channel.send(`${user} You have been warned for ${args[1]}. Additional \
-infractions may result in a ban.`);
+      message.channel.send(
+        `${user} You have been warned. Additional infractions may result in a ban.`);
+    }
+    else
+    {
+      message.channel.send(
+        `${user} You have been warned for ${args[1]}. Additional infractions may result in a ban.`
+      );
     }
 
     app.warnings.push(new UserWarning(user.id, user.username, args[1], message.author.id,

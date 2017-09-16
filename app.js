@@ -1,5 +1,6 @@
 /* Application State */
-var Application = function() {
+var Application = function()
+{
   this.guild = null;
   this.logChannel = null;
   this.warnings = [];

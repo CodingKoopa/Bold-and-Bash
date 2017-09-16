@@ -1,5 +1,7 @@
-class UserBan {
-  constructor(id, username, warnedBy, warnedByUsername, priorWarnings) {
+class UserBan
+{
+  constructor(id, username, warnedBy, warnedByUsername, priorWarnings)
+  {
     this.id = id;
     this.username = username;
     this.date = new Date();
