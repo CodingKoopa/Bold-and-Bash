@@ -1,8 +1,6 @@
-var request = require('request');
-var app = require('../app.js');
-var logger = require('../logging.js');
+const request = require(`request`);
 
-var regex = /[^<\\]\#(\d+)/ig;
+const regex = /[^<\\]#(\d+)/ig;
 
 exports.trigger = function(message)
 {
@@ -11,13 +9,13 @@ exports.trigger = function(message)
 
 exports.execute = function(message)
 {
-  let matcher = new RegExp(regex);
+  const matcher = new RegExp(regex);
   let match = matcher.exec(message.content);
-  let matched = [];
+  const matched = [];
 
-  while (match != null)
+  while (match !== null)
   {
-    if (matched.indexOf(match[1]) == -1)
+    if (matched.indexOf(match[1]) === -1)
     {
       matched.push(match[1]);
     }
@@ -36,11 +34,11 @@ exports.execute = function(message)
       return;
     }
 
-    let url = `https://github.com/citra-emu/citra/pull/${match[1]}`;
+    const url = `https://github.com/citra-emu/citra/pull/${match[1]}`;
     /* jshint loopfunc: true */
-    request(url, function(error, response, body)
+    request(url, function(error, response)
     {
-      if (!error && response.statusCode == 200)
+      if (!error && response.statusCode === 200)
       {
         message.channel.sendMessage(`Github Pull Request: ${url}`);
       }

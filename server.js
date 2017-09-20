@@ -1,51 +1,52 @@
-const discord = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const config = require('config');
-const schedule = require('node-schedule');
+const fs = require(`fs`);
+const path = require(`path`);
 
-const common = require('./common.js');
-const logger = require('./logging.js');
-const app = require('./app.js');
-const data = require('./data.js');
+const discord = require(`discord.js`);
+const config = require(`config`);
+const schedule = require(`node-schedule`);
 
-logger.info(`KoopaBot Version ${require('./package.json').version} Starting.`);
+const common = require(`./common.js`);
+const logger = require(`./logging.js`);
+const app = require(`./app.js`);
+const data = require(`./data.js`);
+
+logger.info(`KoopaBot Version ${require(`./package.json`).version} Starting.`);
 
 var commandList = [];
 var cachedTriggers = [];
 var client = new discord.Client();
 
-process.on('unhandledRejection', function onError(err)
+process.on(`unhandledRejection`, function onError(err)
 {
   throw err;
 });
 
-process.on("SIGINT", () =>
+process.on(`SIGINT`, () =>
 {
-  logger.info('Shutting down.');
+  logger.info(`Shutting down.`);
   process.exit();
 });
 
-client.on('ready', () =>
+client.on(`ready`, () =>
 {
   // Initalize app channels.
   app.logChannel = client.channels.get(config.logChannel);
-  if (typeof app.logChannel == 'undefined')
+  if (!app.logChannel)
   {
     logger.error(`Logging channel #${config.logChannel} not found.`);
-    throw ('LOG_CHANNEL_NOT_FOUND');
+    throw (`LOG_CHANNEL_NOT_FOUND`);
   }
   app.guild = app.logChannel.guild;
 
-  logger.info('Bot is now online and connected to server.');
+  logger.info(`Bot is now online and connected to server.`);
 });
 
-client.on("guildMemberAdd", (member) =>
+client.on(`guildMemberAdd`, () =>
 {
   app.stats.joins += 1;
 });
 
-client.on("guildMemberRemove", (member) =>
+client.on(`guildMemberRemove`, () =>
 {
   app.stats.leaves += 1;
 });
@@ -53,34 +54,34 @@ client.on("guildMemberRemove", (member) =>
 // Output the stats for app.stats every 24 hours.
 // Server is in UTC mode, 11:30 EST would be 03:30 UTC.
 schedule.scheduleJob(
-{
-  hour: 3,
-  minute: 30
-}, function()
-{
-  logger.info(
-    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
+  {
+    hour: 3,
+    minute: 30
+  }, function()
+  {
+    logger.info(
+      `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-  );
-  app.logChannel.sendMessage(
-    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
+    );
+    app.logChannel.sendMessage(
+      `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-  );
+    );
 
-  // Clear the stats for the day.
-  app.stats.joins = 0;
-  app.stats.leaves = 0;
-  app.stats.warnings = 0;
-});
+    // Clear the stats for the day.
+    app.stats.joins = 0;
+    app.stats.leaves = 0;
+    app.stats.warnings = 0;
+  });
 
-client.on('message', message =>
+client.on(`message`, message =>
 {
-  if (message.author.bot && message.content.startsWith('.ban') == false)
+  if (message.author.bot && !message.content.startsWith(`.ban`))
   {
     return;
   }
 
-  if (message.guild == null)
+  if (!message.guild)
   {
     // We want to log PM attempts.
     logger.info(`${message.author.username} ${message.author} [PM]: ${message.content}`);
@@ -108,18 +109,15 @@ ${message.channel}]: ${message.content}`
       common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
 
   }
-  else if (message.author.bot == false)
+  else if (!message.author.bot)
   {
     // This is a normal channel message.
     cachedTriggers.forEach(function(trigger)
     {
-      if (trigger.roles == undefined || common.findArray(message.member.roles.map(function(
-          x)
-        {
-          return x.name;
-        }), trigger.roles))
+      if (!trigger.roles || common.findArray(message.member.roles.map(member => member.name),
+        trigger.roles))
       {
-        if (trigger.trigger(message) == true)
+        if (trigger.trigger(message))
         {
           logger.debug(
             `${message.author.username} ${message.author} [Channel: ${message.channel}] triggered: \
@@ -140,14 +138,14 @@ ${message.content}`
 });
 
 // Load all command modules.
-logger.info("Loading Command Modules.");
+logger.info(`Loading Command Modules.`);
 commandList = [];
-require("fs").readdirSync('./commands/').forEach(function(file)
+fs.readdirSync(`./commands/`).forEach(function(file)
 {
   // Load the module if it's a script.
-  if (path.extname(file) == '.js')
+  if (path.extname(file) === `.js`)
   {
-    if (file.includes('.disabled'))
+    if (file.includes(`.disabled`))
     {
       logger.info(`Did not load disabled module: ${file}`);
     }
@@ -161,13 +159,13 @@ require("fs").readdirSync('./commands/').forEach(function(file)
 
 // Cache all triggers.
 cachedTriggers = [];
-logger.info("Loading Triggers.");
-require("fs").readdirSync('./triggers/').forEach(function(file)
+logger.info(`Loading Triggers.`);
+fs.readdirSync(`./triggers/`).forEach(function(file)
 {
   // Load the trigger if it's a script.
-  if (path.extname(file) == '.js')
+  if (path.extname(file) === `.js`)
   {
-    if (file.includes('.disabled'))
+    if (file.includes(`.disabled`))
     {
       logger.info(`Did not load disabled trigger: ${file}`);
     }
@@ -185,10 +183,10 @@ data.readBans();
 if (config.clientLoginToken)
 {
   client.login(config.clientLoginToken);
-  logger.info('Startup completed. Established connection to Discord.');
+  logger.info(`Startup completed. Established connection to Discord.`);
 }
 else
 {
-  logger.error('Cannot establish connection to Discord. Client login token is not defined.');
-  throw ('MISSING_CLIENT_LOGIN_TOKEN');
+  logger.error(`Cannot establish connection to Discord. Client login token is not defined.`);
+  throw (`MISSING_CLIENT_LOGIN_TOKEN`);
 }

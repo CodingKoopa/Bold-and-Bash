@@ -1,12 +1,13 @@
-var app = require('../app.js');
-var data = require('../data.js');
-var logger = require('../logging.js');
-const Command = require('../models/Command.js');
-const Argument = require('../models/Argument.js');
+const logger = require(`./logging.js`);
+const app = require(`./app.js`);
+const data = require(`./data.js`);
 
-const description = 'Clears the warnings for a user.';
-const arg = [new Argument('user', 'The user to clear warnings for.', true, true)];
-const roles = require('../common.js').staffRoles;
+const Command = require(`../models/Command.js`);
+const Argument = require(`../models/Argument.js`);
+
+const description = `Clears the warnings for a user.`;
+const arg = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
+const roles = require(`../common.js`).staffRoles;
 const callback = function(args, message)
 {
   // Use some and not forEach, so we can return.
@@ -14,7 +15,7 @@ const callback = function(args, message)
   {
     const authorInfo = `${message.author.username} (${message.author})`;
     const userInfo = `${user.username} (${user})`;
-    let warnings = app.warnings.filter(x => x.id == user.id && !x.cleared);
+    const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
     const logMessage =
       `${authorInfo} has cleared warnings for ${userInfo} (${warnings.length} warnings).`;
     logger.info(logMessage);
@@ -29,9 +30,9 @@ const callback = function(args, message)
     }
     else
     {
-      throw 'No warnings found.';
+      throw `No warnings found.`;
     }
   });
 };
 
-module.exports.command = new Command('clearWarnings', description, arg, roles, callback);
+module.exports.command = new Command(`clearWarnings`, description, arg, roles, callback);

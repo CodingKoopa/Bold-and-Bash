@@ -11,7 +11,7 @@ function sendErrorMessage(error, message)
   message.channel.send(`${message.author} :rotating_light: Error: ${error}`);
 }
 
-const staffRoles = ['Admins', 'Moderators'];
+const staffRoles = [`Admins`, `Moderators`];
 
 module.exports = {
   findArray,
