@@ -48,8 +48,8 @@ class Command
   {
     const seeHelpMessage =
       `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
-    // Check if the user is not allowed to use the command.
-    if (!this.roles && !common.findArray(message.member.roles.map(role => role.name),
+    // If there are roles to fulfill, and the user's roles do not contain the command's.
+    if (this.roles && !common.findArray(message.member.roles.map(role => role.name),
       this.roles))
     {
       // TODO: handle no arguments.
