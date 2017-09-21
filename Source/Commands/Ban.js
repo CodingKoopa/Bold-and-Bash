@@ -32,7 +32,13 @@ function ban(user, message)
     count));
   message.guild.member(user).ban().catch(error =>
   {
-    logger.error(`Error banning ${userInfo}. Error: ${error}`);
+    const sharedMessage = `Failed to ban ${userInfo}. Error: `;
+    // Internally log it.
+    logger.error(`${sharedMessage}${error}`);
+    // Return the string to be logged in Discord, use a code block.
+    // Ordinarily, the error would be sent publicly, but for moderation commands this looks
+    // unprofessional.
+    app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
   });
   data.flushBans();
 }

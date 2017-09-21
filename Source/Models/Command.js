@@ -63,7 +63,7 @@ ${this.name} with arguments ${passedArguments}.`;
     }
     else if (passedArguments[0] && passedArguments[0].toLowerCase() === `--help`)
     {
-      const description = `**Description**: ${this.description}.\n`;
+      const description = `**Description**: ${this.description}\n`;
       var usage = `**Usage**: \`${require(`config`).commandPrefix}${this.name} [--help] `;
       // arguments is reserved.
       var argumentList = ``;
@@ -112,25 +112,17 @@ ${passedArguments.length}. ${seeHelpMessage}`,
     }
     else
     {
+      this.callback(passedArguments, message);
       try
       {
-        // This callback can throw an exception if something goes wrong.
-        this.callback(passedArguments, message);
-        try
-        {
-          message.delete();
-        }
-        catch (error)
-        {
-          logger.error(
-            `Failed to delete message, check if bot has message management permissions. \
-  Error: ${error}.`
-          );
-        }
+        message.delete();
       }
       catch (error)
       {
-        common.sendErrorMessage(error, message);
+        logger.error(
+          `Failed to delete message, check if bot has message management permissions. \
+Error: ${error}.`
+        );
       }
     }
   }
