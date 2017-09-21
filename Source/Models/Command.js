@@ -63,13 +63,13 @@ class Command
       `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
     if (!this.isExecutable(message))
     {
-      // TODO: handle no arguments.
       const logMessage =
         `${message.author.username} (${message.author}) attempted to use staff command \
-${this.name} with arguments ${passedArguments}.`;
+${this.name} with argument(s) ${passedArguments}.`;
       logger.info(logMessage);
       common.sendErrorMessage(
-        `Permission denied. This command can only be used by: \`${this.roles}\`.`, message);
+        `Permission denied. This command can only be used by ${common.printArray(this.roles)}.`,
+        message);
       app.logChannel.send(logMessage);
     }
     else if (passedArguments[0] && passedArguments[0].toLowerCase() === `--help`)
