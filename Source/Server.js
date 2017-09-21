@@ -63,7 +63,7 @@ schedule.scheduleJob(
       `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
     );
-    app.logChannel.sendMessage(
+    app.logChannel.send(
       `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
     );
@@ -85,7 +85,7 @@ client.on(`message`, message =>
   {
     // We want to log PM attempts.
     logger.info(`${message.author.username} ${message.author} [PM]: ${message.content}`);
-    app.logChannel.sendMessage(`${message.author} [PM]: ${message.content}`);
+    app.logChannel.send(`${message.author} [PM]: ${message.content}`);
     message.reply(config.pmReply);
     return;
   }

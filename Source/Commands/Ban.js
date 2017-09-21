@@ -24,15 +24,14 @@ function ban(user, message)
   const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
   const logMessage = `${authorInfo} has banned ${userInfo} (${count} warnings).`;
   logger.info(logMessage);
-  app.logChannel.sendMessage(logMessage);
-  message.channel.sendMessage(
+  app.logChannel.send(logMessage);
+  message.channel.send(
     `${message.author} banning ${user} (${user.username}) from this server.`);
 
   app.bans.push(new UserBan(user.id, user.username, message.author.id, message.author.username,
     count));
   message.guild.member(user).ban().catch(error =>
   {
-    app.logChannel.sendMessage(`Error banning ${userInfo}. Error: \`\`\`${error}\`\`\``);
     logger.error(`Error banning ${userInfo}. Error: ${error}`);
   });
   data.flushBans();

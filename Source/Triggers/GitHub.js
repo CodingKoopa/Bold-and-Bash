@@ -40,7 +40,7 @@ exports.execute = function(message)
     {
       if (!error && response.statusCode === 200)
       {
-        message.channel.sendMessage(`Github Pull Request: ${url}`);
+        message.channel.send(`Github Pull Request: ${url}`);
       }
     });
 

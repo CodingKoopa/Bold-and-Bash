@@ -59,7 +59,7 @@ ${this.name} with arguments ${passedArguments}.`;
       logger.info(logMessage);
       common.sendErrorMessage(
         `Permission denied. This command can only be used by: \`${this.roles}\`.`, message);
-      app.logChannel.sendMessage(logMessage);
+      app.logChannel.send(logMessage);
     }
     else if (passedArguments[0] && passedArguments[0].toLowerCase() === `--help`)
     {
