@@ -1,11 +1,11 @@
-const app = require(`../app.js`);
+const app = require(`../App.js`);
 
-const Command = require(`../models/Command.js`);
-const Argument = require(`../models/Argument.js`);
+const Command = require(`../Models/Command.js`);
+const Argument = require(`../Models/Argument.js`);
 
 const description = `Gets the number of warnings for a user.`;
 const arg = [new Argument(`user`, `The user to get warnings for.`, true, true)];
-const roles = require(`../common.js`).staffRoles;
+const roles = require(`../Common.js`).staffRoles;
 const callback = function(args, message)
 {
   message.mentions.users.map((user) =>

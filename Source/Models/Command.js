@@ -1,6 +1,6 @@
-const common = require(`../common.js`);
-const logger = require(`../logging.js`);
-const app = require(`../app.js`);
+const common = require(`../Common.js`);
+const logger = require(`../Logging.js`);
+const app = require(`../App.js`);
 
 const RichEmbed = require(`discord.js`).RichEmbed;
 

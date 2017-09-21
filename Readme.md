@@ -52,7 +52,7 @@ Copy App Bot User token to `"clientLoginToken": ""`
 
 ##### For Development
 
-`node server.js`   Requires a config/development.json file.
+`node Server.js`   Requires a config/development.json file.
 
 # License
 GNU General Public License v2.0

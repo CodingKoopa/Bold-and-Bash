@@ -1,13 +1,13 @@
 const fs = require(`fs`);
 
-const logger = require(`./logging.js`);
-const app = require(`./app.js`);
+const logger = require(`./Logging.js`);
+const app = require(`./App.js`);
 
 function readWarnings()
 {
   logger.info(`Reading warnings.`);
   // Load the warnings file into the bans variable.
-  fs.readFile(`./data/discordWarnings.json`, `utf8`, function(err, data)
+  fs.readFile(`./Data/DiscordWarnings.json`, `utf8`, function(err, data)
   {
     if (err && err.code === `ENOENT`)
     {
@@ -26,7 +26,7 @@ function readBans()
 {
   logger.info(`Reading bans.`);
   // Load the ban file into the bans variable.
-  fs.readFile(`./data/discordBans.json`, `utf8`, function(err, data)
+  fs.readFile(`./Data/DiscordBans.json`, `utf8`, function(err, data)
   {
     if (err && err.code === `ENOENT`)
     {
@@ -45,7 +45,7 @@ function flushWarnings()
 {
   var warningsJson = JSON.stringify(app.warnings, null, 4);
   if (!fs.existsSync(`./data/`)) fs.mkdirSync(`./data/`);
-  fs.writeFile(`./data/discordWarnings.json`, warningsJson, `utf8`, function(err)
+  fs.writeFile(`./data/DiscordWarnings.json`, warningsJson, `utf8`, function(err)
   {
     if (err) logger.error(err);
   });
@@ -55,7 +55,7 @@ function flushBans()
 {
   var bansJson = JSON.stringify(app.bans, null, 4);
   if (!fs.existsSync(`./data/`)) fs.mkdirSync(`./data/`);
-  fs.writeFile(`./data/discordBans.json`, bansJson, `utf8`, function(err)
+  fs.writeFile(`./data/DiscordBans.json`, bansJson, `utf8`, function(err)
   {
     if (err) logger.error(err);
   });

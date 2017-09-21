@@ -1,17 +1,17 @@
-const logger = require(`./logging.js`);
-const app = require(`./app.js`);
-const data = require(`./data.js`);
+const logger = require(`../Logging.js`);
+const app = require(`../App.js`);
+const data = require(`../Data.js`);
 
-const Command = require(`../models/Command.js`);
-const Argument = require(`../models/Argument.js`);
-const UserWarning = require(`../models/UserWarning.js`);
+const Command = require(`../Models/Command.js`);
+const Argument = require(`../Models/Argument.js`);
+const UserWarning = require(`../Models/UserWarning.js`);
 
 const description = `Warns a user.`;
 const args = [
   new Argument(`user`, `The user to be warned.`, true, true),
   new Argument(`reason`, `The reason why the user is being warned.`, false)
 ];
-const roles = require(`../common.js`).staffRoles;
+const roles = require(`../Common.js`).staffRoles;
 const callback = function(args, message)
 {
   var reason = args[1];
@@ -44,7 +44,7 @@ const callback = function(args, message)
     data.flushWarnings();
     app.stats.warnings++;
     if (newCount >= 3)
-      require(`./ban.js`).ban(user, message);
+      require(`./Ban.js`).ban(user, message);
   });
 };
 

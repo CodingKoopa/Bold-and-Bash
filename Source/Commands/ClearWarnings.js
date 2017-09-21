@@ -1,13 +1,13 @@
-const logger = require(`./logging.js`);
-const app = require(`./app.js`);
-const data = require(`./data.js`);
+const logger = require(`../Logging.js`);
+const app = require(`../App.js`);
+const data = require(`../Data.js`);
 
-const Command = require(`../models/Command.js`);
-const Argument = require(`../models/Argument.js`);
+const Command = require(`../Models/Command.js`);
+const Argument = require(`../Models/Argument.js`);
 
 const description = `Clears the warnings for a user.`;
 const arg = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
-const roles = require(`../common.js`).staffRoles;
+const roles = require(`../Common.js`).staffRoles;
 const callback = function(args, message)
 {
   // Use some and not forEach, so we can return.

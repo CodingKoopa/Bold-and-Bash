@@ -1,10 +1,8 @@
 # Data folder.
-data/
+Data/
 
-# Logs
-logs
-*.log
-npm-debug.log*
+# Log Folder
+Logs/
 
 # Runtime data
 pids

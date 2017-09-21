@@ -4,8 +4,8 @@
   "description": "Discord bot.",
   "author": "TheKoopaKingdom <thekoopakingdom@gmail.com>",
   "scripts": {
-    "start-dev": "cross-env NODE_ENV=development node server.js",
-    "start-prod": "cross-env NODE_ENV=production node server.js"
+    "start-dev": "cross-env NODE_ENV=development node Source/Server.js",
+    "start-prod": "cross-env NODE_ENV=production node Source/Server.js"
   },
   "preferGlobal": true,
   "private": true,

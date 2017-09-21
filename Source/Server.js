@@ -5,12 +5,12 @@ const discord = require(`discord.js`);
 const config = require(`config`);
 const schedule = require(`node-schedule`);
 
-const common = require(`./common.js`);
-const logger = require(`./logging.js`);
-const app = require(`./app.js`);
-const data = require(`./data.js`);
+const common = require(`./Common.js`);
+const logger = require(`./Logging.js`);
+const app = require(`./App.js`);
+const data = require(`./Data.js`);
 
-logger.info(`KoopaBot Version ${require(`./package.json`).version} Starting.`);
+logger.info(`KoopaBot Version ${require(`../package.json`).version} Starting.`);
 
 var commandList = [];
 var cachedTriggers = [];
@@ -140,7 +140,7 @@ ${message.content}`
 // Load all command modules.
 logger.info(`Loading Command Modules.`);
 commandList = [];
-fs.readdirSync(`./commands/`).forEach(function(file)
+fs.readdirSync(`Source/Commands/`).forEach(function(file)
 {
   // Load the module if it's a script.
   if (path.extname(file) === `.js`)
@@ -152,7 +152,7 @@ fs.readdirSync(`./commands/`).forEach(function(file)
     else
     {
       logger.info(`Loaded module: ${file}`);
-      commandList.push(require(`./commands/${file}`).command);
+      commandList.push(require(`./Commands/${file}`).command);
     }
   }
 });
@@ -160,7 +160,7 @@ fs.readdirSync(`./commands/`).forEach(function(file)
 // Cache all triggers.
 cachedTriggers = [];
 logger.info(`Loading Triggers.`);
-fs.readdirSync(`./triggers/`).forEach(function(file)
+fs.readdirSync(`Source/Triggers/`).forEach(function(file)
 {
   // Load the trigger if it's a script.
   if (path.extname(file) === `.js`)
@@ -172,7 +172,7 @@ fs.readdirSync(`./triggers/`).forEach(function(file)
     else
     {
       logger.info(`Loaded trigger: ${file}`);
-      cachedTriggers.push(require(`./triggers/${file}`));
+      cachedTriggers.push(require(`./Triggers/${file}`));
     }
   }
 });
