@@ -47,7 +47,6 @@ class Command
   // Used by the help command.
   isExecutable(message)
   {
-    logger.info(`Testing. Roles: ${this.roles}`);
     // If there are roles to fulfill, and the user's roles contain the command's.
     if (this.roles && common.findArray(message.member.roles.map(role => role.name), this.roles))
       return true;
