@@ -19,19 +19,23 @@ const callback = function(args, message)
 // This is in its own function so that the warn command can call it.
 function ban(user, message)
 {
+  // Log the ban event.
   const authorInfo = `${message.author.username} (${message.author})`;
   const userInfo = `${user.username} (${user})`;
   const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
   const logMessage = `${authorInfo} has banned ${userInfo} (${count} warnings).`;
   logger.info(logMessage);
   app.logChannel.send(logMessage);
-  message.channel.send(
-    `${message.author} banning ${user} (${user.username}) from this server.`);
 
+  // Send a banning message.
+  message.reply(`banning ${userInfo} from this server.`);
+
+  // Do the banning.
   app.bans.push(new UserBan(user.id, user.username, message.author.id, message.author.username,
     count));
   message.guild.member(user).ban().catch(error =>
   {
+    // Log the ban error.
     const sharedMessage = `Failed to ban ${userInfo}. Error: `;
     // Internally log it.
     logger.error(`${sharedMessage}${error}`);

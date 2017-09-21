@@ -20,7 +20,8 @@ const callback = function(args, message)
       `${authorInfo} has cleared warnings for ${userInfo} (${warnings.length} warnings).`;
     logger.info(logMessage);
     app.logChannel.send(logMessage);
-    message.channel.send(`${message.author} clearing warnings for ${userInfo}`);
+
+    message.reply(`clearing warnings for ${userInfo}`);
 
     if (warnings && warnings.length > 0)
     {
@@ -32,6 +33,7 @@ const callback = function(args, message)
     {
       const logErrorMessage = `Failed to clear warnings for ${userInfo}`;
       logger.error(logErrorMessage);
+      // See: the comment about this in ban.js.
       app.logChannel.send(logErrorMessage);
     }
   });

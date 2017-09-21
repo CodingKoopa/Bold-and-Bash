@@ -19,35 +19,35 @@ const callback = function(args, message)
   {
     const authorInfo = `${message.author.username} (${message.author})`;
     const userInfo = `${user.username} (${user})`;
-    const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
-    const newCount = count + 1;
-    message.channel.send(`${message.author} warning ${userInfo}.`);
+    const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
     var logMessage;
-    var channelMessage;
+    var warnMessage;
     if (!reason)
     {
       reason = ``;
       logMessage =
-        `${authorInfo} has warned ${user.username} ${user} (${newCount} warnings).`;
-      channelMessage =
+        `${authorInfo} has warned ${userInfo} (${count} warnings).`;
+      warnMessage =
         `${user} You have been warned. Additional infractions may result in a ban.`;
     }
     else
     {
       logMessage =
-        `${authorInfo} has warned ${user.username} ${user} for ${reason} (${newCount} warnings).`;
-      channelMessage =
+        `${authorInfo} has warned ${userInfo} for ${reason} (${count} warnings).`;
+      warnMessage =
         `${user} You have been warned for ${reason}. Additional infractions may result in a ban.`;
     }
     logger.info(logMessage);
     app.logChannel.send(logMessage);
-    message.channel.send(channelMessage);
 
+    message.reply(`warning ${userInfo}.`);
+
+    message.channel.send(warnMessage);
     app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
       message.author.username));
     data.flushWarnings();
     app.stats.warnings++;
-    if (newCount >= 3)
+    if (count >= 3)
       require(`./Ban.js`).ban(user, message);
   });
 };
