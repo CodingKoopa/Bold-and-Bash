@@ -100,10 +100,33 @@ ${message.channel}]: ${message.content}`
     const splitMessage = message.content.match(/([\w|.|@|#|<|>|-]+)|("[^"]+")/g);
     const enteredCommand = splitMessage[0].slice(config.commandPrefix.length).toLowerCase();
     const args = splitMessage.slice(1, splitMessage.length);
-    logger.info(`Command entered: ${enteredCommand} with args ${args}.`);
+    logger.silly(`Command entered: ${enteredCommand} with args ${args}.`);
 
+    // Get the index of the command in the list.
     const index = commandList.map(command => command.name.toLowerCase()).indexOf(enteredCommand);
-    if (index >= 0)
+
+    // The help command is handled differently. Consider it to be, like, a shell builtin like alias.
+    if (enteredCommand === `help`)
+    {
+      message.channel.send(`${message.author} private messaging bot help to you.`);
+      var commandNameList = ``;
+      commandList.forEach(command =>
+      {
+        // Only add commands that the user can run to the list.
+        if (command.isExecutable(message))
+          commandNameList += `\`${command.name}\`: ${command.description}\n`;
+      });
+      const helpEmbed = new discord.RichEmbed(
+        {
+          title: `Bold and Bash Help`,
+          description: commandNameList
+        });
+      message.author.send(`Here's the help for this bot:`,
+        {
+          embed: helpEmbed
+        });
+    }
+    else if (index >= 0)
       commandList[index].execute(message, args);
     else
       common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);

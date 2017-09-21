@@ -44,13 +44,25 @@ class Command
     return mentionMissing;
   }
 
+  // Used by the help command.
+  isExecutable(message)
+  {
+    logger.info(`Testing. Roles: ${this.roles}`);
+    // If there are roles to fulfill, and the user's roles contain the command's.
+    if (this.roles && common.findArray(message.member.roles.map(role => role.name), this.roles))
+      return true;
+    // If there are no roles to fulfill.
+    else if (!this.roles)
+      return true;
+    else
+      return false;
+  }
+
   execute(message, passedArguments)
   {
     const seeHelpMessage =
       `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
-    // If there are roles to fulfill, and the user's roles do not contain the command's.
-    if (this.roles && !common.findArray(message.member.roles.map(role => role.name),
-      this.roles))
+    if (!this.isExecutable(message))
     {
       // TODO: handle no arguments.
       const logMessage =
