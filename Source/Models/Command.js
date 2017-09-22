@@ -124,17 +124,8 @@ ${passedArguments.length}. ${seeHelpMessage}`,
     else
     {
       this.callback(passedArguments, message);
-      try
-      {
+      if (message.deletable)
         message.delete();
-      }
-      catch (error)
-      {
-        logger.error(
-          `Failed to delete message, check if bot has message management permissions. \
-Error: ${error}.`
-        );
-      }
     }
   }
 }
