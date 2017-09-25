@@ -2,6 +2,7 @@
   "commandPrefix": ".",
   "logChannel": null,
   "clientLoginToken": null,
+  "inviteLink": null,
 
   "pmReply": "Please refer to our **Frequently Asked Questions**. <https://citra-emu.org/wiki/faq/>",
 

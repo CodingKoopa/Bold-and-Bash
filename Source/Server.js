@@ -72,6 +72,36 @@ have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings
     app.stats.joins = 0;
     app.stats.leaves = 0;
     app.stats.warnings = 0;
+
+    const currentDate = new Date;
+    const numSeconds = currentDate.getTime();
+    app.bans.forEach((ban, index, array) =>
+    {
+      if (!ban.cleared && ban.unbanDate <= numSeconds)
+      {
+        const logMessage = `Unbanning ${ban.username}.`;
+        logger.info(logMessage);
+        app.logChannel.send(logMessage);
+        // Unban the user.
+        app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
+        {
+          client.users.get(ban.id).send(`You have been unbanned from the server
+**${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(error =>
+          {
+            const sharedMessage = `Failed to send unban message to ${ban.username}. Error: `;
+            logger.error(`${sharedMessage}${error}`);
+            app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
+          });
+          array[index].cleared = true;
+        }, error =>
+        {
+          const sharedMessage = `Failed to unban ${ban.username}. Error: `;
+          logger.error(`${sharedMessage}${error}`);
+          app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
+        });
+      }
+    });
+    data.flushBans();
   });
 
 client.on(`message`, message =>

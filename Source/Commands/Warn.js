@@ -24,7 +24,6 @@ const callback = function(args, message)
     var warnMessage;
     if (!reason)
     {
-      reason = ``;
       logMessage =
         `${authorInfo} has warned ${userInfo} (${count} warnings).`;
       warnMessage =
@@ -48,7 +47,7 @@ const callback = function(args, message)
     data.flushWarnings();
     app.stats.warnings++;
     if (count >= 3)
-      require(`./Ban.js`).ban(user, message);
+      require(`./Ban.js`).ban(user, `third warning`, null, message);
   });
 };
 
