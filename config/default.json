@@ -4,6 +4,9 @@
   "clientLoginToken": null,
   "inviteLink": null,
 
+  "logdnaKey": "",
+  "enableLogdnaLogging": false,
+
   "pmReply": "Please refer to our **Frequently Asked Questions**. <https://citra-emu.org/wiki/faq/>",
 
   "quotes": {

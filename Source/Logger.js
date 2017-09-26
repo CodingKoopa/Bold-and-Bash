@@ -1,5 +1,11 @@
+const os = require(`os`);
+
+const ip = require(`ip`);
 const winston = require(`winston`);
 require(`winston-daily-rotate-file`);
+require(`logdna`);
+
+const config = require(`config`);
 
 // This is outside of the DailyRotateFile constructor because the log serialization only supports
 // the timestamp being a function, and not the level.
@@ -51,5 +57,22 @@ const logger = new winston.Logger(
     exitOnError: false,
     meta: true,
   });
+
+if (config.enableLogdnaLogging && config.logdnaKey)
+{
+  // Setup logging for LogDNA cloud logging.
+  logger.add(winston.transports.Logdna, {
+    key: config.logdnaKey,
+    level: `info`,
+    ip: ip.address(),
+    hostname: os.hostname(),
+    app: `discord-bot`
+  });
+  logger.info(`Started LogDNA winston transport.`);
+}
+else if (config.enableLogdna === true)
+{
+  throw `Attempted to enable LogDNA transport without a key!`;
+}
 
 module.exports = logger;
