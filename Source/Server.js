@@ -51,49 +51,44 @@ client.on(`guildMemberRemove`, () =>
 });
 
 // Output the stats for app.stats every 24 hours.
-// Server is in UTC mode, 11:30 EST would be 03:30 UTC.
-schedule.scheduleJob(
-  {
-    hour: 3,
-    minute: 30
-  }, function()
-  {
-    logger.info(
-      `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
+schedule.scheduleJob(function()
+{
+  logger.info(
+    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-    );
-    app.logChannel.send(
-      `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
+  );
+  app.logChannel.send(
+    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
 have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-    );
+  );
 
-    // Clear the stats for the day.
-    app.stats.joins = 0;
-    app.stats.leaves = 0;
-    app.stats.warnings = 0;
+  // Clear the stats for the day.
+  app.stats.joins = 0;
+  app.stats.leaves = 0;
+  app.stats.warnings = 0;
 
-    const currentDate = new Date;
-    const numSeconds = currentDate.getTime();
-    app.bans.forEach((ban, index, array) =>
+  const currentDate = new Date;
+  const numSeconds = currentDate.getTime();
+  app.bans.forEach((ban, index, array) =>
+  {
+    if (!ban.cleared && ban.unbanDate <= numSeconds)
     {
-      if (!ban.cleared && ban.unbanDate <= numSeconds)
+      const logMessage = `Unbanning ${ban.username}.`;
+      logger.info(logMessage);
+      app.logChannel.send(logMessage);
+      // Unban the user.
+      app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
-        const logMessage = `Unbanning ${ban.username}.`;
-        logger.info(logMessage);
-        app.logChannel.send(logMessage);
-        // Unban the user.
-        app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
-        {
-          client.users.get(ban.id).send(`You have been unbanned from the server
+        client.users.get(ban.id).send(`You have been unbanned from the server
 **${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(error =>
-            common.sendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
-              error));
-          array[index].cleared = true;
-        }, error => common.sendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
-      }
-    });
-    data.flushBans();
+          common.sendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
+            error));
+        array[index].cleared = true;
+      }, error => common.sendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
+    }
   });
+  data.flushBans();
+});
 
 client.on(`message`, message =>
 {
