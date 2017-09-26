@@ -118,6 +118,10 @@ ${message.channel}]: ${message.content}`
 
   if (message.content.startsWith(config.commandPrefix))
   {
+    // If the message starts with more than one of the command prefix, don't do anything.
+    // For example: "...well ok then."
+    if (message.content[0] === message.content[1])
+      return;
     const splitMessage = message.content.match(/([\w|.|@|#|<|>|-]+)|("[^"]+")/g);
     const enteredCommand = splitMessage[0].slice(config.commandPrefix.length).toLowerCase();
     const args = splitMessage.slice(1, splitMessage.length);
