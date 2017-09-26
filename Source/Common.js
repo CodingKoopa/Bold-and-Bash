@@ -1,4 +1,4 @@
-const logger = require(`./Logging.js`);
+const logger = require(`./Logger.js`);
 const app = require(`./App.js`);
 
 function printArray(arr)

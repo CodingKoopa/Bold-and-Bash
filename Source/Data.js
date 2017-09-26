@@ -1,6 +1,6 @@
 const fs = require(`fs`);
 
-const logger = require(`./Logging.js`);
+const logger = require(`./Logger.js`);
 const app = require(`./App.js`);
 
 function readWarnings()

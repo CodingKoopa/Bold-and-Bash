@@ -6,7 +6,8 @@ const config = require(`config`);
 const schedule = require(`node-schedule`);
 
 const common = require(`./Common.js`);
-const logger = require(`./Logging.js`);
+const logger = require(`./Logger.js`);
+const messageLogger = require(`./MessageLogger.js`);
 const app = require(`./App.js`);
 const data = require(`./Data.js`);
 
@@ -90,6 +91,29 @@ have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings
   data.flushBans();
 });
 
+function padString(string, number)
+{
+  return string.length < number ? string.padEnd(number) : string.slice(0, number);
+}
+
+function formatMessage(message, channel)
+{
+  // Breakdown of the message logging (Should take up exactly 50 chars.):
+  // 1: The opening bracket for the channel.
+  // 12: The channel name, or PM (Including the #, if present.).
+  // 1: The closing bracket for the channel.
+  // 1: The space separating the channel section from the username.
+  // 12: The username.
+  // 1: The space separating the username section from the user ID section.
+  // 1: The opening parenthesis for the user ID.
+  // 18: The user ID.
+  // 1: The closing parenthesis the user ID.
+  // 1: The colon indicating the message.
+  // 1: The space separating the message info from the message itself.
+  return `[${padString(channel, 12)}] ${padString(message.author.username, 12)} \
+(${message.author.id}): ${message.content}`;
+}
+
 client.on(`message`, message =>
 {
   if (message.author.bot && !message.content.startsWith(`.ban`))
@@ -99,17 +123,11 @@ client.on(`message`, message =>
 
   if (!message.guild)
   {
-    // We want to log PM attempts.
-    logger.info(`${message.author.username} ${message.author} [PM]: ${message.content}`);
-    app.logChannel.send(`${message.author} [PM]: ${message.content}`);
-    message.reply(config.pmReply);
+    // We want to log DM attempts.
+    messageLogger.silly(formatMessage(message, `DM`));
     return;
   }
-
-  logger.verbose(
-    `${message.author.username} ${message.author} [Channel: ${message.channel.name} \
-${message.channel}]: ${message.content}`
-  );
+  messageLogger.silly(formatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.commandPrefix))
   {
