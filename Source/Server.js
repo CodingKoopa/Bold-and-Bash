@@ -151,10 +151,10 @@ ${message.channel}]: ${message.content}`
           title: `Bold and Bash Help`,
           description: commandNameList
         });
-      message.author.send(`Here's the help for this bot:`,
-        {
-          embed: helpEmbed
-        });
+      message.author.send(`Here's the help for this bot:`, { embed: helpEmbed}).then(() =>
+      {
+        message.delete();
+      });
     }
     else if (index >= 0)
       commandList[index].execute(message, args);
