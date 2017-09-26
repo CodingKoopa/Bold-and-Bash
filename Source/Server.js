@@ -51,17 +51,12 @@ client.on(`guildMemberRemove`, () =>
   app.stats.leaves += 1;
 });
 
-// Output the stats for app.stats every 24 hours.
+// Output the stats for app.stats every 24 hours, and unban where necessary.
 schedule.scheduleJob(function()
 {
-  logger.info(
-    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
-have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-  );
-  app.logChannel.send(
-    `Here are today's stats for ${(new Date()).toLocaleDateString()}! ${app.stats.joins} users \
-have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings have been issued.`
-  );
+  common.sendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}!
+${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings}
+warnings have been issued.`);
 
   // Clear the stats for the day.
   app.stats.joins = 0;
@@ -74,9 +69,7 @@ have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings
   {
     if (!ban.cleared && ban.unbanDate <= numSeconds)
     {
-      const logMessage = `Unbanning ${ban.username}.`;
-      logger.info(logMessage);
-      app.logChannel.send(logMessage);
+      common.sendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
       app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
@@ -116,11 +109,6 @@ function formatMessage(message, channel)
 
 client.on(`message`, message =>
 {
-  if (message.author.bot && !message.content.startsWith(`.ban`))
-  {
-    return;
-  }
-
   if (!message.guild)
   {
     // We want to log DM attempts.
@@ -159,10 +147,8 @@ client.on(`message`, message =>
           title: `Bold and Bash Help`,
           description: commandNameList
         });
-      message.author.send(`Here's the help for this bot:`, { embed: helpEmbed}).then(() =>
-      {
-        message.delete();
-      });
+      message.author.send(`Here's the help for this bot:`, {embed: helpEmbed}).then(() =>
+        message.delete());
     }
     else if (index >= 0)
       commandList[index].execute(message, args);
@@ -181,11 +167,11 @@ fs.readdirSync(`Source/Commands/`).forEach(function(file)
   {
     if (file.includes(`.disabled`))
     {
-      logger.info(`Did not load disabled module: ${file}`);
+      logger.debug(`Did not load disabled module: ${file}`);
     }
     else
     {
-      logger.info(`Loaded module: ${file}`);
+      logger.debug(`Loaded module: ${file}`);
       commandList.push(require(`./Commands/${file}`).command);
     }
   }

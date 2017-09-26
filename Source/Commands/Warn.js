@@ -1,4 +1,4 @@
-const logger = require(`../Logger.js`);
+const common = require(`../Common.js`);
 const app = require(`../App.js`);
 const data = require(`../Data.js`);
 
@@ -36,8 +36,7 @@ const callback = function(args, message)
       warnMessage =
         `${user} You have been warned for ${reason}. Additional infractions may result in a ban.`;
     }
-    logger.info(logMessage);
-    app.logChannel.send(logMessage);
+    common.sendPrivateInfoMessage(logMessage);
 
     message.reply(`warning ${userInfo}.`);
 

@@ -22,6 +22,12 @@ function findArray(haystack, arr)
   });
 }
 
+function sendPrivateInfoMessage(messageText)
+{
+  logger.info(messageText);
+  app.logChannel.send(messageText);
+}
+
 function sendErrorMessage(error, message)
 {
   message.channel.send(`${message.author} :rotating_light: Error: ${error}`);
@@ -49,6 +55,7 @@ const staffRoles = [`Admins`, `Moderators`];
 module.exports = {
   findArray,
   printArray,
+  sendPrivateInfoMessage,
   sendErrorMessage,
   sendPrivateErrorMessage,
   staffRoles

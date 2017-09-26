@@ -1,5 +1,4 @@
 const common = require(`../Common.js`);
-const logger = require(`../Logger.js`);
 const app = require(`../App.js`);
 const data = require(`../Data.js`);
 
@@ -17,10 +16,8 @@ const callback = function(args, message)
     const authorInfo = `${message.author.username} (${message.author})`;
     const userInfo = `${user.username} (${user})`;
     const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-    const logMessage =
-      `${authorInfo} has cleared warnings for ${userInfo} (${warnings.length} warnings).`;
-    logger.info(logMessage);
-    app.logChannel.send(logMessage);
+    common.sendPrivateInfoMessage(`${authorInfo} has cleared warnings for ${userInfo}
+(${warnings.length} warnings).`);
 
     message.reply(`clearing warnings for ${userInfo}`);
 

@@ -36,7 +36,7 @@ function ban(user, reason, length, message)
     logMessage =
       `${authorInfo} has banned ${userInfo} (${count} warnings)`;
     banMessage =
-      `${user} You are being banned.`;
+      `${user} You are being banned`;
   }
   else
   {
@@ -49,8 +49,7 @@ function ban(user, reason, length, message)
   logMessage += appendString;
   banMessage += appendString;
 
-  logger.info(logMessage);
-  app.logChannel.send(logMessage);
+  common.sendPrivateInfoMessage(logMessage);
 
   // Send a banning message.
   message.reply(`banning ${userInfo}.`);
