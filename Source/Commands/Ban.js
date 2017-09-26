@@ -1,3 +1,4 @@
+const common = require(`../Common.js`);
 const logger = require(`../Logging.js`);
 const app = require(`../App.js`);
 const data = require(`../Data.js`);
@@ -75,18 +76,7 @@ function ban(user, reason, length, message)
       message.author.username, count, unbanDate));
     data.flushBans();
   },
-  error =>
-  {
-    // The ban failed, likely due to an API error.
-    // Log the ban error.
-    const sharedMessage = `Failed to ban ${userInfo}. Error: `;
-    // Internally log it.
-    logger.error(`${sharedMessage}${error}`);
-    // Return the string to be logged in Discord, use a code block.
-    // Ordinarily, the error would be sent publicly, but for moderation commands this looks
-    // unprofessional.
-    app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
-  });
+  error => common.sendPrivateErrorMessage(`Failed to ban ${userInfo}.`, error));
 }
 
 module.exports = {

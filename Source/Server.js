@@ -87,18 +87,10 @@ have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} warnings
         {
           client.users.get(ban.id).send(`You have been unbanned from the server
 **${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(error =>
-          {
-            const sharedMessage = `Failed to send unban message to ${ban.username}. Error: `;
-            logger.error(`${sharedMessage}${error}`);
-            app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
-          });
+            common.sendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
+              error));
           array[index].cleared = true;
-        }, error =>
-        {
-          const sharedMessage = `Failed to unban ${ban.username}. Error: `;
-          logger.error(`${sharedMessage}${error}`);
-          app.logChannel.send(`${sharedMessage}\`\`\`${error}\`\`\``);
-        });
+        }, error => common.sendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
       }
     });
     data.flushBans();

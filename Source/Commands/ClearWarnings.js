@@ -1,3 +1,4 @@
+const common = require(`../Common.js`);
 const logger = require(`../Logging.js`);
 const app = require(`../App.js`);
 const data = require(`../Data.js`);
@@ -31,10 +32,7 @@ const callback = function(args, message)
     }
     else
     {
-      const logErrorMessage = `Failed to clear warnings for ${userInfo}`;
-      logger.error(logErrorMessage);
-      // See: the comment about this in ban.js.
-      app.logChannel.send(logErrorMessage);
+      common.sendPrivateErrorMessage(`Failed to clear warnings for ${userInfo}`);
     }
   });
 };
