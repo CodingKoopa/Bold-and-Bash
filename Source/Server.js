@@ -13,7 +13,6 @@ const data = require(`./Data.js`);
 logger.info(`KoopaBot Version ${require(`../package.json`).version} Starting.`);
 
 var commandList = [];
-var cachedTriggers = [];
 var client = new discord.Client();
 
 process.on(`unhandledRejection`, function onError(err)
