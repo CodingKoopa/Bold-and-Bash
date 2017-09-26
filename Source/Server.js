@@ -160,33 +160,6 @@ ${message.channel}]: ${message.content}`
       commandList[index].execute(message, args);
     else
       common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
-
-  }
-  else if (!message.author.bot)
-  {
-    // This is a normal channel message.
-    cachedTriggers.forEach(function(trigger)
-    {
-      if (!trigger.roles || common.findArray(message.member.roles.map(member => member.name),
-        trigger.roles))
-      {
-        if (trigger.trigger(message))
-        {
-          logger.debug(
-            `${message.author.username} ${message.author} [Channel: ${message.channel}] triggered: \
-${message.content}`
-          );
-          try
-          {
-            trigger.execute(message);
-          }
-          catch (err)
-          {
-            logger.error(err);
-          }
-        }
-      }
-    });
   }
 });
 
@@ -206,26 +179,6 @@ fs.readdirSync(`Source/Commands/`).forEach(function(file)
     {
       logger.info(`Loaded module: ${file}`);
       commandList.push(require(`./Commands/${file}`).command);
-    }
-  }
-});
-
-// Cache all triggers.
-cachedTriggers = [];
-logger.info(`Loading Triggers.`);
-fs.readdirSync(`Source/Triggers/`).forEach(function(file)
-{
-  // Load the trigger if it's a script.
-  if (path.extname(file) === `.js`)
-  {
-    if (file.includes(`.disabled`))
-    {
-      logger.info(`Did not load disabled trigger: ${file}`);
-    }
-    else
-    {
-      logger.info(`Loaded trigger: ${file}`);
-      cachedTriggers.push(require(`./Triggers/${file}`));
     }
   }
 });
