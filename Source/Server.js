@@ -109,6 +109,10 @@ function formatMessage(message, channel)
 
 client.on(`message`, message =>
 {
+  // Ignore bot messages.
+  if (message.author.bot)
+    return;
+
   if (!message.guild)
   {
     // We want to log DM attempts.
