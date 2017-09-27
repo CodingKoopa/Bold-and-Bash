@@ -36,6 +36,18 @@ client.on(`ready`, () =>
     logger.error(`Logging channel #${config.logChannel} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
+  app.showcaseChannel = client.channels.get(config.showcaseChannel);
+  if (!app.showcaseChannel)
+  {
+    logger.error(`Showcase channel #${config.showcaseChannel} not found.`);
+    throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
+  }
+  app.verificationChannel = client.channels.get(config.verificationChannel);
+  if (!app.verificationChannel)
+  {
+    logger.error(`Verification channel #${config.verificationChannel} not found.`);
+    throw (`VERIFICATION_CHANNEL_NOT_FOUND`);
+  }
   app.guild = app.logChannel.guild;
 
   logger.info(`Bot is now online and connected to server.`);
@@ -119,7 +131,9 @@ client.on(`message`, message =>
     messageLogger.silly(formatMessage(message, `DM`));
     return;
   }
-  messageLogger.silly(formatMessage(message, `#${message.channel.name}`));
+  // Don't log messages in the verification channel, because we don't have permission to do so, yet.
+  if (message.channel !== app.verificationChannel)
+    messageLogger.silly(formatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.commandPrefix))
   {
@@ -160,11 +174,17 @@ client.on(`message`, message =>
       message.author.send(`Here's the help for this bot:`, {embed: helpEmbed}).then(() =>
         message.delete());
     }
+    // Restrict verification channel to the verify command.
+    else if (!message.channel !== app.verificationChannel && enteredCommand !== `verify`)
+      message.delete();
     else if (index >= 0)
       commandList[index].execute(message, args);
     else
       common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
   }
+  // Clean up, for the verification channel.
+  else if (message.channel === app.verificationChannel)
+    message.delete();
 });
 
 // Load all command modules.

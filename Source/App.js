@@ -3,6 +3,8 @@ var Application = function()
 {
   this.guild = null;
   this.logChannel = null;
+  this.verificationChannel = null;
+  this.showcaseChannel = null;
   this.warnings = [];
   this.bans = [];
   this.stats = {

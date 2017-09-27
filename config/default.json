@@ -1,6 +1,8 @@
 {
   "commandPrefix": ".",
   "logChannel": null,
+  "verificationChannel": null,
+  "showcaseChannel": null,
   "clientLoginToken": null,
   "inviteLink": null,
 
