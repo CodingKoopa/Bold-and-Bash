@@ -127,7 +127,7 @@ client.on(`message`, message =>
     // For example: "...well ok then."
     if (message.content[0] === message.content[1])
       return;
-    const splitMessage = message.content.match(/([\w|.|@|#|<|>|:|/|-]+)|("[^"]+")/g);
+    const splitMessage = message.content.match(/([\w|.|@|#|<|>|:|/|\(|\)|-]+)|("[^"]+")/g);
     const enteredCommand = splitMessage[0].slice(config.commandPrefix.length).toLowerCase();
     var args = splitMessage.slice(1, splitMessage.length);
     // Strip any quotes, they're not needed any more.
