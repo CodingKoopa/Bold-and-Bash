@@ -175,7 +175,7 @@ client.on(`message`, message =>
         message.delete());
     }
     // Restrict verification channel to the verify command.
-    else if (!message.channel !== app.verificationChannel && enteredCommand !== `verify`)
+    else if (message.channel === app.verificationChannel && enteredCommand !== `verify`)
       message.delete();
     else if (index >= 0)
       commandList[index].execute(message, args);
