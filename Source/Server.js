@@ -129,7 +129,13 @@ client.on(`message`, message =>
       return;
     const splitMessage = message.content.match(/([\w|.|@|#|<|>|-|/|:]+)|("[^"]+")/g);
     const enteredCommand = splitMessage[0].slice(config.commandPrefix.length).toLowerCase();
-    const args = splitMessage.slice(1, splitMessage.length);
+    var args = splitMessage.slice(1, splitMessage.length);
+    // Strip any quotes, they're not needed any more.
+    args.forEach((arg, index, array) =>
+    {
+      if (arg[0] === `"`)
+        array[index] = arg.substring(1, arg.length - 1);
+    });
     logger.silly(`Command entered: ${enteredCommand} with args ${args}.`);
 
     // Get the index of the command in the list.
