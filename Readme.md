@@ -1,7 +1,8 @@
-<h1>
-  <img src="https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/BoldAndBash.png" alt="logo" height="100">
-  Bold and Bash
-</h1>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/BoldAndBash.png" alt="Logo" height="200" />
+</p>
+
+# Bold and Brash
 Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http://discord.gg/K3ERBFC), based off of [CitraBot](https://github.com/citra-emu/discord-bot). It shares some functionality with the [Bash](https://www.gnu.org/software/bash/) shell, as the name implies. Some examples of said functionality are the help commands, analogous to a command's manpage, and the stringing of commands together with `&&` and `||` (This part is not quite ready yet.).
 
 ## Features
@@ -32,6 +33,7 @@ This system does have pros outside of the legal stuff though. By making users ha
 
 ### Mod Showcasing
 In a modding server, generally people will have mods to share. However, in a channel dedicated to this purpose, one mod being shared can lead to offtopic discussion, making it hard to find new mods. So, with this system, the mod showcase channel is read only, and users run a command to submit a mod from another channel. Here's an example of what the bot's message looks like:
+
 ![Mod Showcase Screenshot](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/ModShowcase.png)
 
 ## Setup
@@ -40,9 +42,9 @@ In a modding server, generally people will have mods to share. However, in a cha
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/en/)
 
-## Instructuions
+### Instructuions
 
-### Discord Setup
+#### Discord Setup
 1. Create a Discord server.
 2. Modify the `@everyone` role to take away the `Send Messages` permission in the `Text Permissions` section.
 3. Make 4 roles (These must be named exactly how they are typed here, unless noted otherwise.):
@@ -72,7 +74,7 @@ In a modding server, generally people will have mods to share. However, in a cha
 
 Now, you should have a Discord server setup with roles, channels, and a bot invited but offline. Now, we will setup the bot to run and respond to commands.
 
-### Bot Setup
+#### Bot Setup
 1. Open up a terminal or command prompt.
 2. Clone the `Bold-and-Bash` repository:
 ```bash
@@ -104,7 +106,7 @@ npm run start-prod
 
 If you did everything right, the bot should now be up and running!
 
-#### What Now?
+##### What Now?
 From now on, to run the bot you will just follow the last step of [Bot Setup](#bot-setup), running `npm run start-prod`.
 
 If you are interested in working on the bot's code, follow these steps to get a development environment up and running:
