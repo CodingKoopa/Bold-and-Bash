@@ -1,7 +1,7 @@
 {
-  "name": "koopabot",
+  "name": "bold-and-bash",
   "version": "0.0.1",
-  "description": "Discord bot.",
+  "description": "A Discord bot not unlike Bash.",
   "author": "TheKoopaKingdom <thekoopakingdom@gmail.com>",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development node Source/Server.js",

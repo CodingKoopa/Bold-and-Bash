@@ -11,7 +11,7 @@ const messageLogger = require(`./MessageLogger.js`);
 const app = require(`./App.js`);
 const data = require(`./Data.js`);
 
-logger.info(`KoopaBot Version ${require(`../package.json`).version} Starting.`);
+logger.info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
 
 var commandList = [];
 var client = new discord.Client();
