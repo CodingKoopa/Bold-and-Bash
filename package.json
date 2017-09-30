@@ -4,6 +4,7 @@
   "description": "A Discord bot not unlike Bash.",
   "author": "TheKoopaKingdom <thekoopakingdom@gmail.com>",
   "scripts": {
+    "test": "eslint .",
     "start-dev": "cross-env NODE_ENV=development node Source/Server.js",
     "start-prod": "cross-env NODE_ENV=production node Source/Server.js"
   },
