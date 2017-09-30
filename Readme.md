@@ -1,75 +1,128 @@
-# Setting Up Discord
-Create server in Discord.
+<h1>
+  <img src="https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/BoldAndBash.png" alt="logo" height="100">
+  Bold and Bash
+</h1>
+Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http://discord.gg/K3ERBFC), based off of [CitraBot](https://github.com/citra-emu/discord-bot). It shares some functionality with the [Bash](https://www.gnu.org/software/bash/) shell, as the name implies. Some examples of said functionality are the help commands, analogous to a command's manpage, and the stringing of commands together with `&&` and `||` (This part is not quite ready yet.).
 
-Create text channel for logs.
+## Features
+A full list of commands be found by running the `help` command.
 
-Create roles `Admins` and `Moderators`.
+### Moderation
+The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
 
-Invite Bot to your Server (see **Creating a Bot User** below).
-
-Make bot a Moderator.
-
-# Install & Dependencies
-Install Node.js and NPM.
-
-Install forever (task scheduler).
-```sh
-npm install -g forever
+Additionally, Bold and Brash logs messages to `Logs/Date.Messagess.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
 ```
-Clone repository and install package dependencies.
-```sh
-git clone https://github.com/citra-emu/discord-bot.git
-cd discord-bot
+[info]    [7:21 PM]  Bold and Bash Version 0.0.1 Starting.
+[info]    [7:21 PM]  Loading Command Modules.
+[debug]   [7:21 PM]  Loaded module: Ban.js
+```
+And here's an excerpt from the messages log (Featuring @Hexexpeck):
+```
+[#general    ] Koopa        (168559677913694208): Hey <@202614166689677312> can you say something?
+[#general    ] Koopa        (168559677913694208): I'm getting an example of the message log for the Bold & Brash readme.
+[#general    ] Hexexpeck    (202614166689677312): test 1
+[#general    ] Koopa        (168559677913694208): Thanks~
+[#verificatio] Koopa        (168559677913694208): And just for good measure, here's a message in another channel.
+```
+
+### Verification
+In compliance with [section 2.4 of the Discord Developer Terms of Service](https://discordapp.com/developers/docs/legal#2-license-accounts-and-restrictions), Bold and Brash gets permission from all users before retaining chat logs. In order for a user to send messages in a server, they must run the `verify` command to have the bot give them the `Verified` role that gives them the permission. By running this command, users give permission to the bot owner to keep their "end user data".
+
+This system does have pros outside of the legal stuff though. By making users have to look for a command before particiating in a community, they have to at least take a quick look at the rules.
+
+### Mod Showcasing
+In a modding server, generally people will have mods to share. However, in a channel dedicated to this purpose, one mod being shared can lead to offtopic discussion, making it hard to find new mods. So, with this system, the mod showcase channel is read only, and users run a command to submit a mod from another channel. Here's an example of what the bot's message looks like:
+![Mod Showcase Screenshot](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/ModShowcase.png)
+
+## Setup
+
+### Prerequisities
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en/)
+
+## Instructuions
+
+### Discord Setup
+1. Create a Discord server.
+2. Modify the `@everyone` role to take away the `Send Messages` permission in the `Text Permissions` section.
+3. Make 4 roles (These must be named exactly how they are typed here, unless noted otherwise.):
+ - The `Admins` role. These are administrators, the staff with the most power. The permissions are up to you.
+ - The `Moderators` role. These are moderators, staff members with less power than the administrators. The permissions are up to you.
+ - The Bold and Bash role (The name of this role is up to you.). This is the bot's role. The permissions must include:
+    - `Manage Roles` for the `verify` command.
+    - `Ban Members` for the `ban` command.
+    - `Read Text Channels & See Voice Channels` to recieve commands.
+    - `Send Text Messages` to respond to commands.
+    - `Manage Messages` to delete entered commands that ended sucessfully, and clean up the verification channel.
+ - The `Verified` role. The permissions should have everything except for `Send Messages` **disabled**, with `Send Messages` itself **enabled**.
+4. Make 3 text channels in addition to the default `#general` channel (The names are up to you.):
+ - The verification channel. This is where people will enter the `verify` command to give themselves the permission to send messages. The permissions must be:
+     - `@everyone` has the `Read Messages` and `Send Messages` permissions.
+     - `Verified` is denied the `Read Messages` permission (`Send Messages` is neutral.).
+     - `Admins` and `Moderators` have the `Read Messages` permission.
+ - The mod showcase channel. This is where the bot will post mod updates on behalf of people using the `showcase` command. The permissions must be:
+     - `@everyone` is denied the `Send Messages` permission.
+     - `Admins`, `Moderators`, and the bot have the `Send Messages` permission.
+ - The log channel. This is where the bot reports events like warns or bans that are of interest to the staff. The permissions must be:
+     - `@everyone` is denied the `Read Messages` permission.
+     - `Admins`, `Moderators`, and the bot have the `Read Messages` permission.
+4. Make a bot user using [this](https://discordapp.com/developers/docs/intro) guide.
+5. Invite the bot to the server using [this](https://discordapp.com/developers/docs/topics/oauth2#bot-authorization-flow) guide. For the permissions, just use `0`, because we already have a role with the bot's permissions.
+6. Give the bot role to the newly invited bot.
+
+Now, you should have a Discord server setup with roles, channels, and a bot invited but offline. Now, we will setup the bot to run and respond to commands.
+
+### Bot Setup
+1. Open up a terminal or command prompt.
+2. Clone the `Bold-and-Bash` repository:
+```bash
+git clone https://github.com/TheKoopaKingdom/Bold-and-Bash.git
+```
+3. Enter the `Bold-and-Bash` directory:
+```bash
+cd Bold-and-Bash
+```
+4. Install the Node.js dependencies with the [NPM](https://www.npmjs.com/) package manager:
+```bash
 npm install
 ```
-Create new JSON file for bot config with the following contents in the directory specified below:
-
-**For Development:** `./config/development.json`
-
-**For Production:** `./config/production.json`
-
-```JSON
-{
-  "logChannel": "",
-  "clientLoginToken": ""
-} 
+5. Make a copy of the default configuration to be the development configuration:
+```bash
+cp config/default.json config/production.json
 ```
-To get `logChannel`, type `\#YOUR_CHANNEL_NAME` in your Discord server chat.
+6. Fill out the values in `config/production.json`. Here's some info about what they are:
+  - `clientLoginToken` (String): The bot's token, from [here](https://discordapp.com/developers/applications/me).
+  - `inviteLink` (String): The server's invite link, used when reinviting users after timed bans.
+  - `verificationChannel` (String), `showcaseChannel` (String), `logChannel` (String): The IDs of the channels the bot uses. To get the ID of a channel, go into your Discord settings, `Appearance`, and enable `Developer Mode` at the bottom. Now, you should be able to right click on a channel and copy its ID.
+  - `commandPrefix` (String): The way that commands are launched. For example, with `.` (The default.), you would type `.ban`.
+  - `enableLogdnaLogging` (Boolean): Whether LogDNA logging will be used or not. Setting up LogDNA is beyond the scope of this guide, and is not required for the bot to function.
+  - `logdnaKey` (String): Your LogDNA Ingestion Key, if you are using LogDNA.
+7. Launch the bot in production mode:
+```bash
+npm run start-prod
+```
 
-Copy string of numbers **after** `#` into `"logChannel": ""`
+If you did everything right, the bot should now be up and running!
 
-![](http://i.imgur.com/PdcXVCD.png)
+#### What Now?
+From now on, to run the bot you will just follow the last step of [Bot Setup](#bot-setup), running `npm run start-prod`.
 
-Copy App Bot User token to `"clientLoginToken": ""`
-
-![](http://i.imgur.com/YTGZju9.png)
-
-# Running Bot
-
-##### For Production
-
-`./start.sh` Requires a config/production.json file.
-
-##### For Development
-
-`node Server.js`   Requires a config/development.json file.
+If you are interested in working on the bot's code, follow these steps to get a development environment up and running:
+1. Follow [Discord Setup](#discord-setup) again, creating a separate Discord server, and separate bot account.
+2. Make a copy of your production configuration, for development:
+```bash
+cp config/production.json config/development.json
+```
+3. Edit the values of `config/development.json` to fit the new server, and new bot account.
+4. Directly run the bot from `Server.js` (This is faster than going through NPM.):
+```bash
+clear && NODE_ENV=development node Source/Server.js
+```
+(Here, the `clear` isn't necessary, but is very helpful when constantly restarting the bot.
+5. When you've made your changes, use ESLint to check them for errors:
+```bash
+npm test
+```
 
 # License
 GNU General Public License v2.0
-
-# Creating a Bot User.
-First you need to go to [discord developers](https://discordapp.com/developers/applications/me) and click "New Application"
-![Application Screen](http://i.imgur.com/FvgfY2Z.png)
-Now give your bot a name and a picture, a description isn't necessary.
-![New Application Screen](http://i.imgur.com/MOS7yvH.png)
-Click "Create Application". On the next page scroll down until you see "Create a bot user", click that. Also click yes do it.
-![Screen you see after creating a new application then scrolling down a little.](http://i.imgur.com/YAzK5ml.png)
-![Yes Do It.](http://i.imgur.com/vkF6Rxo.png)
-Now you can get your bot's token, by using the "click to reveal button" in the app bot user section. Remember to uncheck `Public Bot`
-![New Bot Page](http://i.imgur.com/xhKMUVU.png)
-![Token](http://i.imgur.com/QwCmJJM.png)
-There's your token! Now its time to invite your bot to your server. Don't worry about your bot being started for this next step. Change the `client_id` in the URL to your Client ID under App Details, then go to this url ```https://discordapp.com/oauth2/authorize?&client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=0```
-![Authorize Bot](http://i.imgur.com/Ggwy0BP.png)
-Now select your sever, then click authorize.
-![Authorized](http://i.imgur.com/4cqNcs1.png)
-That's it! Now you can start your bot.
