@@ -1,12 +1,20 @@
-{
-  "env":
+// Unlike the rest of the project, this file uses double quotes instead of backticks, because ESLint
+// expects the former for the rules.
+module.exports = {
+  env:
   {
-    "es6": true,
-    "node": true
+    // Use EMCAScript6 features.
+    es6: true,
+    // Use Node.js features.
+    node: true
   },
-  "extends": "eslint:recommended",
-  "rules":
+  // Use the recommended ruleset as a base.
+  extends: "eslint:recommended",
+  plugins: ["more-naming-conventions"],
+  rules:
   {
+    // These are organized by the order in which they appear in the ESLint docs.
+
     // Best Practices
 
     // C++: Warn about empty return values.
@@ -33,8 +41,6 @@
       "warn",
       "allman"
     ],
-    // Style: Use Camelcase naming.
-    "camelcase": "warn",
     // Style: Use 2 levels of indentation, throw error otherwise..
     "indent": [
       "error",
@@ -58,6 +64,9 @@
     // EMCAScript 6
 
     // Use const when possible.
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+
+    // Custom Rules
+    "more-naming-conventions/snake-case-variables": "warn"
   }
-}
+};

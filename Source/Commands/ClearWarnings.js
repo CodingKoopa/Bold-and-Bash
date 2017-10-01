@@ -5,21 +5,21 @@ const data = require(`../Data.js`);
 const Command = require(`../Models/Command.js`);
 const Argument = require(`../Models/Argument.js`);
 
-const description = `Clears the warnings for a user.`;
-const arg = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
-const roles = require(`../Common.js`).staffRoles;
+const DESCRIPTION = `Clears the warnings for a user.`;
+const ARG = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
+const ROLES = require(`../Common.js`).staffRoles;
 const callback = function(args, message)
 {
   // Use some and not forEach, so we can return.
   message.mentions.users.forEach((user) =>
   {
-    const authorInfo = `${message.author.username} (${message.author})`;
-    const userInfo = `${user.username} (${user})`;
+    const author_info = `${message.author.username} (${message.author})`;
+    const user_info = `${user.username} (${user})`;
     const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-    common.sendPrivateInfoMessage(`${authorInfo} has cleared warnings for ${userInfo}
+    common.sendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info}
 (${warnings.length} warnings).`);
 
-    message.reply(`clearing warnings for ${userInfo}`);
+    message.reply(`clearing warnings for ${user_info}`);
 
     if (warnings && warnings.length > 0)
     {
@@ -29,9 +29,9 @@ const callback = function(args, message)
     }
     else
     {
-      common.sendPrivateErrorMessage(`Failed to clear warnings for ${userInfo}`);
+      common.sendPrivateErrorMessage(`Failed to clear warnings for ${user_info}`);
     }
   });
 };
 
-module.exports.command = new Command(`clearWarnings`, description, arg, roles, callback);
+module.exports.command = new Command(`clearWarnings`, DESCRIPTION, ARG, ROLES, callback);

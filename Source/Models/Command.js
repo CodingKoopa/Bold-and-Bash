@@ -15,13 +15,13 @@ class Command
       if (argument.required)
         this.numRequiredArguments++;
     });
-    var mentionIndex = 0;
+    var mention_index = 0;
     this.args.forEach((argument, index, args) =>
     {
       if (argument.isMention)
       {
-        args[index].mentionIndex = mentionIndex;
-        mentionIndex++;
+        args[index].mention_index = mention_index;
+        mention_index++;
       }
     });
     this.roles = roles;
@@ -31,15 +31,15 @@ class Command
   isMentionMissing(message, passedArguments)
   {
     const mentions = message.mentions.users.map(user => user.toString());
-    var mentionMissing = false;
+    var mention_missing = false;
     this.args.forEach((argument, index) =>
     {
       // If the argument expects a mention, make sure the passed argument is one.
-      if (argument.isMention && passedArguments[index] !== mentions[argument.mentionIndex])
+      if (argument.isMention && passedArguments[index] !== mentions[argument.mention_index])
         // If we return here, it won't work properly because only an exception can break forEach().
-        mentionMissing = true;
+        mention_missing = true;
     });
-    return mentionMissing;
+    return mention_missing;
   }
 
   // Used by the help command.
@@ -57,7 +57,7 @@ class Command
 
   execute(message, passedArguments)
   {
-    const seeHelpMessage =
+    const see_help_message =
       `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
     if (!this.isExecutable(message))
     {
@@ -71,43 +71,43 @@ ${common.printArray(this.roles)}.`, message);
       const description = `**Description**: ${this.description}\n`;
       var usage = `**Usage**: \`${require(`config`).commandPrefix}${this.name} [--help] `;
       // arguments is reserved.
-      var argumentList = ``;
+      var argument_list = ``;
       this.args.map(argument =>
       {
         usage += `${argument.shortName} `;
-        argumentList += `\`${argument.shortName}\``;
+        argument_list += `\`${argument.shortName}\``;
         if (argument.required && argument.isMention)
-          argumentList += ` (Mention)`;
+          argument_list += ` (Mention)`;
         else if (!argument.required && argument.isMention)
-          argumentList += ` (Optional Mention)`;
+          argument_list += ` (Optional Mention)`;
         else if (!argument.required && !argument.isMention)
-          argumentList += ` (Optional)`;
-        argumentList += `: ${argument.explanation}\n`;
+          argument_list += ` (Optional)`;
+        argument_list += `: ${argument.explanation}\n`;
       });
       // Close the mini code block.
       usage += `\``;
-      const helpEmbed = new RichEmbed(
+      const help_embed = new RichEmbed(
         {
           title: `\`${this.name}\` Command Help`,
-          description: `${description}${usage}\n${argumentList}`
+          description: `${description}${usage}\n${argument_list}`
         });
       message.reply(`here's the command help for \`${this.name}\`:`,
         {
-          embed: helpEmbed
+          embed: help_embed
         });
     }
     else if (passedArguments.length < this.numRequiredArguments)
     {
       common.sendErrorMessage(
         `Too little arguments. At least ${this.numRequiredArguments} needed, given \
-${passedArguments.length}. ${seeHelpMessage}`,
+${passedArguments.length}. ${see_help_message}`,
         message);
     }
     else if (passedArguments.length > this.args.length)
     {
       common.sendErrorMessage(
         `Too many arguments. No more than ${this.args.length} accepted, given \
-${passedArguments.length}. ${seeHelpMessage}`,
+${passedArguments.length}. ${see_help_message}`,
         message);
       // Everything is good, run the command.
     }

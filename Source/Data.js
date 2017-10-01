@@ -43,9 +43,9 @@ function readBans()
 
 function flushWarnings()
 {
-  var warningsJson = JSON.stringify(app.warnings, null, 4);
+  var warnings_json = JSON.stringify(app.warnings, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
-  fs.writeFile(`./Data/DiscordWarnings.json`, warningsJson, `utf8`, function(err)
+  fs.writeFile(`./Data/DiscordWarnings.json`, warnings_json, `utf8`, function(err)
   {
     if (err) logger.error(err);
   });
@@ -53,9 +53,9 @@ function flushWarnings()
 
 function flushBans()
 {
-  var bansJson = JSON.stringify(app.bans, null, 4);
+  var bans_json = JSON.stringify(app.bans, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
-  fs.writeFile(`./Data/DiscordBans.json`, bansJson, `utf8`, function(err)
+  fs.writeFile(`./Data/DiscordBans.json`, bans_json, `utf8`, function(err)
   {
     if (err) logger.error(err);
   });

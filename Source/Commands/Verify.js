@@ -3,7 +3,7 @@ const app = require(`../App.js`);
 
 const Command = require(`../Models/Command.js`);
 
-const description = `Gives you the \`Verified\` role.`;
+const DESCRIPTION = `Gives you the \`Verified\` role.`;
 const callback = function(args, message)
 {
   const role = app.guild.roles.find(role => role.name === `Verified`);
@@ -14,4 +14,4 @@ const callback = function(args, message)
     common.sendPrivateErrorMessage(`Failed to find Verified role.`);
 };
 
-module.exports.command = new Command(`verify`, description, [], null, callback);
+module.exports.command = new Command(`verify`, DESCRIPTION, [], null, callback);

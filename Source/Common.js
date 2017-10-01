@@ -36,21 +36,21 @@ function sendErrorMessage(error, message)
 // Error is optional, it's meant for passing API error details.
 function sendPrivateErrorMessage(messageText, errorDetails)
 {
-  const errorStr = `Error: `;
+  const error_str = `Error: `;
   if (errorDetails)
   {
-    logger.error(`${messageText} ${errorStr}${errorDetails}`);
+    logger.error(`${messageText} ${error_str}${errorDetails}`);
     // Use CSS syntax highlighting because it has "key: value" pairs.
-    app.logChannel.send(`${messageText} ${errorStr}\`\`\`css\n${errorDetails}\`\`\``);
+    app.logChannel.send(`${messageText} ${error_str}\`\`\`css\n${errorDetails}\`\`\``);
   }
   else
   {
-    logger.error(`${errorStr}${messageText}`);
-    app.logChannel.send(`${errorStr}${messageText}`);
+    logger.error(`${error_str}${messageText}`);
+    app.logChannel.send(`${error_str}${messageText}`);
   }
 }
 
-const staffRoles = [`Admins`, `Moderators`];
+const STAFF_ROLES = [`Admins`, `Moderators`];
 
 module.exports = {
   findArray,
@@ -58,5 +58,5 @@ module.exports = {
   sendPrivateInfoMessage,
   sendErrorMessage,
   sendPrivateErrorMessage,
-  staffRoles
+  STAFF_ROLES
 };

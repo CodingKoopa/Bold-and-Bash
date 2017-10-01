@@ -40,8 +40,8 @@ const logger = new winston.Logger(
             const date = new Date();
             const hours = padNumber(date.getHours());
             const minutes = padNumber(date.getMinutes());
-            const amPM = hours < 13 ? `AM` : `PM`;
-            const str = `[${hours % 12 || 12}:${minutes} ${amPM}]`;
+            const am_pm = hours < 13 ? `AM` : `PM`;
+            const str = `[${hours % 12 || 12}:${minutes} ${am_pm}]`;
             // 10: The length of the longest time ([AA:BB CC]).
             return str + ` `.repeat(10 - str.length);
           },

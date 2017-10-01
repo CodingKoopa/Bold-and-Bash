@@ -7,13 +7,13 @@ const schedule = require(`node-schedule`);
 
 const common = require(`./Common.js`);
 const logger = require(`./Logger.js`);
-const messageLogger = require(`./MessageLogger.js`);
+const message_logger = require(`./MessageLogger.js`);
 const app = require(`./App.js`);
 const data = require(`./Data.js`);
 
 logger.info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
 
-var commandList = [];
+var command_list = [];
 var client = new discord.Client();
 
 process.on(`unhandledRejection`, function onError(err)
@@ -75,11 +75,11 @@ warnings have been issued.`);
   app.stats.leaves = 0;
   app.stats.warnings = 0;
 
-  const currentDate = new Date;
-  const numSeconds = currentDate.getTime();
+  const current_date = new Date;
+  const num_seconds = current_date.getTime();
   app.bans.forEach((ban, index, array) =>
   {
-    if (!ban.cleared && ban.unbanDate <= numSeconds)
+    if (!ban.cleared && ban.unbanDate <= num_seconds)
     {
       common.sendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
@@ -128,12 +128,12 @@ client.on(`message`, message =>
   if (!message.guild)
   {
     // We want to log DM attempts.
-    messageLogger.silly(formatMessage(message, `DM`));
+    message_logger.silly(formatMessage(message, `DM`));
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
   if (message.channel !== app.verificationChannel)
-    messageLogger.silly(formatMessage(message, `#${message.channel.name}`));
+    message_logger.silly(formatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.commandPrefix))
   {
@@ -141,44 +141,44 @@ client.on(`message`, message =>
     // For example: "...well ok then."
     if (message.content[0] === message.content[1])
       return;
-    const splitMessage = message.content.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
-    const enteredCommand = splitMessage[0].slice(config.commandPrefix.length).toLowerCase();
-    var args = splitMessage.slice(1, splitMessage.length);
+    const split_message = message.content.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
+    const entered_command = split_message[0].slice(config.commandPrefix.length).toLowerCase();
+    var args = split_message.slice(1, split_message.length);
     // Strip any quotes, they're not needed any more.
     args.forEach((arg, index, array) =>
     {
       if (arg[0] === `"`)
         array[index] = arg.substring(1, arg.length - 1);
     });
-    logger.silly(`Command entered: ${enteredCommand} with args ${args}.`);
+    logger.silly(`Command entered: ${entered_command} with args ${args}.`);
 
     // Get the index of the command in the list.
-    const index = commandList.map(command => command.name.toLowerCase()).indexOf(enteredCommand);
+    const index = command_list.map(command => command.name.toLowerCase()).indexOf(entered_command);
 
     // The help command is handled differently. Consider it to be, like, a shell builtin like alias.
-    if (enteredCommand === `help`)
+    if (entered_command === `help`)
     {
       message.channel.send(`${message.author} private messaging bot help to you.`);
-      var commandNameList = ``;
-      commandList.forEach(command =>
+      var command_name_list = ``;
+      command_list.forEach(command =>
       {
         // Only add commands that the user can run to the list.
         if (command.isExecutable(message))
-          commandNameList += `\`${command.name}\`: ${command.description}\n`;
+          command_name_list += `\`${command.name}\`: ${command.description}\n`;
       });
-      const helpEmbed = new discord.RichEmbed(
+      const help_embed = new discord.RichEmbed(
         {
           title: `Bold and Bash Help`,
-          description: commandNameList
+          description: command_name_list
         });
-      message.author.send(`Here's the help for this bot:`, {embed: helpEmbed}).then(() =>
+      message.author.send(`Here's the help for this bot:`, {embed: help_embed}).then(() =>
         message.delete());
     }
     // Restrict verification channel to the verify command.
-    else if (message.channel === app.verificationChannel && enteredCommand !== `verify`)
+    else if (message.channel === app.verificationChannel && entered_command !== `verify`)
       message.delete();
     else if (index >= 0)
-      commandList[index].execute(message, args);
+      command_list[index].execute(message, args);
     else
       common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
   }
@@ -189,7 +189,7 @@ client.on(`message`, message =>
 
 // Load all command modules.
 logger.info(`Loading Command Modules.`);
-commandList = [];
+command_list = [];
 fs.readdirSync(`Source/Commands/`).forEach(function(file)
 {
   // Load the module if it's a script.
@@ -202,7 +202,7 @@ fs.readdirSync(`Source/Commands/`).forEach(function(file)
     else
     {
       logger.debug(`Loaded module: ${file}`);
-      commandList.push(require(`./Commands/${file}`).command);
+      command_list.push(require(`./Commands/${file}`).command);
     }
   }
 });
