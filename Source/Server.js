@@ -163,7 +163,7 @@ client.on(`message`, message =>
       command_list.forEach(command =>
       {
         // Only add commands that the user can run to the list.
-        if (command.isExecutable(message))
+        if (command.IsExecutable(message))
           command_name_list += `\`${command.name}\`: ${command.description}\n`;
       });
       const help_embed = new discord.RichEmbed(
@@ -178,7 +178,7 @@ client.on(`message`, message =>
     else if (message.channel === app.verificationChannel && entered_command !== `verify`)
       message.delete();
     else if (index >= 0)
-      command_list[index].execute(message, args);
+      command_list[index].Execute(message, args);
     else
       common.SendErrorMessage(`Command not found. See: \`.help\`.`, message);
   }
