@@ -10,7 +10,7 @@ const config = require(`config`);
 winston.emitErrs = true;
 const logger = new winston.Logger(
   {
-    levels: {Silly: 5},
+    levels: {Message: 0},
     transports: [
       new winston.transports.DailyRotateFile(
         {
@@ -19,7 +19,7 @@ const logger = new winston.Logger(
             return options.message;
           },
           json: false,
-          level: `silly`,
+          level: `Message`,
           filename: `Logs/Messages.log`,
           prepend: true
         })

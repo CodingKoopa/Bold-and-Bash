@@ -128,12 +128,12 @@ client.on(`message`, message =>
   if (!message.guild)
   {
     // We want to log DM attempts.
-    message_logger.Silly(FormatMessage(message, `DM`));
+    message_logger.Message(FormatMessage(message, `DM`));
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
   if (message.channel !== app.verificationChannel)
-    message_logger.Silly(FormatMessage(message, `#${message.channel.name}`));
+    message_logger.Message(FormatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.commandPrefix))
   {
