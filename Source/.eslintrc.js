@@ -61,11 +61,6 @@ module.exports = {
     // C++: Use semicolons.
     "semi": "error",
 
-    // EMCAScript 6
-
-    // Use const when possible.
-    "prefer-const": "warn",
-
     // Custom Rules
     "more-naming-conventions/snake-case-variables": "warn",
     "more-naming-conventions/upper-camel-case-functions": "warn"
