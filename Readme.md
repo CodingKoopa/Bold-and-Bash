@@ -5,37 +5,6 @@
 # Bold and Bash
 Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http://discord.gg/K3ERBFC), based off of [CitraBot](https://github.com/citra-emu/discord-bot). It shares some functionality with the [Bash](https://www.gnu.org/software/bash/) shell, as the name implies. Some examples of said functionality are the help commands, analogous to a command's manpage, and the stringing of commands together with `&&` and `||` (This part is not quite ready yet.).
 
-## Features
-A full list of commands be found by running the `help` command.
-
-### Moderation
-The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
-
-Additionally, Bold and Brash logs messages to `Logs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
-```
-[info]    [7:21 PM]  Bold and Bash Version 0.0.1 Starting.
-[info]    [7:21 PM]  Loading Command Modules.
-[debug]   [7:21 PM]  Loaded module: Ban.js
-```
-And here's an excerpt from the messages log (Featuring @Hexexpeck):
-```
-[#general    ] Koopa        (168559677913694208): Hey <@202614166689677312> can you say something?
-[#general    ] Koopa        (168559677913694208): I'm getting an example of the message log for the Bold & Brash readme.
-[#general    ] Hexexpeck    (202614166689677312): test 1
-[#general    ] Koopa        (168559677913694208): Thanks~
-[#verificatio] Koopa        (168559677913694208): And just for good measure, here's a message in another channel.
-```
-
-### Verification
-In compliance with [section 2.4 of the Discord Developer Terms of Service](https://discordapp.com/developers/docs/legal#2-license-accounts-and-restrictions), Bold and Brash gets permission from all users before retaining chat logs. In order for a user to send messages in a server, they must run the `verify` command to have the bot give them the `Verified` role that gives them the permission. By running this command, users give permission to the bot owner to keep their "end user data".
-
-This system does have pros outside of the legal stuff though. By making users have to look for a command before particiating in a community, they have to at least take a quick look at the rules.
-
-### Mod Showcasing
-In a modding server, generally people will have mods to share. However, in a channel dedicated to this purpose, one mod being shared can lead to offtopic discussion, making it hard to find new mods. So, with this system, the mod showcase channel is read only, and users run a command to submit a mod from another channel. Here's an example of what the bot's message looks like:
-
-![Mod Showcase Screenshot](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/ModShowcase.png)
-
 ## Setup
 
 ### Prerequisities
@@ -126,6 +95,37 @@ clear && NODE_ENV=development node Source/Server.js
 ```bash
 npm test
 ```
+
+## Features
+A full list of commands be found by running the `help` command.
+
+### Moderation
+The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
+
+Additionally, Bold and Brash logs messages to `Logs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
+```
+[info]    [7:21 PM]  Bold and Bash Version 0.0.1 Starting.
+[info]    [7:21 PM]  Loading Command Modules.
+[debug]   [7:21 PM]  Loaded module: Ban.js
+```
+And here's an excerpt from the messages log (Featuring @Hexexpeck):
+```
+[#general    ] Koopa        (168559677913694208): Hey <@202614166689677312> can you say something?
+[#general    ] Koopa        (168559677913694208): I'm getting an example of the message log for the Bold & Brash readme.
+[#general    ] Hexexpeck    (202614166689677312): test 1
+[#general    ] Koopa        (168559677913694208): Thanks~
+[#verificatio] Koopa        (168559677913694208): And just for good measure, here's a message in another channel.
+```
+
+### Verification
+In compliance with [section 2.4 of the Discord Developer Terms of Service](https://discordapp.com/developers/docs/legal#2-license-accounts-and-restrictions), Bold and Brash gets permission from all users before retaining chat logs. In order for a user to send messages in a server, they must run the `verify` command to have the bot give them the `Verified` role that gives them the permission. By running this command, users give permission to the bot owner to keep their "end user data".
+
+This system does have pros outside of the legal stuff though. By making users have to look for a command before particiating in a community, they have to at least take a quick look at the rules.
+
+### Mod Showcasing
+In a modding server, generally people will have mods to share. However, in a channel dedicated to this purpose, one mod being shared can lead to offtopic discussion, making it hard to find new mods. So, with this system, the mod showcase channel is read only, and users run a command to submit a mod from another channel. Here's an example of what the bot's message looks like:
+
+![Mod Showcase Screenshot](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/ModShowcase.png)
 
 # License
 GNU General Public License v2.0
