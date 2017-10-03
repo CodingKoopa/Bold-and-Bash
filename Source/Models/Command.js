@@ -28,7 +28,7 @@ class Command
     this.callback = callback;
   }
 
-  isMentionMissing(message, passedArguments)
+  IsMentionMissing(message, passedArguments)
   {
     const mentions = message.mentions.users.map(user => user.toString());
     var mention_missing = false;
@@ -43,10 +43,10 @@ class Command
   }
 
   // Used by the help command.
-  isExecutable(message)
+  IsExecutable(message)
   {
     // If there are roles to fulfill, and the user's roles contain the command's.
-    if (this.roles && common.findArray(message.member.roles.map(role => role.name), this.roles))
+    if (this.roles && common.FindArray(message.member.roles.map(role => role.name), this.roles))
       return true;
     // If there are no roles to fulfill.
     else if (!this.roles)
@@ -55,16 +55,16 @@ class Command
       return false;
   }
 
-  execute(message, passedArguments)
+  Execute(message, passedArguments)
   {
     const see_help_message =
       `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
-    if (!this.isExecutable(message))
+    if (!this.IsExecutable(message))
     {
-      common.sendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to
+      common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to
 use staff command ${this.name} with argument(s) ${passedArguments}.`);
-      common.sendErrorMessage(`Permission denied. This command can only be used by
-${common.printArray(this.roles)}.`, message);
+      common.SendErrorMessage(`Permission denied. This command can only be used by
+${common.PrintArray(this.roles)}.`, message);
     }
     else if (passedArguments[0] && passedArguments[0].toLowerCase() === `--help`)
     {
@@ -98,22 +98,22 @@ ${common.printArray(this.roles)}.`, message);
     }
     else if (passedArguments.length < this.numRequiredArguments)
     {
-      common.sendErrorMessage(
+      common.SendErrorMessage(
         `Too little arguments. At least ${this.numRequiredArguments} needed, given \
 ${passedArguments.length}. ${see_help_message}`,
         message);
     }
     else if (passedArguments.length > this.args.length)
     {
-      common.sendErrorMessage(
+      common.SendErrorMessage(
         `Too many arguments. No more than ${this.args.length} accepted, given \
 ${passedArguments.length}. ${see_help_message}`,
         message);
       // Everything is good, run the command.
     }
-    else if (this.isMentionMissing(message, passedArguments))
+    else if (this.IsMentionMissing(message, passedArguments))
     {
-      common.sendErrorMessage(`Expected mention(s), but one or more were not found.`, message);
+      common.SendErrorMessage(`Expected mention(s), but one or more were not found.`, message);
     }
     else
     {

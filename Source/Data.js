@@ -3,9 +3,9 @@ const fs = require(`fs`);
 const logger = require(`./Logger.js`);
 const app = require(`./App.js`);
 
-function readWarnings()
+function ReadWarnings()
 {
-  logger.info(`Reading warnings.`);
+  logger.Info(`Reading warnings.`);
   // Load the warnings file into the bans variable.
   fs.readFile(`./Data/DiscordWarnings.json`, `utf8`, function(err, data)
   {
@@ -15,16 +15,16 @@ function readWarnings()
     }
     if (err)
     {
-      logger.error(err);
+      logger.Error(err);
     }
     app.warnings = JSON.parse(data);
-    logger.debug(`Loaded warnings file.`);
+    logger.Debug(`Loaded warnings file.`);
   });
 }
 
-function readBans()
+function ReadBans()
 {
-  logger.info(`Reading bans.`);
+  logger.Info(`Reading bans.`);
   // Load the ban file into the bans variable.
   fs.readFile(`./Data/DiscordBans.json`, `utf8`, function(err, data)
   {
@@ -34,36 +34,36 @@ function readBans()
     }
     if (err)
     {
-      logger.error(err);
+      logger.Error(err);
     }
     app.bans = JSON.parse(data);
-    logger.debug(`Loaded bans file.`);
+    logger.Debug(`Loaded bans file.`);
   });
 }
 
-function flushWarnings()
+function FlushWarnings()
 {
   var warnings_json = JSON.stringify(app.warnings, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
   fs.writeFile(`./Data/DiscordWarnings.json`, warnings_json, `utf8`, function(err)
   {
-    if (err) logger.error(err);
+    if (err) logger.Error(err);
   });
 }
 
-function flushBans()
+function FlushBans()
 {
   var bans_json = JSON.stringify(app.bans, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
   fs.writeFile(`./Data/DiscordBans.json`, bans_json, `utf8`, function(err)
   {
-    if (err) logger.error(err);
+    if (err) logger.Error(err);
   });
 }
 
 module.exports = {
-  readWarnings: readWarnings,
-  readBans: readBans,
-  flushWarnings: flushWarnings,
-  flushBans: flushBans
+  ReadWarnings: ReadWarnings,
+  ReadBans: ReadBans,
+  FlushWarnings: FlushWarnings,
+  FlushBans: FlushBans
 };

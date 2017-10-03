@@ -11,7 +11,7 @@ const message_logger = require(`./MessageLogger.js`);
 const app = require(`./App.js`);
 const data = require(`./Data.js`);
 
-logger.info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
+logger.Info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
 
 var command_list = [];
 var client = new discord.Client();
@@ -23,7 +23,7 @@ process.on(`unhandledRejection`, function onError(err)
 
 process.on(`SIGINT`, () =>
 {
-  logger.info(`Shutting down.`);
+  logger.Info(`Shutting down.`);
   process.exit();
 });
 
@@ -33,24 +33,24 @@ client.on(`ready`, () =>
   app.logChannel = client.channels.get(config.logChannel);
   if (!app.logChannel)
   {
-    logger.error(`Logging channel #${config.logChannel} not found.`);
+    logger.Error(`Logging channel #${config.logChannel} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
   app.showcaseChannel = client.channels.get(config.showcaseChannel);
   if (!app.showcaseChannel)
   {
-    logger.error(`Showcase channel #${config.showcaseChannel} not found.`);
+    logger.Error(`Showcase channel #${config.showcaseChannel} not found.`);
     throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
   }
   app.verificationChannel = client.channels.get(config.verificationChannel);
   if (!app.verificationChannel)
   {
-    logger.error(`Verification channel #${config.verificationChannel} not found.`);
+    logger.Error(`Verification channel #${config.verificationChannel} not found.`);
     throw (`VERIFICATION_CHANNEL_NOT_FOUND`);
   }
   app.guild = app.logChannel.guild;
 
-  logger.info(`Bot is now online and connected to server.`);
+  logger.Info(`Bot is now online and connected to server.`);
 });
 
 client.on(`guildMemberAdd`, () =>
@@ -66,7 +66,7 @@ client.on(`guildMemberRemove`, () =>
 // Output the stats for app.stats every 24 hours, and unban where necessary.
 schedule.scheduleJob(function()
 {
-  common.sendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}!
+  common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}!
 ${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings}
 warnings have been issued.`);
 
@@ -81,27 +81,27 @@ warnings have been issued.`);
   {
     if (!ban.cleared && ban.unbanDate <= num_seconds)
     {
-      common.sendPrivateInfoMessage(`Unbanning ${ban.username}.`);
+      common.SendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
       app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
         client.users.get(ban.id).send(`You have been unbanned from the server
-**${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(error =>
-          common.sendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
-            error));
+**${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(Error =>
+          common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
+            Error));
         array[index].cleared = true;
-      }, error => common.sendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
+      }, Error => common.SendPrivateErrorMessage(`Failed to unban ${ban.username}.`, Error));
     }
   });
-  data.flushBans();
+  data.FlushBans();
 });
 
-function padString(string, number)
+function PadString(string, number)
 {
   return string.length < number ? string.padEnd(number) : string.slice(0, number);
 }
 
-function formatMessage(message, channel)
+function FormatMessage(message, channel)
 {
   // Breakdown of the message logging (Should take up exactly 50 chars.):
   // 1: The opening bracket for the channel.
@@ -114,8 +114,8 @@ function formatMessage(message, channel)
   // 18: The user ID.
   // 1: The closing parenthesis the user ID.
   // 1: The colon indicating the message.
-  // 1: The space separating the message info from the message itself.
-  return `[${padString(channel, 12)}] ${padString(message.author.username, 12)} \
+  // 1: The space separating the message Info from the message itself.
+  return `[${PadString(channel, 12)}] ${PadString(message.author.username, 12)} \
 (${message.author.id}): ${message.content}`;
 }
 
@@ -128,12 +128,12 @@ client.on(`message`, message =>
   if (!message.guild)
   {
     // We want to log DM attempts.
-    message_logger.silly(formatMessage(message, `DM`));
+    message_logger.Silly(FormatMessage(message, `DM`));
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
   if (message.channel !== app.verificationChannel)
-    message_logger.silly(formatMessage(message, `#${message.channel.name}`));
+    message_logger.Silly(FormatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.commandPrefix))
   {
@@ -150,7 +150,7 @@ client.on(`message`, message =>
       if (arg[0] === `"`)
         array[index] = arg.substring(1, arg.length - 1);
     });
-    logger.silly(`Command entered: ${entered_command} with args ${args}.`);
+    logger.Silly(`Command entered: ${entered_command} with args ${args}.`);
 
     // Get the index of the command in the list.
     const index = command_list.map(command => command.name.toLowerCase()).indexOf(entered_command);
@@ -180,7 +180,7 @@ client.on(`message`, message =>
     else if (index >= 0)
       command_list[index].execute(message, args);
     else
-      common.sendErrorMessage(`Command not found. See: \`.help\`.`, message);
+      common.SendErrorMessage(`Command not found. See: \`.help\`.`, message);
   }
   // Clean up, for the verification channel.
   else if (message.channel === app.verificationChannel)
@@ -188,7 +188,7 @@ client.on(`message`, message =>
 });
 
 // Load all command modules.
-logger.info(`Loading Command Modules.`);
+logger.Info(`Loading Command Modules.`);
 command_list = [];
 fs.readdirSync(`Source/Commands/`).forEach(function(file)
 {
@@ -197,26 +197,26 @@ fs.readdirSync(`Source/Commands/`).forEach(function(file)
   {
     if (file.includes(`.disabled`))
     {
-      logger.debug(`Did not load disabled module: ${file}`);
+      logger.Debug(`Did not load disabled module: ${file}`);
     }
     else
     {
-      logger.debug(`Loaded module: ${file}`);
+      logger.Debug(`Loaded module: ${file}`);
       command_list.push(require(`./Commands/${file}`).command);
     }
   }
 });
 
-data.readWarnings();
-data.readBans();
+data.ReadWarnings();
+data.ReadBans();
 
 if (config.clientLoginToken)
 {
   client.login(config.clientLoginToken);
-  logger.info(`Startup completed. Established connection to Discord.`);
+  logger.Info(`Startup completed. Established connection to Discord.`);
 }
 else
 {
-  logger.error(`Cannot establish connection to Discord. Client login token is not defined.`);
+  logger.Error(`Cannot establish connection to Discord. Client login token is not defined.`);
   throw (`MISSING_CLIENT_LOGIN_TOKEN`);
 }

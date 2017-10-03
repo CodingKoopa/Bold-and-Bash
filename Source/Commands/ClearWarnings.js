@@ -16,7 +16,7 @@ const callback = function(args, message)
     const author_info = `${message.author.username} (${message.author})`;
     const user_info = `${user.username} (${user})`;
     const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-    common.sendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info}
+    common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info}
 (${warnings.length} warnings).`);
 
     message.reply(`clearing warnings for ${user_info}`);
@@ -24,12 +24,12 @@ const callback = function(args, message)
     if (warnings && warnings.length > 0)
     {
       warnings.forEach(warning => warning.cleared = true);
-      data.flushWarnings();
+      data.FlushWarnings();
       message.channel.send(`${user}, your warnings have been cleared.`);
     }
     else
     {
-      common.sendPrivateErrorMessage(`Failed to clear warnings for ${user_info}`);
+      common.SendPrivateErrorMessage(`Failed to clear warnings for ${user_info}`);
     }
   });
 };

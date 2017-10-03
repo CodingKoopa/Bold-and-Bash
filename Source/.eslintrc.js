@@ -67,6 +67,7 @@ module.exports = {
     "prefer-const": "warn",
 
     // Custom Rules
-    "more-naming-conventions/snake-case-variables": "warn"
+    "more-naming-conventions/snake-case-variables": "warn",
+    "more-naming-conventions/upper-camel-case-functions": "warn"
   }
 };

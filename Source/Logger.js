@@ -9,13 +9,13 @@ const config = require(`config`);
 
 // This is outside of the DailyRotateFile constructor because the log serialization only supports
 // the timestamp being a function, and not the level.
-function formatLevel(level)
+function FormatLevel(level)
 {
   // 7: The length of the longest level (verbose).
   return `[` + level + `]` + ` `.repeat(7 - level.length);
 }
 
-function padNumber(number)
+function PadNumber(number)
 {
   return number < 10 ? `0` + number : number;
 }
@@ -23,30 +23,46 @@ function padNumber(number)
 winston.emitErrs = true;
 const logger = new winston.Logger(
   {
+    levels: {
+      Error: 0,
+      Warn: 1,
+      Info: 2,
+      Verbose: 3,
+      Debug: 4,
+      Silly: 5
+    },
+    colors: {
+      Error: `red`,
+      Warn: `yellow`,
+      Info: `green`,
+      Verbose: `cyan`,
+      Debug: `blue`,
+      Silly: `magenta`
+    },
     transports: [
       new winston.transports.Console(
         {
-          level: `silly`,
+          level: `Silly`,
           colorize: true
         }),
       new winston.transports.DailyRotateFile(
         {
           formatter: function(options)
           {
-            return formatLevel(options.level) + ` ` + options.timestamp() + ` ` + options.message;
+            return FormatLevel(options.level) + ` ` + options.timestamp() + ` ` + options.message;
           },
           timestamp: function()
           {
             const date = new Date();
-            const hours = padNumber(date.getHours());
-            const minutes = padNumber(date.getMinutes());
+            const hours = PadNumber(date.getHours());
+            const minutes = PadNumber(date.getMinutes());
             const am_pm = hours < 13 ? `AM` : `PM`;
             const str = `[${hours % 12 || 12}:${minutes} ${am_pm}]`;
             // 10: The length of the longest time ([AA:BB CC]).
             return str + ` `.repeat(10 - str.length);
           },
           json: false,
-          level: `debug`,
+          level: `Debug`,
           something: `test`,
           filename: `Logs/log`,
           prepend: true
@@ -61,14 +77,14 @@ const logger = new winston.Logger(
 if (config.enableLogdnaLogging && config.logdnaKey)
 {
   // Setup logging for LogDNA cloud logging.
-  logger.add(winston.transports.Logdna, {
+  logger.Add(winston.transports.Logdna, {
     key: config.logdnaKey,
-    level: `info`,
+    level: `Info`,
     ip: ip.address(),
     hostname: os.hostname(),
     app: `discord-bot`
   });
-  logger.info(`Started LogDNA winston transport.`);
+  logger.Info(`Started LogDNA winston transport.`);
 }
 else if (config.enableLogdna === true)
 {

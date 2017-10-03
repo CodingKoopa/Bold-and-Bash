@@ -13,7 +13,7 @@ const ARGUMENTS = [
   new Argument(`picture`, `The URL of a picture of the mod.`, true),
   new Argument(`url`, `The URL of the download, or wiki page.`, false)
 ];
-function randomColor()
+function RandomColor()
 {
   const min = 0;
   const max = 255;
@@ -30,11 +30,11 @@ const callback = function(args, message)
       url: args[3]
     }
   );
-  mod_embed.setColor([randomColor(), randomColor(), randomColor()]);
+  mod_embed.setColor([RandomColor(), RandomColor(), RandomColor()]);
   mod_embed.setImage(args[2]);
   // An error can occur if the URL is broken.
   app.showcaseChannel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
-    .catch(error => common.sendErrorMessage(`\`\`\`css\n${error}\`\`\``, message));
+    .catch(error => common.SendErrorMessage(`\`\`\`css\n${error}\`\`\``, message));
 };
 
 module.exports.command = new Command(`showcase`, DESCRIPTION, ARGUMENTS, null, callback);

@@ -10,6 +10,7 @@ const config = require(`config`);
 winston.emitErrs = true;
 const logger = new winston.Logger(
   {
+    levels: {Silly: 5},
     transports: [
       new winston.transports.DailyRotateFile(
         {
@@ -32,14 +33,14 @@ const logger = new winston.Logger(
 if (config.enableLogdnaLogging && config.logdnaKey)
 {
   // Setup logging for LogDNA cloud logging.
-  logger.add(winston.transports.Logdna, {
+  logger.Add(winston.transports.Logdna, {
     key: config.logdnaKey,
     level: `silly`,
     ip: ip.address(),
     hostname: os.hostname(),
     app: `discord-bot`
   });
-  logger.info(`Started LogDNA winston transport.`);
+  logger.Info(`Started LogDNA winston transport.`);
 }
 else if (config.enableLogdna === true)
 {

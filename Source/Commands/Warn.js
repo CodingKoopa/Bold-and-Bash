@@ -36,14 +36,14 @@ const callback = function(args, message)
       warn_message =
         `${user} You have been warned for ${reason}. Additional infractions may result in a ban.`;
     }
-    common.sendPrivateInfoMessage(log_message);
+    common.SendPrivateInfoMessage(log_message);
 
     message.reply(`warning ${user_info}.`);
 
     message.channel.send(warn_message);
     app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
       message.author.username));
-    data.flushWarnings();
+    data.FlushWarnings();
     app.stats.warnings++;
     if (count >= 3)
       require(`./Ban.js`).ban(user, `third warning`, null, message);

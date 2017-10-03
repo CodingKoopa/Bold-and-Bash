@@ -9,9 +9,9 @@ const callback = function(args, message)
   const role = app.guild.roles.find(role => role.name === `Verified`);
   if (role)
     message.member.addRole(role).catch(error =>
-      common.sendPrivateErrorMessage(`Failed to give verified role.`, error));
+      common.SendPrivateErrorMessage(`Failed to give verified role.`, error));
   else
-    common.sendPrivateErrorMessage(`Failed to find Verified role.`);
+    common.SendPrivateErrorMessage(`Failed to find Verified role.`);
 };
 
 module.exports.command = new Command(`verify`, DESCRIPTION, [], null, callback);
