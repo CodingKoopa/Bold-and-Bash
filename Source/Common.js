@@ -4,12 +4,12 @@ const app = require(`./App.js`);
 function PrintArray(arr)
 {
   let str = ``;
-  arr.forEach((role, index, array) =>
+  arr.forEach((element, index, array) =>
   {
     if (index + 1 === array.length)
-      str += `and \`${role}\``;
+      str += `and \`${element}\``;
     else
-      str += `\`${role}\`, `;
+      str += `\`${element}\`, `;
   });
   return str;
 }

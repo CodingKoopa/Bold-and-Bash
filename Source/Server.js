@@ -102,11 +102,11 @@ warnings have been issued.`);
       app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
         client.users.get(ban.id).send(`You have been unbanned from the server
-**${app.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(Error =>
+**${app.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(error =>
           common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
-            Error));
+            error));
         array[index].cleared = true;
-      }, Error => common.SendPrivateErrorMessage(`Failed to unban ${ban.username}.`, Error));
+      }, error => common.SendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
     }
   });
   data.FlushBans();
