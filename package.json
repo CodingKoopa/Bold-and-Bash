@@ -24,6 +24,7 @@
     "winston-daily-rotate-file": "^1.4.6"
   },
   "devDependencies": {
-    "eslint": "^4.7.0"
+    "eslint": "^4.7.0",
+    "eslint-plugin-more-naming-conventions": "^1.0.1"
   }
 }

@@ -69,7 +69,7 @@ ${common.PrintArray(this.roles)}.`, message);
     else if (passed_arguments[0] && passed_arguments[0].toLowerCase() === `--help`)
     {
       const description = `**Description**: ${this.description}\n`;
-      const usage = `**Usage**: \`${require(`config`).command_prefix}${this.name} [--help] `;
+      var usage = `**Usage**: \`${require(`config`).command_prefix}${this.name} [--help] `;
       // arguments is reserved.
       let argument_list = ``;
       this.args.map(argument =>
