@@ -98,17 +98,15 @@ ${common.PrintArray(this.roles)}.`);
     }
     else if (passed_arguments.length < this.num_required_arguments)
     {
-      common.SendErrorMessage(
+      common.SendErrorMessage(message,
         `Too little arguments. At least ${this.num_required_arguments} needed, given \
-${passed_arguments.length}. ${see_help_message}`,
-        message);
+${passed_arguments.length}. ${see_help_message}`);
     }
     else if (passed_arguments.length > this.args.length)
     {
-      common.SendErrorMessage(
+      common.SendErrorMessage(message,
         `Too many arguments. No more than ${this.args.length} accepted, given \
-${passed_arguments.length}. ${see_help_message}`,
-        message);
+${passed_arguments.length}. ${see_help_message}`);
     }
     else if (this.IsMentionMissing(message, passed_arguments))
     {
