@@ -1,3 +1,5 @@
+'use strict';
+
 /* Application State */
 var Application = function()
 {

@@ -1,3 +1,5 @@
+'use strict';
+
 const common = require(`../Common.js`);
 
 const RichEmbed = require(`discord.js`).RichEmbed;

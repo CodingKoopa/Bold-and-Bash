@@ -1,3 +1,5 @@
+'use strict';
+
 const app = require(`../App.js`);
 
 const Command = require(`../Models/Command.js`);

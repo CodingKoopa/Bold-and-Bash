@@ -1,3 +1,5 @@
+'use strict';
+
 class UserBan
 {
   constructor(id, username, reason, warned_by, warned_by_username, prior_warnings, unban_date)

@@ -1,3 +1,5 @@
+'use strict';
+
 class UserWarning
 {
   constructor(id, username, reason, warned_by, warned_by_username)

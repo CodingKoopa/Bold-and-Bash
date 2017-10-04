@@ -1,3 +1,5 @@
+'use strict';
+
 const common = require(`../Common.js`);
 const app = require(`../App.js`);
 

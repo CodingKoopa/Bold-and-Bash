@@ -1,3 +1,5 @@
+'use strict'
+
 // Unlike the rest of the project, this file uses double quotes instead of backticks, because ESLint
 // expects the former for the rules.
 module.exports = {
@@ -25,6 +27,14 @@ module.exports = {
     "no-unused-expressions": "warn",
     // Style: Allow fallthrough in switches.
     "no-fallthrough": "off",
+
+    // Strict Mode
+
+    // Safety: Always use strict mode.
+    "strict": [
+      "error",
+      "global"
+    ],
 
     // Variables
 

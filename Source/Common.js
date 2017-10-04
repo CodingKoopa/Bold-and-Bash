@@ -1,3 +1,5 @@
+'use strict';
+
 const logger = require(`./Logger.js`);
 const app = require(`./App.js`);
 

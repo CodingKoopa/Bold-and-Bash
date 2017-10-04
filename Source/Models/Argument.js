@@ -1,3 +1,5 @@
+'use strict';
+
 class Argument
 {
   constructor(short_name, explanation, required, is_mention = false)
