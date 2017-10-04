@@ -13,7 +13,7 @@ const args = [
   new Argument(`reason`, `The reason why the user is being banned.`, false),
   new Argument(`length`, `The number of days the user should be banned for.`, false, false)
 ];
-const ROLES = require(`../Common.js`).staffRoles;
+const ROLES = require(`../Common.js`).STAFF_ROLES;
 const callback = (args, message) =>
 {
   // It's easier to grab the user from the message object than the args.

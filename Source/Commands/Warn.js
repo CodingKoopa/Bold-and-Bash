@@ -11,7 +11,7 @@ const args = [
   new Argument(`user`, `The user to be warned.`, true, true),
   new Argument(`reason`, `The reason why the user is being warned.`, false)
 ];
-const ROLES = require(`../Common.js`).staffRoles;
+const ROLES = require(`../Common.js`).STAFF_ROLES;
 const callback = (args, message) =>
 {
   let reason = args[1];
