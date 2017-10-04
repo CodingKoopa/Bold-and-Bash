@@ -51,6 +51,15 @@ process.on(`SIGINT`, () =>
   process.exit();
 });
 
+function SetPlayingStatus()
+{
+  if (config.playing_statuses)
+  {
+    client.user.setGame(config.playing_statuses[common.GetRandomNumber(0,
+      config.playing_statuses.length - 1)]);
+  }
+}
+
 client.on(`ready`, () =>
 {
   // Initalize app channels.
@@ -75,6 +84,7 @@ client.on(`ready`, () =>
   app.guild = app.log_channel.guild;
 
   logger.Info(`Bot is now online and connected to server.`);
+  SetPlayingStatus();
 });
 
 client.on(`guildMemberAdd`, () => app.stats.joins += 1 );
@@ -92,6 +102,8 @@ warnings have been issued.`);
   app.stats.joins = 0;
   app.stats.leaves = 0;
   app.stats.warnings = 0;
+
+  SetPlayingStatus();
 
   const current_date = new Date;
   const num_seconds = current_date.getTime();

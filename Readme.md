@@ -62,12 +62,13 @@ npm install
 cp config/default.json config/production.json
 ```
 6. Fill out the values in `config/production.json`. Here's some info about what they are:
-  - `client_login_token` (String): The bot's token, from [here](https://discordapp.com/developers/applications/me).
-  - `invite_link` (String): The server's invite link, used when reinviting users after timed bans.
-  - `verification_channel` (String), `showcase_channel` (String), `log_channel` (String): The IDs of the channels the bot uses. To get the ID of a channel, go into your Discord settings, `Appearance`, and enable `Developer Mode` at the bottom. Now, you should be able to right click on a channel and copy its ID.
-  - `command_prefix` (String): The way that commands are launched. For example, with `.` (The default.), you would type `.ban`.
-  - `enable_logdna_logging` (Boolean): Whether LogDNA logging will be used or not. Setting up LogDNA is beyond the scope of this guide, and is not required for the bot to function.
-  - `logdna_key` (String): Your LogDNA Ingestion Key, if you are using LogDNA.
+- `client_login_token` (String): The bot's token, from [here](https://discordapp.com/developers/applications/me).
+- `invite_link` (String): The server's invite link, used when reinviting users after timed bans.
+- `verification_channel` (String), `showcase_channel` (String), `log_channel` (String): The IDs of the channels the bot uses. To get the ID of a channel, go into your Discord settings, `Appearance`, and enable `Developer Mode` at the bottom. Now, you should be able to right click on a channel and copy its ID.
+- `command_prefix` (String): The way that commands are launched. For example, with `.` (The default.), you would type `.ban`.
+- `enable_logdna_logging` (Boolean): Whether LogDNA logging will be used or not. Setting up LogDNA is beyond the scope of this guide, and is not required for the bot to function.
+- `logdna_key` (String): Your LogDNA Ingestion Key, if you are using LogDNA.
+- `playing_statuses` (Array of strings): A status will be randomly picked from here every day to be shown. This may be undefined if you don't want this feature.
 7. Launch the bot in production mode:
 ```bash
 npm run start-prod

@@ -15,14 +15,7 @@ const args = [
   new Argument(`picture`, `The URL of a picture of the mod.`, true),
   new Argument(`url`, `The URL of the download, or wiki page.`, false)
 ];
-function RandomColor()
-{
-  const min = 0;
-  const max = 255;
-  // From:
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
 const callback = (message, args) =>
 {
   const mod_embed = new RichEmbed(
@@ -32,7 +25,13 @@ const callback = (message, args) =>
       url: args[3]
     }
   );
-  mod_embed.setColor([RandomColor(), RandomColor(), RandomColor()]);
+  const min = 0;
+  const max = 255;
+  mod_embed.setColor([
+    common.GetRandomNumber(min, max),
+    common.GetRandomNumber(min, max),
+    common.GetRandomNumber(min, max)
+  ]);
   mod_embed.setImage(args[2]);
   // An error can occur if the URL is broken.
   app.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
