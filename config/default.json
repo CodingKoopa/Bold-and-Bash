@@ -1,13 +1,13 @@
 {
-  "clientLoginToken": null,
-  "inviteLink": null,
+  "client_login_token": null,
+  "invite_link": null,
 
-  "verificationChannel": null,
-  "showcaseChannel": null,
-  "logChannel": null,
+  "verification_channel": null,
+  "showcase_channel": null,
+  "log_channel": null,
 
-  "commandPrefix": ".",
+  "command_prefix": ".",
 
-  "enableLogdnaLogging": false,
-  "logdnaKey": ""
+  "enable_logdna_logging": false,
+  "logdna_key": ""
 }

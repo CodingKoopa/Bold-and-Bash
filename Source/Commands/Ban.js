@@ -8,13 +8,13 @@ const UserBan = require(`../Models/UserBan.js`);
 const UserWarning = require(`../Models/UserWarning.js`);
 
 const DESCRIPTION = `Bans a user from the server.`;
-const ARGUMENTS = [
-  new Argument(`user`, `The user to be Banned.`, true, true),
-  new Argument(`reason`, `The reason why the user is being Banned.`, false),
-  new Argument(`length`, `The number of days the user should be Banned for.`, false, false)
+const args = [
+  new Argument(`user`, `The user to be banned.`, true, true),
+  new Argument(`reason`, `The reason why the user is being banned.`, false),
+  new Argument(`length`, `The number of days the user should be banned for.`, false, false)
 ];
 const ROLES = require(`../Common.js`).staffRoles;
-const callback = function(args, message)
+const callback = (args, message) =>
 {
   // It's easier to grab the user from the message object than the args.
   message.mentions.users.map(user => Ban(user, args[1], args[2], message));
@@ -26,26 +26,26 @@ function Ban(user, reason, length, message)
   // Log the Ban event.
   const author_info = `${message.author.username} (${message.author})`;
   const user_info = `${user.username} (${user})`;
-  const count = app.Warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
+  const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
   let log_message = ``;
-  let Ban_message = ``;
+  let ban_message = ``;
   if (!reason)
   {
     log_message =
-      `${author_info} has Banned ${user_info} (${count} Warnings)`;
-    Ban_message =
-      `${user} You are being Banned`;
+      `${author_info} has banned ${user_info} (${count} Warnings)`;
+    ban_message =
+      `${user} You are being banned`;
   }
   else
   {
     log_message =
-      `${author_info} has Banned ${user_info} for ${reason} (${count} Warnings)`;
-    Ban_message =
-      `${user} You are being Banned for ${reason}`;
+      `${author_info} has banned ${user_info} for ${reason} (${count} Warnings)`;
+    ban_message =
+      `${user} You are being banned for ${reason}`;
   }
   const append_string = length ? `, for ${length} days.` : `.`;
   log_message += append_string;
-  Ban_message += append_string;
+  ban_message += append_string;
 
   common.SendPrivateInfoMessage(log_message);
 
@@ -53,30 +53,30 @@ function Ban(user, reason, length, message)
   message.reply(`Banning ${user_info}.`);
 
   // Do the Banning.
-  message.channel.send(Ban_message);
-  message.guild.Ban(user, {reason: reason}).then(() =>
+  message.channel.send(ban_message);
+  message.guild.ban(user, {reason: reason}).then(() =>
   {
-    var un_ban_date = null;
+    let unban_date = null;
     // Schedule an unBanning, if required.
     if (length)
     {
       const date = new Date;
-      un_ban_date = date.getTime() + length;
+      unban_date = date.getTime() + length;
 
       // Add a warning for when they come back.
-      app.Warnings(new UserWarning(user.id, user.username, reason, message.author.id,
+      app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
         message.author.username));
       data.FlushWarnings();
     }
 
-    app.Bans.push(new UserBan(user.id, user.username, reason, message.author.id,
-      message.author.username, count, un_ban_date));
+    app.bans.push(new UserBan(user.id, user.username, reason, message.author.id,
+      message.author.username, count, unban_date));
     data.FlushBans();
   },
-  error => common.SendPrivateErrorMessage(`Failed to Ban ${user_info}.`, error));
+  error => common.SendPrivateErrorMessage(`Failed to ban ${user_info}.`, error));
 }
 
 module.exports = {
-  command: new Command(`Ban`, DESCRIPTION, ARGUMENTS, ROLES, callback),
+  command: new Command(`ban`, DESCRIPTION, args, ROLES, callback),
   Ban: Ban
 };

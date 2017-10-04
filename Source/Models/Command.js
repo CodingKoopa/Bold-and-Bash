@@ -9,16 +9,16 @@ class Command
     this.name = name;
     this.description = description;
     this.args = args;
-    this.numRequiredArguments = 0;
+    this.num_required_arguments = 0;
     this.args.forEach(argument =>
     {
       if (argument.required)
-        this.numRequiredArguments++;
+        this.num_required_arguments++;
     });
-    var mention_index = 0;
+    let mention_index = 0;
     this.args.forEach((argument, index, args) =>
     {
-      if (argument.isMention)
+      if (argument.is_mention)
       {
         args[index].mention_index = mention_index;
         mention_index++;
@@ -28,14 +28,14 @@ class Command
     this.callback = callback;
   }
 
-  IsMentionMissing(message, passedArguments)
+  IsMentionMissing(message, passed_arguments)
   {
     const mentions = message.mentions.users.map(user => user.toString());
-    var mention_missing = false;
+    let mention_missing = false;
     this.args.forEach((argument, index) =>
     {
       // If the argument expects a mention, make sure the passed argument is one.
-      if (argument.isMention && passedArguments[index] !== mentions[argument.mention_index])
+      if (argument.is_mention && passed_arguments[index] !== mentions[argument.mention_index])
         // If we return here, it won't work properly because only an exception can break forEach().
         mention_missing = true;
     });
@@ -55,32 +55,32 @@ class Command
       return false;
   }
 
-  Execute(message, passedArguments)
+  Execute(message, passed_arguments)
   {
     const see_help_message =
-      `See \`${require(`config`).commandPrefix}${this.name} --help\` for usage.`;
+      `See \`${require(`config`).command_prefix}${this.name} --help\` for usage.`;
     if (!this.IsExecutable(message))
     {
       common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to
-use staff command ${this.name} with argument(s) ${passedArguments}.`);
+use staff command ${this.name} with argument(s) ${passed_arguments}.`);
       common.SendErrorMessage(`Permission denied. This command can only be used by
 ${common.PrintArray(this.roles)}.`, message);
     }
-    else if (passedArguments[0] && passedArguments[0].toLowerCase() === `--help`)
+    else if (passed_arguments[0] && passed_arguments[0].toLowerCase() === `--help`)
     {
       const description = `**Description**: ${this.description}\n`;
-      var usage = `**Usage**: \`${require(`config`).commandPrefix}${this.name} [--help] `;
+      const usage = `**Usage**: \`${require(`config`).command_prefix}${this.name} [--help] `;
       // arguments is reserved.
-      var argument_list = ``;
+      let argument_list = ``;
       this.args.map(argument =>
       {
-        usage += `${argument.shortName} `;
-        argument_list += `\`${argument.shortName}\``;
-        if (argument.required && argument.isMention)
+        usage += `${argument.short_name} `;
+        argument_list += `\`${argument.short_name}\``;
+        if (argument.required && argument.is_mention)
           argument_list += ` (Mention)`;
-        else if (!argument.required && argument.isMention)
+        else if (!argument.required && argument.is_mention)
           argument_list += ` (Optional Mention)`;
-        else if (!argument.required && !argument.isMention)
+        else if (!argument.required && !argument.is_mention)
           argument_list += ` (Optional)`;
         argument_list += `: ${argument.explanation}\n`;
       });
@@ -96,28 +96,27 @@ ${common.PrintArray(this.roles)}.`, message);
           embed: help_embed
         });
     }
-    else if (passedArguments.length < this.numRequiredArguments)
+    else if (passed_arguments.length < this.num_required_arguments)
     {
       common.SendErrorMessage(
-        `Too little arguments. At least ${this.numRequiredArguments} needed, given \
-${passedArguments.length}. ${see_help_message}`,
+        `Too little arguments. At least ${this.num_required_arguments} needed, given \
+${passed_arguments.length}. ${see_help_message}`,
         message);
     }
-    else if (passedArguments.length > this.args.length)
+    else if (passed_arguments.length > this.args.length)
     {
       common.SendErrorMessage(
         `Too many arguments. No more than ${this.args.length} accepted, given \
-${passedArguments.length}. ${see_help_message}`,
+${passed_arguments.length}. ${see_help_message}`,
         message);
-      // Everything is good, run the command.
     }
-    else if (this.IsMentionMissing(message, passedArguments))
+    else if (this.IsMentionMissing(message, passed_arguments))
     {
       common.SendErrorMessage(`Expected mention(s), but one or more were not found.`, message);
     }
     else
     {
-      this.callback(passedArguments, message);
+      this.callback(passed_arguments, message);
       if (message.deletable)
         message.delete();
     }

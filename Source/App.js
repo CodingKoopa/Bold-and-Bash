@@ -2,9 +2,9 @@
 var Application = function()
 {
   this.guild = null;
-  this.logChannel = null;
-  this.verificationChannel = null;
-  this.showcaseChannel = null;
+  this.log_channel = null;
+  this.verification_channel = null;
+  this.showcase_channel = null;
   this.warnings = [];
   this.bans = [];
   this.stats = {

@@ -2,10 +2,9 @@ const os = require(`os`);
 
 const ip = require(`ip`);
 const winston = require(`winston`);
+const config = require(`config`);
 require(`winston-daily-rotate-file`);
 require(`logdna`);
-
-const config = require(`config`);
 
 winston.emitErrs = true;
 const logger = new winston.Logger(
@@ -30,11 +29,11 @@ const logger = new winston.Logger(
     meta: true,
   });
 
-if (config.enableLogdnaLogging && config.logdnaKey)
+if (config.enable_logdna_logging && config.logdna_key)
 {
   // Setup logging for LogDNA cloud logging.
   logger.Add(winston.transports.Logdna, {
-    key: config.logdnaKey,
+    key: config.logdna_key,
     level: `silly`,
     ip: ip.address(),
     hostname: os.hostname(),

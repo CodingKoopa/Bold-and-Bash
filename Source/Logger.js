@@ -2,10 +2,9 @@ const os = require(`os`);
 
 const ip = require(`ip`);
 const winston = require(`winston`);
+const config = require(`config`);
 require(`winston-daily-rotate-file`);
 require(`logdna`);
-
-const config = require(`config`);
 
 // This is outside of the DailyRotateFile constructor because the log serialization only supports
 // the timestamp being a function, and not the level.
@@ -74,11 +73,11 @@ const logger = new winston.Logger(
     meta: true,
   });
 
-if (config.enableLogdnaLogging && config.logdnaKey)
+if (config.enable_logdna_logging && config.logdna_key)
 {
   // Setup logging for LogDNA cloud logging.
   logger.Add(winston.transports.Logdna, {
-    key: config.logdnaKey,
+    key: config.logdna_key,
     level: `Info`,
     ip: ip.address(),
     hostname: os.hostname(),

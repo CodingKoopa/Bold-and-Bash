@@ -4,15 +4,15 @@ const Command = require(`../Models/Command.js`);
 const Argument = require(`../Models/Argument.js`);
 
 const DESCRIPTION = `Gets the number of warnings for a user.`;
-const ARGUMENT = [new Argument(`user`, `The user to get warnings for.`, true, true)];
+const arg = [new Argument(`user`, `The user to get warnings for.`, true, true)];
 const ROLES = require(`../Common.js`).staffRoles;
-const callback = function(args, message)
+const callback = (args, message) =>
 {
-  message.mentions.users.map((user) =>
+  message.mentions.users.map(user =>
   {
-    var warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
+    const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
     message.reply(`${user.username} (${user}) has ${warnings.length} warning(s).`);
   });
 };
 
-module.exports.command = new Command(`warnings`, DESCRIPTION, ARGUMENT, ROLES, callback);
+module.exports.command = new Command(`warnings`, DESCRIPTION, arg, ROLES, callback);

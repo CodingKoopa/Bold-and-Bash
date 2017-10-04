@@ -13,10 +13,32 @@ const data = require(`./Data.js`);
 
 logger.Info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
 
-var command_list = [];
-var client = new discord.Client();
+const client = new discord.Client();
+let command_list = [];
 
-process.on(`unhandledRejection`, function onError(err)
+// Load all command modules.
+logger.Info(`Loading Command Modules.`);
+fs.readdirSync(`Source/Commands/`).forEach(file =>
+{
+  // Load the module if it's a script.
+  if (path.extname(file) === `.js`)
+  {
+    if (file.includes(`.disabled`))
+    {
+      logger.Debug(`Did not load disabled module: ${file}`);
+    }
+    else
+    {
+      logger.Debug(`Loaded module: ${file}`);
+      command_list.push(require(`./Commands/${file}`).command);
+    }
+  }
+});
+
+data.ReadWarnings();
+data.ReadBans();
+
+process.on(`unhandledRejection`, err =>
 {
   throw err;
 });
@@ -30,38 +52,32 @@ process.on(`SIGINT`, () =>
 client.on(`ready`, () =>
 {
   // Initalize app channels.
-  app.logChannel = client.channels.get(config.logChannel);
-  if (!app.logChannel)
+  app.log_channel = client.channels.get(config.log_channel);
+  if (!app.log_channel)
   {
-    logger.Error(`Logging channel #${config.logChannel} not found.`);
+    logger.Error(`Logging channel #${config.log_channel} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
-  app.showcaseChannel = client.channels.get(config.showcaseChannel);
-  if (!app.showcaseChannel)
+  app.showcase_channel = client.channels.get(config.showcase_channel);
+  if (!app.showcase_channel)
   {
-    logger.Error(`Showcase channel #${config.showcaseChannel} not found.`);
+    logger.Error(`Showcase channel #${config.showcase_channel} not found.`);
     throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
   }
-  app.verificationChannel = client.channels.get(config.verificationChannel);
-  if (!app.verificationChannel)
+  app.verification_channel = client.channels.get(config.verification_channel);
+  if (!app.verification_channel)
   {
-    logger.Error(`Verification channel #${config.verificationChannel} not found.`);
+    logger.Error(`Verification channel #${config.verification_channel} not found.`);
     throw (`VERIFICATION_CHANNEL_NOT_FOUND`);
   }
-  app.guild = app.logChannel.guild;
+  app.guild = app.log_channel.guild;
 
   logger.Info(`Bot is now online and connected to server.`);
 });
 
-client.on(`guildMemberAdd`, () =>
-{
-  app.stats.joins += 1;
-});
+client.on(`guildMemberAdd`, () => app.stats.joins += 1 );
 
-client.on(`guildMemberRemove`, () =>
-{
-  app.stats.leaves += 1;
-});
+client.on(`guildMemberRemove`, () => app.stats.leaves += 1 );
 
 // Output the stats for app.stats every 24 hours, and unban where necessary.
 schedule.scheduleJob(function()
@@ -79,14 +95,14 @@ warnings have been issued.`);
   const num_seconds = current_date.getTime();
   app.bans.forEach((ban, index, array) =>
   {
-    if (!ban.cleared && ban.unbanDate <= num_seconds)
+    if (!ban.cleared && ban.unban_date <= num_seconds)
     {
       common.SendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
       app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
         client.users.get(ban.id).send(`You have been unbanned from the server
-**${app.guild.name}**. Here's the invite link: ${config.inviteLink}.`).catch(Error =>
+**${app.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(Error =>
           common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
             Error));
         array[index].cleared = true;
@@ -132,18 +148,18 @@ client.on(`message`, message =>
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
-  if (message.channel !== app.verificationChannel)
+  if (message.channel !== app.verification_channel)
     message_logger.Message(FormatMessage(message, `#${message.channel.name}`));
 
-  if (message.content.startsWith(config.commandPrefix))
+  if (message.content.startsWith(config.command_prefix))
   {
     // If the message starts with more than one of the command prefix, don't do anything.
     // For example: "...well ok then."
     if (message.content[0] === message.content[1])
       return;
     const split_message = message.content.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
-    const entered_command = split_message[0].slice(config.commandPrefix.length).toLowerCase();
-    var args = split_message.slice(1, split_message.length);
+    const entered_command = split_message[0].slice(config.command_prefix.length).toLowerCase();
+    let args = split_message.slice(1, split_message.length);
     // Strip any quotes, they're not needed any more.
     args.forEach((arg, index, array) =>
     {
@@ -159,23 +175,22 @@ client.on(`message`, message =>
     if (entered_command === `help`)
     {
       message.channel.send(`${message.author} private messaging bot help to you.`);
-      var command_name_list = ``;
+      let command_name_list = ``;
       command_list.forEach(command =>
       {
         // Only add commands that the user can run to the list.
         if (command.IsExecutable(message))
           command_name_list += `\`${command.name}\`: ${command.description}\n`;
       });
-      const help_embed = new discord.RichEmbed(
-        {
-          title: `Bold and Bash Help`,
-          description: command_name_list
-        });
+      const help_embed = new discord.RichEmbed({
+        title: `Bold and Bash Help`,
+        description: command_name_list
+      });
       message.author.send(`Here's the help for this bot:`, {embed: help_embed}).then(() =>
         message.delete());
     }
     // Restrict verification channel to the verify command.
-    else if (message.channel === app.verificationChannel && entered_command !== `verify`)
+    else if (message.channel === app.verification_channel && entered_command !== `verify`)
       message.delete();
     else if (index >= 0)
       command_list[index].Execute(message, args);
@@ -183,36 +198,13 @@ client.on(`message`, message =>
       common.SendErrorMessage(`Command not found. See: \`.help\`.`, message);
   }
   // Clean up, for the verification channel.
-  else if (message.channel === app.verificationChannel)
+  else if (message.channel === app.verification_channel)
     message.delete();
 });
 
-// Load all command modules.
-logger.Info(`Loading Command Modules.`);
-command_list = [];
-fs.readdirSync(`Source/Commands/`).forEach(function(file)
+if (config.client_login_token)
 {
-  // Load the module if it's a script.
-  if (path.extname(file) === `.js`)
-  {
-    if (file.includes(`.disabled`))
-    {
-      logger.Debug(`Did not load disabled module: ${file}`);
-    }
-    else
-    {
-      logger.Debug(`Loaded module: ${file}`);
-      command_list.push(require(`./Commands/${file}`).command);
-    }
-  }
-});
-
-data.ReadWarnings();
-data.ReadBans();
-
-if (config.clientLoginToken)
-{
-  client.login(config.clientLoginToken);
+  client.login(config.client_login_token);
   logger.Info(`Startup completed. Established connection to Discord.`);
 }
 else

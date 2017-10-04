@@ -22,10 +22,10 @@ function FindArray(haystack, arr)
   });
 }
 
-function SendPrivateInfoMessage(messageText)
+function SendPrivateInfoMessage(message_text)
 {
-  logger.Info(messageText);
-  app.logChannel.send(messageText);
+  logger.Info(message_text);
+  app.log_channel.send(message_text);
 }
 
 function SendErrorMessage(Error, message)
@@ -34,19 +34,19 @@ function SendErrorMessage(Error, message)
 }
 
 // Error is optional, it's meant for passing API Error details.
-function SendPrivateErrorMessage(messageText, ErrorDetails)
+function SendPrivateErrorMessage(message_text, error_details)
 {
-  const Error_str = `Error: `;
-  if (ErrorDetails)
+  const error_str = `Error: `;
+  if (error_details)
   {
-    logger.Error(`${messageText} ${Error_str}${ErrorDetails}`);
+    logger.Error(`${message_text} ${error_str}${error_details}`);
     // Use CSS syntax highlighting because it has "key: value" pairs.
-    app.logChannel.send(`${messageText} ${Error_str}\`\`\`css\n${ErrorDetails}\`\`\``);
+    app.log_channel.send(`${message_text} ${error_str}\`\`\`css\n${error_details}\`\`\``);
   }
   else
   {
-    logger.Error(`${Error_str}${messageText}`);
-    app.logChannel.send(`${Error_str}${messageText}`);
+    logger.Error(`${error_str}${message_text}`);
+    app.log_channel.send(`${error_str}${message_text}`);
   }
 }
 

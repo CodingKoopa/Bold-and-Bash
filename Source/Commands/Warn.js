@@ -7,21 +7,21 @@ const Argument = require(`../Models/Argument.js`);
 const UserWarning = require(`../Models/UserWarning.js`);
 
 const DESCRIPTION = `Warns a user.`;
-const ARGUMENTS = [
+const args = [
   new Argument(`user`, `The user to be warned.`, true, true),
   new Argument(`reason`, `The reason why the user is being warned.`, false)
 ];
 const ROLES = require(`../Common.js`).staffRoles;
-const callback = function(args, message)
+const callback = (args, message) =>
 {
-  var reason = args[1];
-  message.mentions.users.map((user) =>
+  let reason = args[1];
+  message.mentions.users.map(user =>
   {
     const author_info = `${message.author.username} (${message.author})`;
     const user_info = `${user.username} (${user})`;
     const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
-    var log_message;
-    var warn_message;
+    let log_message = ``;
+    let warn_message = ``;
     if (!reason)
     {
       log_message =
@@ -50,4 +50,4 @@ const callback = function(args, message)
   });
 };
 
-module.exports.command = new Command(`warn`, DESCRIPTION, ARGUMENTS, ROLES, callback);
+module.exports.command = new Command(`warn`, DESCRIPTION, args, ROLES, callback);

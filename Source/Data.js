@@ -7,7 +7,7 @@ function ReadWarnings()
 {
   logger.Info(`Reading warnings.`);
   // Load the warnings file into the bans variable.
-  fs.readFile(`./Data/DiscordWarnings.json`, `utf8`, function(err, data)
+  fs.readFile(`./Data/DiscordWarnings.json`, `utf8`, (err, data) =>
   {
     if (err && err.code === `ENOENT`)
     {
@@ -26,7 +26,7 @@ function ReadBans()
 {
   logger.Info(`Reading bans.`);
   // Load the ban file into the bans variable.
-  fs.readFile(`./Data/DiscordBans.json`, `utf8`, function(err, data)
+  fs.readFile(`./Data/DiscordBans.json`, `utf8`, (err, data) =>
   {
     if (err && err.code === `ENOENT`)
     {
@@ -43,9 +43,9 @@ function ReadBans()
 
 function FlushWarnings()
 {
-  var warnings_json = JSON.stringify(app.warnings, null, 4);
+  const warnings_json = JSON.stringify(app.warnings, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
-  fs.writeFile(`./Data/DiscordWarnings.json`, warnings_json, `utf8`, function(err)
+  fs.writeFile(`./Data/DiscordWarnings.json`, warnings_json, `utf8`, err =>
   {
     if (err) logger.Error(err);
   });
@@ -53,7 +53,7 @@ function FlushWarnings()
 
 function FlushBans()
 {
-  var bans_json = JSON.stringify(app.bans, null, 4);
+  const bans_json = JSON.stringify(app.bans, null, 4);
   if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
   fs.writeFile(`./Data/DiscordBans.json`, bans_json, `utf8`, function(err)
   {

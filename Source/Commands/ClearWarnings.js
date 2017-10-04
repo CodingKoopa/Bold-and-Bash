@@ -6,17 +6,17 @@ const Command = require(`../Models/Command.js`);
 const Argument = require(`../Models/Argument.js`);
 
 const DESCRIPTION = `Clears the warnings for a user.`;
-const ARG = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
+const arg = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
 const ROLES = require(`../Common.js`).staffRoles;
-const callback = function(args, message)
+const callback = (args, message) =>
 {
   // Use some and not forEach, so we can return.
-  message.mentions.users.forEach((user) =>
+  message.mentions.users.forEach(user =>
   {
     const author_info = `${message.author.username} (${message.author})`;
     const user_info = `${user.username} (${user})`;
     const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-    common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info}
+    common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info} \
 (${warnings.length} warnings).`);
 
     message.reply(`clearing warnings for ${user_info}`);
@@ -34,4 +34,4 @@ const callback = function(args, message)
   });
 };
 
-module.exports.command = new Command(`clearWarnings`, DESCRIPTION, ARG, ROLES, callback);
+module.exports.command = new Command(`clearWarnings`, DESCRIPTION, arg, ROLES, callback);

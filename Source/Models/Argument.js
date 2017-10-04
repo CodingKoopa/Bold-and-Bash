@@ -1,11 +1,11 @@
 class Argument
 {
-  constructor(shortName, explanation, required, isMention = false)
+  constructor(short_name, explanation, required, is_mention = false)
   {
-    this.shortName = shortName;
+    this.short_name = short_name;
     this.explanation = explanation;
     this.required = required;
-    this.isMention = isMention;
+    this.is_mention = is_mention;
   }
 }
 
