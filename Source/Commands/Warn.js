@@ -12,7 +12,7 @@ const args = [
   new Argument(`reason`, `The reason why the user is being warned.`, false)
 ];
 const ROLES = require(`../Common.js`).STAFF_ROLES;
-const callback = (args, message) =>
+const callback = (message, args) =>
 {
   let reason = args[1];
   message.mentions.users.map(user =>
@@ -46,7 +46,7 @@ const callback = (args, message) =>
     data.FlushWarnings();
     app.stats.warnings++;
     if (count >= 3)
-      require(`./Ban.js`).ban(user, `third warning`, null, message);
+      require(`./Ban.js`).ban(message, user, `third warning`, null);
   });
 };
 

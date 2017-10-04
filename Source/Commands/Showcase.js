@@ -21,7 +21,7 @@ function RandomColor()
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-const callback = (args, message) =>
+const callback = (message, args) =>
 {
   const mod_embed = new RichEmbed(
     {
@@ -34,7 +34,7 @@ const callback = (args, message) =>
   mod_embed.setImage(args[2]);
   // An error can occur if the URL is broken.
   app.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
-    .catch(error => common.SendErrorMessage(`\`\`\`css\n${error}\`\`\``, message));
+    .catch(error => common.SendErrorMessage(message, `\`\`\`css\n${error}\`\`\``));
 };
 
 module.exports.command = new Command(`showcase`, DESCRIPTION, args, null, callback);

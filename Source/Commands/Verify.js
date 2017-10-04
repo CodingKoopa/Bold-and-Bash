@@ -4,7 +4,7 @@ const app = require(`../App.js`);
 const Command = require(`../Models/Command.js`);
 
 const DESCRIPTION = `Gives you the \`Verified\` role.`;
-const callback = (args, message) =>
+const callback = (message) =>
 {
   const role = app.guild.roles.find(role => role.name === `Verified`);
   if (role)

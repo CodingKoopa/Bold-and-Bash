@@ -14,14 +14,14 @@ const args = [
   new Argument(`length`, `The number of days the user should be banned for.`, false, false)
 ];
 const ROLES = require(`../Common.js`).STAFF_ROLES;
-const callback = (args, message) =>
+const callback = (message, args) =>
 {
   // It's easier to grab the user from the message object than the args.
-  message.mentions.users.map(user => Ban(user, args[1], args[2], message));
+  message.mentions.users.map(user => Ban(message, user, args[1], args[2]));
 };
 
 // This is in its own function so that the warn command can call it.
-function Ban(user, reason, length, message)
+function Ban(message, user, reason, length)
 {
   // Log the Ban event.
   const author_info = `${message.author.username} (${message.author})`;

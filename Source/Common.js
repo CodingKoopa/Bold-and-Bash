@@ -28,9 +28,9 @@ function SendPrivateInfoMessage(message_text)
   app.log_channel.send(message_text);
 }
 
-function SendErrorMessage(Error, message)
+function SendErrorMessage(message, error)
 {
-  message.channel.send(`${message.author} :rotating_light: Error: ${Error}`);
+  message.channel.send(`${message.author} :rotating_light: Error: ${error}`);
 }
 
 // Error is optional, it's meant for passing API Error details.

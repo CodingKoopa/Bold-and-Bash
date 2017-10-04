@@ -63,8 +63,8 @@ class Command
     {
       common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to
 use staff command ${this.name} with argument(s) ${passed_arguments}.`);
-      common.SendErrorMessage(`Permission denied. This command can only be used by
-${common.PrintArray(this.roles)}.`, message);
+      common.SendErrorMessage(message, `Permission denied. This command can only be used by
+${common.PrintArray(this.roles)}.`);
     }
     else if (passed_arguments[0] && passed_arguments[0].toLowerCase() === `--help`)
     {
@@ -112,11 +112,11 @@ ${passed_arguments.length}. ${see_help_message}`,
     }
     else if (this.IsMentionMissing(message, passed_arguments))
     {
-      common.SendErrorMessage(`Expected mention(s), but one or more were not found.`, message);
+      common.SendErrorMessage(message, `Expected mention(s), but one or more were not found.`);
     }
     else
     {
-      this.callback(passed_arguments, message);
+      this.callback(message, passed_arguments);
       if (message.deletable)
         message.delete();
     }

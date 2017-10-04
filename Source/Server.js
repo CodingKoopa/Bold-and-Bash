@@ -195,7 +195,7 @@ client.on(`message`, message =>
     else if (index >= 0)
       command_list[index].Execute(message, args);
     else
-      common.SendErrorMessage(`Command not found. See: \`.help\`.`, message);
+      common.SendErrorMessage(message, `Command not found. See: \`.help\`.`);
   }
   // Clean up, for the verification channel.
   else if (message.channel === app.verification_channel)
