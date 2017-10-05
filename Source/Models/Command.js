@@ -57,7 +57,7 @@ class Command
       return false;
   }
 
-  Execute(message, passed_arguments)
+  Execute(message, passed_arguments, delete_message = true)
   {
     const see_help_message =
       `See \`${require(`config`).command_prefix}${this.name} --help\` for usage.`;
@@ -67,6 +67,7 @@ class Command
 use staff command ${this.name} with argument(s) ${passed_arguments}.`);
       common.SendErrorMessage(message, `Permission denied. This command can only be used by
 ${common.PrintArray(this.roles)}.`);
+      return 1;
     }
     else if (passed_arguments[0] && passed_arguments[0].toLowerCase() === `--help`)
     {
@@ -97,28 +98,33 @@ ${common.PrintArray(this.roles)}.`);
         {
           embed: help_embed
         });
+      return 0;
     }
     else if (passed_arguments.length < this.num_required_arguments)
     {
       common.SendErrorMessage(message,
         `Too little arguments. At least ${this.num_required_arguments} needed, given \
 ${passed_arguments.length}. ${see_help_message}`);
+      return 1;
     }
     else if (passed_arguments.length > this.args.length)
     {
       common.SendErrorMessage(message,
         `Too many arguments. No more than ${this.args.length} accepted, given \
 ${passed_arguments.length}. ${see_help_message}`);
+      return 1;
     }
     else if (this.IsMentionMissing(message, passed_arguments))
     {
       common.SendErrorMessage(message, `Expected mention(s), but one or more were not found.`);
+      return 1;
     }
     else
     {
       this.callback(message, passed_arguments);
-      if (message.deletable)
+      if (delete_message && message.deletable)
         message.delete();
+      return 0;
     }
   }
 }

@@ -171,45 +171,74 @@ client.on(`message`, message =>
     // For example: "...well ok then."
     if (message.content[0] === message.content[1])
       return;
-    const split_message = message.content.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
-    const entered_command = split_message[0].slice(config.command_prefix.length).toLowerCase();
-    let args = split_message.slice(1, split_message.length);
-    // Strip any quotes, they're not needed any more.
-    args.forEach((arg, index, array) =>
+    const commands = message.content.split(/&&/g);
+    let ret = 0;
+    try
     {
-      if (arg[0] === `"`)
-        array[index] = arg.substring(1, arg.length - 1);
-    });
-    logger.Silly(`Command entered: ${entered_command} with args ${args}.`);
-
-    // Get the index of the command in the list.
-    const index = command_list.map(command => command.name.toLowerCase()).indexOf(entered_command);
-
-    // The help command is handled differently. Consider it to be, like, a shell builtin like alias.
-    if (entered_command === `help`)
-    {
-      message.channel.send(`${message.author} private messaging bot help to you.`);
-      let command_name_list = ``;
-      command_list.forEach(command =>
+      commands.forEach((command, command_index, command_array) =>
       {
-        // Only add commands that the user can run to the list.
-        if (command.IsExecutable(message))
-          command_name_list += `\`${command.name}\`: ${command.description}\n`;
+        const split_message = command.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
+
+        const entered_command = split_message[0].slice(config.command_prefix.length).toLowerCase();
+        let args = split_message.slice(1, split_message.length);
+        // Strip any quotes, they're not needed any more.
+        args.forEach((arg, arg_index, arg_array) =>
+        {
+          if (arg[0] === `"`)
+            arg_array[arg_index] = arg.substring(1, arg.length - 1);
+        });
+        logger.Silly(`Command entered: ${entered_command} with args ${args}.`);
+
+        // Get the index of the command in the list.
+        const index = command_list.map(command =>
+          command.name.toLowerCase()).indexOf(entered_command);
+
+        // The help command is handled differently. Consider it to be, like, a shell builtin, like
+        // alias.
+        if (entered_command === `help`)
+        {
+          message.channel.send(`${message.author} private messaging bot help to you.`);
+          let command_name_list = ``;
+          command_list.forEach(command =>
+          {
+            // Only add commands that the user can run to the list.
+            if (command.IsExecutable(message))
+              command_name_list += `\`${command.name}\`: ${command.description}\n`;
+          });
+          const help_embed = new discord.RichEmbed({
+            title: `Bold and Bash Help`,
+            description: command_name_list
+          });
+          message.author.send(`Here's the help for this bot:`, {embed: help_embed}).then(() =>
+            message.delete());
+        }
+        // Restrict verification channel to the verify command.
+        else if (message.channel === app.verification_channel && entered_command !== `verify`)
+        {
+          message.delete();
+        }
+        else if (index >= 0)
+        {
+          ret = command_list[index].Execute(message, args,
+            command_index + 1 === command_array.length ? true : false);
+        }
+        else
+        {
+          common.SendErrorMessage(message, `Command not found. See: \`.help\`.`);
+          ret = 1;
+        }
+
+        // With &&, if one statement fails, then the rest shouldn't be executed.
+        if (ret !== 0)
+          throw `STATEMENT_FAILED`;
       });
-      const help_embed = new discord.RichEmbed({
-        title: `Bold and Bash Help`,
-        description: command_name_list
-      });
-      message.author.send(`Here's the help for this bot:`, {embed: help_embed}).then(() =>
-        message.delete());
     }
-    // Restrict verification channel to the verify command.
-    else if (message.channel === app.verification_channel && entered_command !== `verify`)
-      message.delete();
-    else if (index >= 0)
-      command_list[index].Execute(message, args);
-    else
-      common.SendErrorMessage(message, `Command not found. See: \`.help\`.`);
+    catch(e)
+    {
+      if (commands.length > 1)
+        common.SendErrorMessage(message, `A statement failed, so the rest of the && combination \
+was not executed.`);
+    }
   }
   // Clean up, for the verification channel.
   else if (message.channel === app.verification_channel)
