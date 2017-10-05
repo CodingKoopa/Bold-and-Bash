@@ -2,6 +2,7 @@
   "client_login_token": null,
   "invite_link": null,
 
+  "welcome_channel": null,
   "verification_channel": null,
   "showcase_channel": null,
   "log_channel": null,
