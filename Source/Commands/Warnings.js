@@ -7,7 +7,7 @@ const Argument = require(`../Models/Argument.js`);
 
 const DESCRIPTION = `Gets the number of warnings for a user.`;
 const arg = [new Argument(`user`, `The user to get warnings for.`, true, true)];
-const ROLES = require(`../Common.js`).STAFF_ROLES;
+const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message) =>
 {
   message.mentions.users.map(user =>
@@ -17,4 +17,4 @@ const callback = (message) =>
   });
 };
 
-module.exports.command = new Command(`warnings`, DESCRIPTION, arg, ROLES, callback);
+module.exports.command = new Command(`warnings`, DESCRIPTION, arg, roles, callback);

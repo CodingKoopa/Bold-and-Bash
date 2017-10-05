@@ -9,7 +9,7 @@ const Argument = require(`../Models/Argument.js`);
 
 const DESCRIPTION = `Clears the warnings for a user.`;
 const arg = [new Argument(`user`, `The user to clear warnings for.`, true, true)];
-const ROLES = require(`../Common.js`).STAFF_ROLES;
+const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message) =>
 {
   // Use some and not forEach, so we can return.
@@ -36,4 +36,4 @@ const callback = (message) =>
   });
 };
 
-module.exports.command = new Command(`clearWarnings`, DESCRIPTION, arg, ROLES, callback);
+module.exports.command = new Command(`clearWarnings`, DESCRIPTION, arg, roles, callback);

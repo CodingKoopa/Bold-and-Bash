@@ -15,7 +15,7 @@ const args = [
   new Argument(`reason`, `The reason why the user is being banned.`, false),
   new Argument(`length`, `The number of days the user should be banned for.`, false, false)
 ];
-const ROLES = require(`../Common.js`).STAFF_ROLES;
+const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   // It's easier to grab the user from the message object than the args.
@@ -79,6 +79,6 @@ function Ban(message, user, reason, length)
 }
 
 module.exports = {
-  command: new Command(`ban`, DESCRIPTION, args, ROLES, callback),
+  command: new Command(`ban`, DESCRIPTION, args, roles, callback),
   Ban: Ban
 };

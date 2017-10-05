@@ -13,7 +13,7 @@ const args = [
   new Argument(`user`, `The user to be warned.`, true, true),
   new Argument(`reason`, `The reason why the user is being warned.`, false)
 ];
-const ROLES = require(`../Common.js`).STAFF_ROLES;
+const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   let reason = args[1];
@@ -52,4 +52,4 @@ const callback = (message, args) =>
   });
 };
 
-module.exports.command = new Command(`warn`, DESCRIPTION, args, ROLES, callback);
+module.exports.command = new Command(`warn`, DESCRIPTION, args, roles, callback);
