@@ -48,7 +48,7 @@ const callback = (message, args) =>
     data.FlushWarnings();
     app.stats.warnings++;
     if (count >= 3)
-      require(`./Ban.js`).ban(message, user, `third warning`, null);
+      require(`./Ban.js`).Ban(message, user, `third warning`, null);
   });
 };
 
