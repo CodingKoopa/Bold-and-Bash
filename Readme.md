@@ -100,6 +100,14 @@ npm test
 ## Features
 A full list of commands be found by running the `help` command.
 
+### `&&`ing Commands
+This wouldn't be a Bash-themed bot without `&&`. For the uninformed, `&&` allows you to execute multiple commands, but from one line of input. If one command fails, then the rest will not be executed. Here's a demonstration:
+![&& Demonstration GIF](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/StatementCombining.png)
+
+## Command Help
+Every command comes with an automatically generated help embed, similiar to a Bash command's manpage.
+![Command Help Screenshot](https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/CommandHelp.png)
+
 ### Moderation
 The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
 
