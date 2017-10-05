@@ -12,16 +12,13 @@ const args = [
 ];
 const callback = (message, args) =>
 {
+  const shared_str = `might be better for ${args[0]}`;
   if (args[1])
-  {
-    message.mentions.users.map(user => message.channel.send(`Hey there ${user.username}! This \
-might be better for ${args[0]}. For more info, a reference for channel usage can be \
-found in <#${config.welcome_channel}>.`) );
-  }
+    message.mentions.users.map(user => message.channel.send(`${user} Hey there ${user.username}! \
+This ${shared_str}. For more info, a reference for channel usage can be found in \
+<#${config.welcome_channel}>.`) );
   else
-  {
-    message.channel.send(`This discussion might be better for ${args[0]}.`);
-  }
+    message.channel.send(`This discussion ${shared_str}.`);
 };
 
 module.exports.command = new Command(`redir`, DESCRIPTION, args, null, callback);

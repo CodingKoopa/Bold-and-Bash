@@ -63,7 +63,7 @@ class Command
       `See \`${require(`config`).command_prefix}${this.name} --help\` for usage.`;
     if (!this.IsExecutable(message))
     {
-      common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to
+      common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to \
 use staff command ${this.name} with argument(s) ${passed_arguments}.`);
       common.SendErrorMessage(message, `Permission denied. This command can only be used by
 ${common.PrintArray(this.roles)}.`);
