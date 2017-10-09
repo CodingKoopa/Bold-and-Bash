@@ -39,6 +39,8 @@ fs.readdirSync(`Source/Commands/`).forEach(file =>
 
 data.ReadWarnings();
 data.ReadBans();
+if (!fs.existsSync(`./Data/`))
+  fs.mkdirSync(`./Data/`);
 
 process.on(`unhandledRejection`, err =>
 {

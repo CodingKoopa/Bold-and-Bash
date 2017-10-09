@@ -5,62 +5,62 @@ const fs = require(`fs`);
 const logger = require(`./Logger.js`);
 const app = require(`./App.js`);
 
+function LoadJSON(path)
+{
+  let json = null;
+  fs.readFile(path, `utf8`, (err, data) =>
+  {
+    if (err)
+    {
+      // It's alright if the file wasn't found.
+      if (err.code !== `ENOENT`)
+        logger.Error(err);
+    }
+    else
+    {
+      json = JSON.parse(data);
+    }
+  });
+  return json;
+}
+
+function WriteJSON(path, json)
+{
+  fs.writeFile(path, json, `utf8`, err =>
+  {
+    if (err)
+      logger.Error(err);
+  });
+}
+
+const WARNINGS_PATH = `./Data/Warnings.json`;
+
 function ReadWarnings()
 {
   logger.Info(`Reading warnings.`);
-  // Load the warnings file into the bans variable.
-  fs.readFile(`./Data/DiscordWarnings.json`, `utf8`, (err, data) =>
-  {
-    if (err && err.code === `ENOENT`)
-    {
-      return;
-    }
-    if (err)
-    {
-      logger.Error(err);
-    }
-    app.warnings = JSON.parse(data);
-    logger.Debug(`Loaded warnings file.`);
-  });
+  const json = LoadJSON(WARNINGS_PATH);
+  if (json)
+    app.warnings = json;
 }
+
+const BANS_PATH = `./Data/Bans.json`;
 
 function ReadBans()
 {
   logger.Info(`Reading bans.`);
-  // Load the ban file into the bans variable.
-  fs.readFile(`./Data/DiscordBans.json`, `utf8`, (err, data) =>
-  {
-    if (err && err.code === `ENOENT`)
-    {
-      return;
-    }
-    if (err)
-    {
-      logger.Error(err);
-    }
-    app.bans = JSON.parse(data);
-    logger.Debug(`Loaded bans file.`);
-  });
+  const json = LoadJSON(BANS_PATH);
+  if (json)
+    app.bans = json;
 }
 
 function FlushWarnings()
 {
-  const warnings_json = JSON.stringify(app.warnings, null, 4);
-  if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
-  fs.writeFile(`./Data/DiscordWarnings.json`, warnings_json, `utf8`, err =>
-  {
-    if (err) logger.Error(err);
-  });
+  WriteJSON(WARNINGS_PATH, JSON.stringify(app.warnings, null, 2));
 }
 
 function FlushBans()
 {
-  const bans_json = JSON.stringify(app.bans, null, 4);
-  if (!fs.existsSync(`./Data/`)) fs.mkdirSync(`./Data/`);
-  fs.writeFile(`./Data/DiscordBans.json`, bans_json, `utf8`, function(err)
-  {
-    if (err) logger.Error(err);
-  });
+  WriteJSON(BANS_PATH, JSON.stringify(app.bans, null, 2));
 }
 
 module.exports = {
