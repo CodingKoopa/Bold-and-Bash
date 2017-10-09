@@ -7,30 +7,12 @@ const app = require(`./App.js`);
 
 function LoadJSON(path)
 {
-  let json = null;
-  fs.readFile(path, `utf8`, (err, data) =>
-  {
-    if (err)
-    {
-      // It's alright if the file wasn't found.
-      if (err.code !== `ENOENT`)
-        logger.Error(err);
-    }
-    else
-    {
-      json = JSON.parse(data);
-    }
-  });
-  return json;
+  return JSON.parse(fs.readFileSync(path, `utf8`));
 }
 
 function WriteJSON(path, json)
 {
-  fs.writeFile(path, json, `utf8`, err =>
-  {
-    if (err)
-      logger.Error(err);
-  });
+  fs.writeFileSync(path, json, `utf8`);
 }
 
 const WARNINGS_PATH = `./Data/Warnings.json`;
@@ -43,6 +25,11 @@ function ReadWarnings()
     app.warnings = json;
 }
 
+function WriteWarnings()
+{
+  WriteJSON(WARNINGS_PATH, JSON.stringify(app.warnings, null, 2));
+}
+
 const BANS_PATH = `./Data/Bans.json`;
 
 function ReadBans()
@@ -53,19 +40,31 @@ function ReadBans()
     app.bans = json;
 }
 
-function FlushWarnings()
-{
-  WriteJSON(WARNINGS_PATH, JSON.stringify(app.warnings, null, 2));
-}
-
-function FlushBans()
+function WriteBans()
 {
   WriteJSON(BANS_PATH, JSON.stringify(app.bans, null, 2));
 }
 
+const QUOTES_PATH = `./Data/Quotes.json`;
+
+function ReadQuotes()
+{
+  logger.Info(`Reading quotes.`);
+  const json = LoadJSON(QUOTES_PATH);
+  if (json)
+    app.quotes = json;
+}
+
+function WriteQuotes()
+{
+  WriteJSON(QUOTES_PATH, JSON.stringify(app.quotes, null, 2));
+}
+
 module.exports = {
   ReadWarnings: ReadWarnings,
+  WriteWarnings: WriteWarnings,
   ReadBans: ReadBans,
-  FlushWarnings: FlushWarnings,
-  FlushBans: FlushBans
+  WriteBans: WriteBans,
+  ReadQuotes: ReadQuotes,
+  WriteQuotes: WriteQuotes
 };

@@ -26,7 +26,7 @@ const callback = (message) =>
     if (warnings && warnings.length > 0)
     {
       warnings.forEach(warning => warning.cleared = true);
-      data.FlushWarnings();
+      data.WriteWarnings();
       message.channel.send(`${user}, your warnings have been cleared.`);
     }
     else

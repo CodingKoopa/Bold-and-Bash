@@ -9,6 +9,7 @@ var Application = function()
   this.showcase_channel = null;
   this.warnings = [];
   this.bans = [];
+  this.quotes = [];
   this.stats = {
     joins: 0,
     leaves: 0,

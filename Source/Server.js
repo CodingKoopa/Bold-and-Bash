@@ -39,6 +39,7 @@ fs.readdirSync(`Source/Commands/`).forEach(file =>
 
 data.ReadWarnings();
 data.ReadBans();
+data.ReadQuotes();
 if (!fs.existsSync(`./Data/`))
   fs.mkdirSync(`./Data/`);
 
@@ -125,7 +126,7 @@ warnings have been issued.`);
       }, error => common.SendPrivateErrorMessage(`Failed to unban ${ban.username}.`, error));
     }
   });
-  data.FlushBans();
+  data.WriteBans();
 });
 
 function PadString(string, number)

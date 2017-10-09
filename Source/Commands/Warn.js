@@ -45,7 +45,7 @@ const callback = (message, args) =>
     message.channel.send(warn_message);
     app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
       message.author.username));
-    data.FlushWarnings();
+    data.WriteWarnings();
     app.stats.warnings++;
     if (count >= 3)
       require(`./Ban.js`).Ban(message, user, `third warning`, null);

@@ -68,12 +68,12 @@ function Ban(message, user, reason, length)
       // Add a warning for when they come back.
       app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
         message.author.username));
-      data.FlushWarnings();
+      data.WriteWarnings();
     }
 
     app.bans.push(new UserBan(user.id, user.username, reason, message.author.id,
       message.author.username, count, unban_date));
-    data.FlushBans();
+    data.WriteBans();
   },
   error => common.SendPrivateErrorMessage(`Failed to ban ${user_info}.`, error));
 }
