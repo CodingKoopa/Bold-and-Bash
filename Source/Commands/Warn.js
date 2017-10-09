@@ -17,39 +17,37 @@ const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   let reason = args[1];
-  message.mentions.users.map(user =>
+  const user = message.mentions.users.first();
+  const author_info = `${message.author.username} (${message.author})`;
+  const user_info = `${user.username} (${user})`;
+  const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
+  let log_message = ``;
+  let warn_message = ``;
+  if (!reason)
   {
-    const author_info = `${message.author.username} (${message.author})`;
-    const user_info = `${user.username} (${user})`;
-    const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
-    let log_message = ``;
-    let warn_message = ``;
-    if (!reason)
-    {
-      log_message =
+    log_message =
         `${author_info} has warned ${user_info} (${count} warnings).`;
-      warn_message =
+    warn_message =
         `${user} You have been warned. Additional infractions may result in a ban.`;
-    }
-    else
-    {
-      log_message =
+  }
+  else
+  {
+    log_message =
         `${author_info} has warned ${user_info} for ${reason} (${count} warnings).`;
-      warn_message =
+    warn_message =
         `${user} You have been warned for ${reason}. Additional infractions may result in a ban.`;
-    }
-    common.SendPrivateInfoMessage(log_message);
+  }
+  common.SendPrivateInfoMessage(log_message);
 
-    message.reply(`warning ${user_info}.`);
+  message.reply(`warning ${user_info}.`);
 
-    message.channel.send(warn_message);
-    app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
-      message.author.username));
-    data.WriteWarnings();
-    app.stats.warnings++;
-    if (count >= 3)
-      require(`./Ban.js`).Ban(message, user, `third warning`, null);
-  });
+  message.channel.send(warn_message);
+  app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
+    message.author.username));
+  data.WriteWarnings();
+  app.stats.warnings++;
+  if (count >= 3)
+    require(`./Ban.js`).Ban(message, user, `third warning`, null);
 };
 
 module.exports.command = new Command(`warn`, DESCRIPTION, args, roles, callback);

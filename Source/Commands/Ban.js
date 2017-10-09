@@ -19,7 +19,7 @@ const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   // It's easier to grab the user from the message object than the args.
-  message.mentions.users.map(user => Ban(message, user, args[1], args[2]));
+  Ban(message, message.mentions.users.first(), args[1], args[2]);
 };
 
 // This is in its own function so that the warn command can call it.

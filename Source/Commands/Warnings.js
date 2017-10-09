@@ -10,11 +10,9 @@ const arg = [new Argument(`user`, `The user to get warnings for.`, true, true)];
 const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message) =>
 {
-  message.mentions.users.map(user =>
-  {
-    const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-    message.reply(`${user.username} (${user}) has ${warnings.length} warning(s).`);
-  });
+  const user = message.mentions.users.first();
+  const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
+  message.reply(`${user.username} (${user}) has ${warnings.length} warning(s).`);
 };
 
 module.exports.command = new Command(`warnings`, DESCRIPTION, arg, roles, callback);

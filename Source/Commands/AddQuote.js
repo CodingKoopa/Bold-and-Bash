@@ -18,8 +18,8 @@ const callback = (message, args) =>
   const quote_text = args[0];
   message.reply(`adding quote "${quote_text}".`);
 
-  message.mentions.users.map(user =>
-    app.quotes.push(new Quote(quote_text, user.id, user.username)));
+  const user = message.mentions.users.first();
+  app.quotes.push(new Quote(quote_text, user.id, user.username));
   data.WriteQuotes();
 };
 
