@@ -7,7 +7,18 @@ const app = require(`./App.js`);
 
 function LoadJSON(path)
 {
-  return JSON.parse(fs.readFileSync(path, `utf8`));
+  let json;
+  try
+  {
+    json = fs.readFileSync(path, `utf8`);
+    return JSON.parse(json);
+  }
+  catch (error)
+  {
+    if (error.code !== `ENOENT`)
+      logger.Error(error);
+    return null;
+  }
 }
 
 function WriteJSON(path, json)
