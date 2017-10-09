@@ -95,7 +95,10 @@ client.on(`guildMemberAdd`, () => app.stats.joins += 1 );
 client.on(`guildMemberRemove`, () => app.stats.leaves += 1 );
 
 // Output the stats for app.stats every 24 hours, and unban where necessary.
-schedule.scheduleJob(function()
+schedule.scheduleJob({
+  hour: 0,
+  minute: 0
+}, function()
 {
   common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}!
 ${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings}
