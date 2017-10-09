@@ -12,7 +12,8 @@ const DESCRIPTION = `Posts a mod in the #mod-showcase channel.`;
 const args = [
   new Argument(`name`, `The name of the mod.`, true),
   new Argument(`description`, `The description of the mod.`, true),
-  new Argument(`picture`, `The URL of a picture of the mod.`, true),
+  new Argument(`picture`, `The URL of a picture of the mod. Alternatively, you may upload an image \
+as a part of the message, and put a dummy argument here.`, true),
   new Argument(`url`, `The URL of the download, or wiki page.`, false)
 ];
 
@@ -32,7 +33,10 @@ const callback = (message, args) =>
     common.GetRandomNumber(min, max),
     common.GetRandomNumber(min, max)
   ]);
-  mod_embed.setImage(args[2]);
+  if (message.attachments.size >= 1)
+    mod_embed.setImage(message.attachments.first().url);
+  else
+    mod_embed.setImage(args[2]);
   // An error can occur if the URL is broken.
   app.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
     .catch(error => common.SendErrorMessage(message, `\`\`\`css\n${error}\`\`\``));
