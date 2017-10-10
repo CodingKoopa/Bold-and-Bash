@@ -12,4 +12,4 @@ const callback = (message) =>
   message.reply(`"${quote.quote_text}" - ${quote.username} (<@${quote.id}>)`);
 };
 
-module.exports.command = new Command(`randomQuote`, DESCRIPTION, [], null, callback);
+module.exports.command = new Command(`RandomQuote`, DESCRIPTION, [], null, callback);

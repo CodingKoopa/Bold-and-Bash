@@ -42,4 +42,4 @@ const callback = (message, args) =>
     .catch(error => common.SendErrorMessage(message, `\`\`\`css\n${error}\`\`\``));
 };
 
-module.exports.command = new Command(`showcase`, DESCRIPTION, args, null, callback);
+module.exports.command = new Command(`Showcase`, DESCRIPTION, args, null, callback);

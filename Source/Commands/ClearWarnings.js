@@ -36,4 +36,4 @@ const callback = (message) =>
   });
 };
 
-module.exports.command = new Command(`clearWarnings`, DESCRIPTION, arg, roles, callback);
+module.exports.command = new Command(`ClearWarnings`, DESCRIPTION, arg, roles, callback);

@@ -50,4 +50,4 @@ const callback = (message, args) =>
     require(`./Ban.js`).Ban(message, user, `third warning`, null);
 };
 
-module.exports.command = new Command(`warn`, DESCRIPTION, args, roles, callback);
+module.exports.command = new Command(`Warn`, DESCRIPTION, args, roles, callback);

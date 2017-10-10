@@ -79,6 +79,6 @@ function Ban(message, user, reason, length)
 }
 
 module.exports = {
-  command: new Command(`ban`, DESCRIPTION, args, roles, callback),
+  command: new Command(`Ban`, DESCRIPTION, args, roles, callback),
   Ban: Ban
 };

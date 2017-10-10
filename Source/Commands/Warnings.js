@@ -15,4 +15,4 @@ const callback = (message) =>
   message.reply(`${user.username} (${user}) has ${warnings.length} warning(s).`);
 };
 
-module.exports.command = new Command(`warnings`, DESCRIPTION, arg, roles, callback);
+module.exports.command = new Command(`Warnings`, DESCRIPTION, arg, roles, callback);
