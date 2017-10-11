@@ -98,7 +98,7 @@ client.on(`guildMemberRemove`, () => app.stats.leaves += 1 );
 schedule.scheduleJob({
   hour: 0,
   minute: 0
-}, function()
+}, () =>
 {
   common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}! \
 ${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} \
@@ -130,6 +130,26 @@ warnings have been issued.`);
     }
   });
   data.WriteBans();
+});
+
+// Post a JSON backup every week.
+schedule.scheduleJob({
+  hour: 0,
+  minute: 0,
+  dayOfWeek: 0
+}, () =>
+{
+  app.log_channel.send(`Here are the JSON backups for this week:`).then(message =>
+  {
+    app.log_channel.send(`:hammer: Bans :hammer: `, new discord.Attachment(common.BANS_PATH))
+      .catch(error => common.SendErrorMessage(message, `Failed to fetch bans file.`, error));
+    app.log_channel.send(`:warning: Warnings :warning: `,
+      new discord.Attachment(common.WARNINGS_PATH))
+      .catch(error => common.SendErrorMessage(message, `Failed to fetch warnings file.`, error));
+    app.log_channel.send(`:speech_balloon: Quotes :speech_balloon: `,
+      new discord.Attachment(common.QUOTES_PATH))
+      .catch(error => common.SendErrorMessage(message, `Failed to fetch quotes file.`, error));
+  });
 });
 
 function PadString(string, number)
