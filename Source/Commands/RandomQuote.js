@@ -9,14 +9,22 @@ const DESCRIPTION = `Prints a random quote from the list.`;
 const callback = (message) =>
 {
   const quote = app.quotes[common.GetRandomNumber(0, app.quotes.length - 1)];
-  var quote_text;
-  // If it doesn't have any spaces, don't include quote marks. Useful for URLs that have broken
-  // previews when quoted.
-  if (quote.quote_text.indexOf(` `) === -1)
-    quote_text = quote.quote_text;
+  if (quote)
+  {
+    var quote_text;
+    // If it doesn't have any spaces, don't include quote marks. Useful for URLs that have broken
+    // previews when quoted.
+    if (quote.quote_text.indexOf(` `) === -1)
+      quote_text = quote.quote_text;
+    else
+      quote_text = `"${quote.quote_text}"`;
+    message.reply(`${quote_text} - ${quote.username} (<@${quote.id}>)`);
+  }
   else
-    quote_text = `"${quote.quote_text}"`;
-  message.reply(`${quote_text} - ${quote.username} (<@${quote.id}>)`);
+  {
+    common.SendErrorMessage(message, `No quotes found. To add quotes, use the \`AddQuote\` \
+command.`);
+  }
 };
 
 module.exports.command = new Command(`RandomQuote`, DESCRIPTION, [], null, callback);
