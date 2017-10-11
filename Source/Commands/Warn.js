@@ -21,22 +21,15 @@ const callback = (message, args) =>
   const author_info = `${message.author.username} (${message.author})`;
   const user_info = `${user.username} (${user})`;
   const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
-  let log_message = ``;
-  let warn_message = ``;
-  if (!reason)
+  let log_message = `${author_info} has warned ${user_info}`;
+  let warn_message = `:warning: ${user}, you have been warned`;
+  if (reason)
   {
-    log_message =
-        `${author_info} has warned ${user_info} (${count} warnings).`;
-    warn_message =
-        `${user}, you have been warned. Additional infractions may result in a ban.`;
+    log_message += ` for ${reason}`;
+    warn_message += ` for ${reason}`;
   }
-  else
-  {
-    log_message =
-        `${author_info} has warned ${user_info} for ${reason} (${count} warnings).`;
-    warn_message =
-        `${user}, you have been warned for ${reason}. Additional infractions may result in a ban.`;
-  }
+  log_message += ` (${count} warnings).`;
+  warn_message += `. Additional infractions may result in a ban.`;
   common.SendPrivateInfoMessage(log_message);
 
   message.reply(`warning ${user_info}.`);

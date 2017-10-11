@@ -16,7 +16,7 @@ const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   const quote_text = args[0];
-  message.reply(`adding quote "${quote_text}".`);
+  message.channel.send(`:ok_hand: ${message.author}, adding quote "${quote_text}".`);
 
   const user = message.mentions.users.first();
   app.quotes.push(new Quote(quote_text, user.id, user.username));

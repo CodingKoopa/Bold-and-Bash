@@ -37,28 +37,34 @@ function SendPrivateInfoMessage(message_text)
   app.log_channel.send(message_text);
 }
 
+function FormatErrorPrefix(user = null)
+{
+  if (user)
+    return `:rotating_light: ${user} Error:`;
+  else
+    return `Error:`;
+}
+
 function FormatErrorMessageDetails(message_text)
 {
   // Use CSS syntax highlighting because it has "key: value" pairs.
   return `Details:\`\`\`css\n${message_text}\`\`\``;
 }
 
-const ERROR_STRING = `:rotating_light: Error:`;
-
 function SendErrorMessage(message, message_text, error_details)
 {
-  var message_reply_text = `${ERROR_STRING} ${message_text}`;
+  var message_reply_text = `${FormatErrorPrefix(message.author)} ${message_text}`;
   if (error_details)
     message_reply_text += ` ${FormatErrorMessageDetails(error_details)}`;
 
-  message.reply(message_reply_text);
+  message.channel.send(message_reply_text);
 }
 
 // Error is optional, it's meant for passing API Error details.
 function SendPrivateErrorMessage(message_text, error_details)
 {
   var winston_log_message_text = `${message_text}`;
-  var discord_log_message_text = `${ERROR_STRING} ${winston_log_message_text}`;
+  var discord_log_message_text = `${FormatErrorPrefix()} ${winston_log_message_text}`;
   if (error_details)
   {
     winston_log_message_text += ` Details: ${error_details}`;

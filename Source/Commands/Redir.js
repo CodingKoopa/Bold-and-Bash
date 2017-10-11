@@ -16,12 +16,12 @@ const callback = (message, args) =>
   if (args[1])
   {
     const user = message.mentions.users.first();
-    message.channel.send(`${user} Hey there ${user.username}! This ${shared_str}. For more info, a \
-reference for channel usage can be found in <#${config.welcome_channel}>.`);
+    message.channel.send(`:arrow_up_down: ${user} Hey there ${user.username}! This ${shared_str}. \
+For more info, a reference for channel usage can be found in <#${config.welcome_channel}>.`);
   }
   else
   {
-    message.channel.send(`This discussion ${shared_str}.`);
+    message.channel.send(`:arrow_up_down: This discussion ${shared_str}.`);
   }
 };
 

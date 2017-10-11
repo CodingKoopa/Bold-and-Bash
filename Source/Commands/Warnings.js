@@ -12,7 +12,8 @@ const callback = (message) =>
 {
   const user = message.mentions.users.first();
   const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
-  message.reply(`${user.username} (${user}) has ${warnings.length} warning(s).`);
+  message.channel.send(`:page_facing_up: ${message.author}, ${user.username} (${user}) has \
+${warnings.length} warning(s).`);
 };
 
 module.exports.command = new Command(`Warnings`, DESCRIPTION, arg, roles, callback);

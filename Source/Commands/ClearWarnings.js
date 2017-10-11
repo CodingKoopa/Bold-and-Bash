@@ -19,7 +19,7 @@ const callback = (message) =>
   common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info} \
 (${warnings.length} warnings).`);
 
-  message.reply(`clearing warnings for ${user_info}.`);
+  message.channel.send(`:wastebasket: ${message.author}, clearing warnings for ${user_info}.`);
 
   if (warnings && warnings.length > 0)
   {

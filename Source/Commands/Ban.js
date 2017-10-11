@@ -29,22 +29,14 @@ function Ban(message, user, reason, length)
   const author_info = `${message.author.username} (${message.author})`;
   const user_info = `${user.username} (${user})`;
   const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length || 0;
-  let log_message = ``;
-  let ban_message = ``;
-  if (!reason)
+  let log_message = `${author_info} has banned ${user_info}`;
+  let ban_message = `:hammer: ${user}, you are being banned`;
+  if (reason)
   {
-    log_message =
-      `${author_info} has banned ${user_info} (${count} Warnings)`;
-    ban_message =
-      `${user}, you are being banned`;
+    log_message += ` for ${reason}`;
+    ban_message += ` for ${reason}`;
   }
-  else
-  {
-    log_message =
-      `${author_info} has banned ${user_info} for ${reason} (${count} Warnings)`;
-    ban_message =
-      `${user}, you are being banned for ${reason}`;
-  }
+  log_message += ` (${count} Warnings)`;
   const append_string = length ? `, for ${length} days.` : `.`;
   log_message += append_string;
   ban_message += append_string;
@@ -52,7 +44,7 @@ function Ban(message, user, reason, length)
   common.SendPrivateInfoMessage(log_message);
 
   // Send a Banning message.
-  message.reply(`banning ${user_info}.`);
+  message.channel.send(`:hammer: ${message.author}, banning ${user_info}.`);
 
   // Do the Banning.
   message.channel.send(ban_message);
