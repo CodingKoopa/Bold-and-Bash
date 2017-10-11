@@ -100,8 +100,8 @@ schedule.scheduleJob({
   minute: 0
 }, function()
 {
-  common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}!
-${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings}
+  common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}! \
+${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} \
 warnings have been issued.`);
 
   // Clear the stats for the day.
