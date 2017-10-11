@@ -57,8 +57,8 @@ function SendErrorMessage(message, message_text, error_details)
 // Error is optional, it's meant for passing API Error details.
 function SendPrivateErrorMessage(message_text, error_details)
 {
-  var winston_log_message_text = `${ERROR_STRING} ${message_text}`;
-  var discord_log_message_text = winston_log_message_text;
+  var winston_log_message_text = `${message_text}`;
+  var discord_log_message_text = `${ERROR_STRING} ${winston_log_message_text}`;
   if (error_details)
   {
     winston_log_message_text += ` Details: ${error_details}`;
