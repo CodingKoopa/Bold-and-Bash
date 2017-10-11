@@ -1,6 +1,6 @@
 'use strict';
 
-const app = require(`../App.js`);
+const state = require(`../State.js`);
 const data = require(`../Data.js`);
 
 const Command = require(`../Models/Command.js`);
@@ -19,7 +19,7 @@ const callback = (message, args) =>
   message.channel.send(`:ok_hand: ${message.author}, adding quote "${quote_text}".`);
 
   const user = message.mentions.users.first();
-  app.quotes.push(new Quote(quote_text, user.id, user.username));
+  state.quotes.push(new Quote(quote_text, user.id, user.username));
   data.WriteQuotes();
 };
 

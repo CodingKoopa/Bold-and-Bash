@@ -4,7 +4,7 @@ const fs = require(`fs`);
 
 const common = require(`./Common.js`);
 const logger = require(`./Logger.js`);
-const app = require(`./App.js`);
+const state = require(`./State.js`);
 
 function LoadJSON(path)
 {
@@ -32,12 +32,12 @@ function ReadWarnings()
   logger.Info(`Reading warnings.`);
   const json = LoadJSON(common.WARNINGS_PATH);
   if (json)
-    app.warnings = json;
+    state.warnings = json;
 }
 
 function WriteWarnings()
 {
-  WriteJSON(common.WARNINGS_PATH, JSON.stringify(app.warnings, null, 2));
+  WriteJSON(common.WARNINGS_PATH, JSON.stringify(state.warnings, null, 2));
 }
 
 function ReadBans()
@@ -45,12 +45,12 @@ function ReadBans()
   logger.Info(`Reading bans.`);
   const json = LoadJSON(common.BANS_PATH);
   if (json)
-    app.bans = json;
+    state.bans = json;
 }
 
 function WriteBans()
 {
-  WriteJSON(common.BANS_PATH, JSON.stringify(app.bans, null, 2));
+  WriteJSON(common.BANS_PATH, JSON.stringify(state.bans, null, 2));
 }
 
 function ReadQuotes()
@@ -58,12 +58,12 @@ function ReadQuotes()
   logger.Info(`Reading quotes.`);
   const json = LoadJSON(common.QUOTES_PATH);
   if (json)
-    app.quotes = json;
+    state.quotes = json;
 }
 
 function WriteQuotes()
 {
-  WriteJSON(common.QUOTES_PATH, JSON.stringify(app.quotes, null, 2));
+  WriteJSON(common.QUOTES_PATH, JSON.stringify(state.quotes, null, 2));
 }
 
 module.exports = {

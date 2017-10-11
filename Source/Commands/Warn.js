@@ -1,7 +1,7 @@
 'use strict';
 
 const common = require(`../Common.js`);
-const app = require(`../App.js`);
+const state = require(`../State.js`);
 const data = require(`../Data.js`);
 
 const Command = require(`../Models/Command.js`);
@@ -20,7 +20,7 @@ const callback = (message, args) =>
   const user = message.mentions.users.first();
   const author_info = `${message.author.username} (${message.author})`;
   const user_info = `${user.username} (${user})`;
-  const count = app.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
+  const count = state.warnings.filter(x => x.id === user.id && !x.cleared).length + 1 || 0;
   let log_message = `${author_info} has warned ${user_info}`;
   let warn_message = `:warning: ${user}, you have been warned`;
   if (reason)
@@ -35,10 +35,10 @@ const callback = (message, args) =>
   message.reply(`warning ${user_info}.`);
 
   message.channel.send(warn_message);
-  app.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
+  state.warnings.push(new UserWarning(user.id, user.username, reason, message.author.id,
     message.author.username));
   data.WriteWarnings();
-  app.stats.warnings++;
+  state.stats.warnings++;
   if (count >= 3)
     require(`./Ban.js`).Ban(message, user, `third warning`, null);
 };

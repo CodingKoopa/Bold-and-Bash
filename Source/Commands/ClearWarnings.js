@@ -1,7 +1,7 @@
 'use strict';
 
 const common = require(`../Common.js`);
-const app = require(`../App.js`);
+const state = require(`../State.js`);
 const data = require(`../Data.js`);
 
 const Command = require(`../Models/Command.js`);
@@ -15,7 +15,7 @@ const callback = (message) =>
   const user = message.mentions.users.first();
   const author_info = `${message.author.username} (${message.author})`;
   const user_info = `${user.username} (${user})`;
-  const warnings = app.warnings.filter(x => x.id === user.id && !x.cleared);
+  const warnings = state.warnings.filter(x => x.id === user.id && !x.cleared);
   common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info} \
 (${warnings.length} warnings).`);
 

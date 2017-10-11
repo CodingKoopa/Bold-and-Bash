@@ -1,7 +1,7 @@
 'use strict';
 
 const logger = require(`./Logger.js`);
-const app = require(`./App.js`);
+const state = require(`./State.js`);
 
 function GetRandomNumber(min, max)
 {
@@ -34,7 +34,7 @@ function FindArray(haystack, arr)
 function SendPrivateInfoMessage(message_text)
 {
   logger.Info(message_text);
-  app.log_channel.send(message_text);
+  state.log_channel.send(message_text);
 }
 
 function FormatErrorPrefix(user = null)
@@ -71,7 +71,7 @@ function SendPrivateErrorMessage(message_text, error_details)
     discord_log_message_text += ` ${FormatErrorMessageDetails(error_details)}`;
   }
   logger.Error(winston_log_message_text);
-  app.log_channel.send(discord_log_message_text);
+  state.log_channel.send(discord_log_message_text);
 }
 
 const STAFF_ROLES = [`Admins`, `Moderators`];

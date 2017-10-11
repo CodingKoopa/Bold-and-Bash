@@ -1,7 +1,7 @@
 'use strict';
 
 /* Application State */
-var Application = function()
+var State = function()
 {
   this.guild = null;
   this.log_channel = null;
@@ -17,4 +17,4 @@ var Application = function()
   };
 };
 
-module.exports = new Application();
+module.exports = new State();

@@ -1,14 +1,14 @@
 'use strict';
 
 const common = require(`../Common.js`);
-const app = require(`../App.js`);
+const state = require(`../State.js`);
 
 const Command = require(`../Models/Command.js`);
 
 const DESCRIPTION = `Prints a random quote from the list.`;
 const callback = (message) =>
 {
-  const quote = app.quotes[common.GetRandomNumber(0, app.quotes.length - 1)];
+  const quote = state.quotes[common.GetRandomNumber(0, state.quotes.length - 1)];
   if (quote)
   {
     var quote_text;

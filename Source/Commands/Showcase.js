@@ -1,7 +1,7 @@
 'use strict';
 
 const common = require(`../Common.js`);
-const app = require(`../App.js`);
+const state = require(`../State.js`);
 
 const RichEmbed = require(`discord.js`).RichEmbed;
 
@@ -38,7 +38,7 @@ const callback = (message, args) =>
   else
     mod_embed.setImage(args[2]);
   // An error can occur if the URL is broken.
-  app.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
+  state.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
     .catch(error => common.SendErrorMessage(message, `\`\`\`css\n${error}\`\`\``));
 };
 

@@ -10,7 +10,7 @@ const schedule = require(`node-schedule`);
 const common = require(`./Common.js`);
 const logger = require(`./Logger.js`);
 const message_logger = require(`./MessageLogger.js`);
-const app = require(`./App.js`);
+const state = require(`./State.js`);
 const data = require(`./Data.js`);
 
 logger.Info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
@@ -65,64 +65,64 @@ function SetPlayingStatus()
 
 client.on(`ready`, () =>
 {
-  // Initalize app channels.
-  app.log_channel = client.channels.get(config.log_channel);
-  if (!app.log_channel)
+  // Initalize state channels.
+  state.log_channel = client.channels.get(config.log_channel);
+  if (!state.log_channel)
   {
     logger.Error(`Logging channel #${config.log_channel} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
-  app.showcase_channel = client.channels.get(config.showcase_channel);
-  if (!app.showcase_channel)
+  state.showcase_channel = client.channels.get(config.showcase_channel);
+  if (!state.showcase_channel)
   {
     logger.Error(`Showcase channel #${config.showcase_channel} not found.`);
     throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
   }
-  app.verification_channel = client.channels.get(config.verification_channel);
-  if (!app.verification_channel)
+  state.verification_channel = client.channels.get(config.verification_channel);
+  if (!state.verification_channel)
   {
     logger.Error(`Verification channel #${config.verification_channel} not found.`);
     throw (`VERIFICATION_CHANNEL_NOT_FOUND`);
   }
-  app.guild = app.log_channel.guild;
+  state.guild = state.log_channel.guild;
 
   logger.Info(`Bot is now online and connected to server.`);
   SetPlayingStatus();
 });
 
-client.on(`guildMemberAdd`, () => app.stats.joins += 1 );
+client.on(`guildMemberAdd`, () => state.stats.joins += 1 );
 
-client.on(`guildMemberRemove`, () => app.stats.leaves += 1 );
+client.on(`guildMemberRemove`, () => state.stats.leaves += 1 );
 
-// Output the stats for app.stats every 24 hours, and unban where necessary.
+// Output the stats for state.stats every 24 hours, and unban where necessary.
 schedule.scheduleJob({
   hour: 0,
   minute: 0
 }, () =>
 {
   common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}! \
-${app.stats.joins} users have joined, ${app.stats.leaves} users have left, ${app.stats.warnings} \
-warnings have been issued.`);
+${state.stats.joins} users have joined, ${state.stats.leaves} users have left, \
+${state.stats.warnings} warnings have been issued.`);
 
   // Clear the stats for the day.
-  app.stats.joins = 0;
-  app.stats.leaves = 0;
-  app.stats.warnings = 0;
+  state.stats.joins = 0;
+  state.stats.leaves = 0;
+  state.stats.warnings = 0;
 
   SetPlayingStatus();
 
   const current_date = new Date;
   const num_seconds = current_date.getTime();
-  app.bans.forEach((ban, index, array) =>
+  state.bans.forEach((ban, index, array) =>
   {
     if (!ban.cleared && ban.unban_date <= num_seconds)
     {
       common.SendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
-      app.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
+      state.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
         client.users.get(ban.id).send(`You have been unbanned from the server
-**${app.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(error =>
+**${state.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(error =>
           common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
             error));
         array[index].cleared = true;
@@ -139,14 +139,14 @@ schedule.scheduleJob({
   dayOfWeek: 0
 }, () =>
 {
-  app.log_channel.send(`Here are the JSON backups for this week:`).then(message =>
+  state.log_channel.send(`Here are the JSON backups for this week:`).then(message =>
   {
-    app.log_channel.send(`:hammer: Bans :hammer: `, new discord.Attachment(common.BANS_PATH))
+    state.log_channel.send(`:hammer: Bans :hammer: `, new discord.Attachment(common.BANS_PATH))
       .catch(error => common.SendErrorMessage(message, `Failed to fetch bans file.`, error));
-    app.log_channel.send(`:warning: Warnings :warning: `,
+    state.log_channel.send(`:warning: Warnings :warning: `,
       new discord.Attachment(common.WARNINGS_PATH))
       .catch(error => common.SendErrorMessage(message, `Failed to fetch warnings file.`, error));
-    app.log_channel.send(`:speech_balloon: Quotes :speech_balloon: `,
+    state.log_channel.send(`:speech_balloon: Quotes :speech_balloon: `,
       new discord.Attachment(common.QUOTES_PATH))
       .catch(error => common.SendErrorMessage(message, `Failed to fetch quotes file.`, error));
   });
@@ -188,7 +188,7 @@ client.on(`message`, message =>
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
-  if (message.channel !== app.verification_channel)
+  if (message.channel !== state.verification_channel)
     message_logger.Message(FormatMessage(message, `#${message.channel.name}`));
 
   if (message.content.startsWith(config.command_prefix))
@@ -239,7 +239,7 @@ client.on(`message`, message =>
             message.delete());
         }
         // Restrict verification channel to the verify command.
-        else if (message.channel === app.verification_channel && entered_command !== `verify`)
+        else if (message.channel === state.verification_channel && entered_command !== `verify`)
         {
           message.delete();
         }
@@ -267,7 +267,7 @@ was not executed.`);
     }
   }
   // Clean up, for the verification channel.
-  else if (message.channel === app.verification_channel)
+  else if (message.channel === state.verification_channel)
     message.delete();
 });
 
