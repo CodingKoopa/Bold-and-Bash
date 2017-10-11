@@ -37,29 +37,42 @@ function SendPrivateInfoMessage(message_text)
   app.log_channel.send(message_text);
 }
 
-function SendErrorMessage(message, error)
+function FormatErrorMessageDetails(message_text)
 {
-  message.channel.send(`${message.author} :rotating_light: Error: ${error}`);
+  // Use CSS syntax highlighting because it has "key: value" pairs.
+  return `Details:\`\`\`css\n${message_text}\`\`\``;
+}
+
+const ERROR_STRING = `:rotating_light: Error:`;
+
+function SendErrorMessage(message, message_text, error_details)
+{
+  var message_reply_text = `${ERROR_STRING} ${message_text}`;
+  if (error_details)
+    message_reply_text += ` ${FormatErrorMessageDetails(error_details)}`;
+
+  message.reply(message_reply_text);
 }
 
 // Error is optional, it's meant for passing API Error details.
 function SendPrivateErrorMessage(message_text, error_details)
 {
-  const error_str = `Error: `;
+  var winston_log_message_text = `${ERROR_STRING} ${message_text}`;
+  var discord_log_message_text = winston_log_message_text;
   if (error_details)
   {
-    logger.Error(`${message_text} ${error_str}${error_details}`);
-    // Use CSS syntax highlighting because it has "key: value" pairs.
-    app.log_channel.send(`${message_text} ${error_str}\`\`\`css\n${error_details}\`\`\``);
+    winston_log_message_text += ` Details: ${error_details}`;
+    discord_log_message_text += ` ${FormatErrorMessageDetails(error_details)}`;
   }
-  else
-  {
-    logger.Error(`${error_str}${message_text}`);
-    app.log_channel.send(`${error_str}${message_text}`);
-  }
+  logger.Error(winston_log_message_text);
+  app.log_channel.send(discord_log_message_text);
 }
 
 const STAFF_ROLES = [`Admins`, `Moderators`];
+
+const WARNINGS_PATH = `./Data/Warnings.json`;
+const BANS_PATH = `./Data/Bans.json`;
+const QUOTES_PATH = `./Data/Quotes.json`;
 
 module.exports = {
   GetRandomNumber,
@@ -68,5 +81,8 @@ module.exports = {
   SendPrivateInfoMessage,
   SendErrorMessage,
   SendPrivateErrorMessage,
-  STAFF_ROLES
+  STAFF_ROLES,
+  WARNINGS_PATH,
+  BANS_PATH,
+  QUOTES_PATH
 };
