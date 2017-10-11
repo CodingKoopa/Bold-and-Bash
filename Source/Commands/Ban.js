@@ -36,14 +36,14 @@ function Ban(message, user, reason, length)
     log_message =
       `${author_info} has banned ${user_info} (${count} Warnings)`;
     ban_message =
-      `${user} You are being banned`;
+      `${user}, you are being banned`;
   }
   else
   {
     log_message =
       `${author_info} has banned ${user_info} for ${reason} (${count} Warnings)`;
     ban_message =
-      `${user} You are being banned for ${reason}`;
+      `${user}, you are being banned for ${reason}`;
   }
   const append_string = length ? `, for ${length} days.` : `.`;
   log_message += append_string;
@@ -52,7 +52,7 @@ function Ban(message, user, reason, length)
   common.SendPrivateInfoMessage(log_message);
 
   // Send a Banning message.
-  message.reply(`Banning ${user_info}.`);
+  message.reply(`banning ${user_info}.`);
 
   // Do the Banning.
   message.channel.send(ban_message);

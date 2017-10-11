@@ -223,7 +223,7 @@ client.on(`message`, message =>
         // alias.
         if (entered_command === `help`)
         {
-          message.channel.send(`${message.author} private messaging bot help to you.`);
+          message.reply(`private messaging bot help to you.`);
           let command_name_list = ``;
           command_list.forEach(command =>
           {

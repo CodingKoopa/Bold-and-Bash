@@ -19,7 +19,7 @@ const callback = (message) =>
   common.SendPrivateInfoMessage(`${author_info} has cleared warnings for ${user_info} \
 (${warnings.length} warnings).`);
 
-  message.reply(`clearing warnings for ${user_info}`);
+  message.reply(`clearing warnings for ${user_info}.`);
 
   if (warnings && warnings.length > 0)
   {
@@ -29,7 +29,7 @@ const callback = (message) =>
   }
   else
   {
-    common.SendPrivateErrorMessage(`Failed to clear warnings for ${user_info}`);
+    common.SendPrivateErrorMessage(`Failed to clear warnings for ${user_info}.`);
   }
 };
 

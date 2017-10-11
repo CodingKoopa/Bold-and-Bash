@@ -28,14 +28,14 @@ const callback = (message, args) =>
     log_message =
         `${author_info} has warned ${user_info} (${count} warnings).`;
     warn_message =
-        `${user} You have been warned. Additional infractions may result in a ban.`;
+        `${user}, you have been warned. Additional infractions may result in a ban.`;
   }
   else
   {
     log_message =
         `${author_info} has warned ${user_info} for ${reason} (${count} warnings).`;
     warn_message =
-        `${user} You have been warned for ${reason}. Additional infractions may result in a ban.`;
+        `${user}, you have been warned for ${reason}. Additional infractions may result in a ban.`;
   }
   common.SendPrivateInfoMessage(log_message);
 
