@@ -19,7 +19,7 @@ const callback = (message) =>
     else
       quote_text = `"${quote.quote_text}"`;
     message.channel.send(`:microphone2: ${message.author}, ${quote_text} :speech_left: \
-${quote.username} (<@${quote.id}>)`);
+${quote.username} (${quote.id})`);
   }
   else
   {
