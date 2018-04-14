@@ -1,8 +1,8 @@
 # Data folder.
 Data/
 
-# Log Folder
-Logs/
+# Log files.
+Logs/*.log
 
 # Runtime data
 pids
