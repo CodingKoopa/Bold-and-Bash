@@ -58,7 +58,7 @@ function SetPlayingStatus()
 {
   if (config.playing_statuses)
   {
-    client.user.setGame(config.playing_statuses[common.GetRandomNumber(0,
+    client.user.setActivity(config.playing_statuses[common.GetRandomNumber(0,
       config.playing_statuses.length - 1)]);
   }
 }
