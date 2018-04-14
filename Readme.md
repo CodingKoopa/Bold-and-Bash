@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/TheKoopaKingdom/Bold-and-Bash/master/Docs/BoldAndBash.png" alt="Logo" height="200" />
 </p>
 
-# Bold and Bash
+# Bold and Bash ![Travis CI Status](https://travis-ci.org/CodingKoopa/Bold-and-Bash.svg?branch=master)
 Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http://discord.gg/K3ERBFC), based off of [CitraBot](https://github.com/citra-emu/discord-bot). It shares some functionality with the [Bash](https://www.gnu.org/software/bash/) shell, as the name implies. Some examples of said functionality are the help commands, analogous to a command's manpage, and the stringing of commands together with `&&` and `||` (This part is not quite ready yet.).
 
 ## Setup
