@@ -183,8 +183,10 @@ client.on(`message`, message =>
 
   if (!message.guild)
   {
-    // We want to log DM attempts.
+    // We want to log DM attempts / modmail.
     message_logger.Message(FormatMessage(message, `DM`));
+    state.log_channel.send(`DM from ${message.author} (${message.author.id}): \
+"${message.content}".`);
     return;
   }
   // Don't log messages in the verification channel, because we don't have permission to do so, yet.
