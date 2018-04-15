@@ -199,7 +199,12 @@ client.on(`message`, message =>
     // For example: "...well ok then."
     if (message.content[0] === message.content[1])
       return;
-    const commands = message.content.split(/&&/g);
+    var commands;
+    // If in the verification channel, only check the first statement.
+    if (message.channel === state.verification_channel)
+      commands = message.content.split(/&&/g, 1);
+    else
+      commands = message.content.split(/&&/g);
     let ret = 0;
     try
     {
@@ -221,9 +226,14 @@ client.on(`message`, message =>
         const index = command_list.map(command =>
           command.name.toLowerCase()).indexOf(entered_command);
 
+        // Restrict verification channel to the verify command.
+        if (message.channel === state.verification_channel && entered_command !== `verify`)
+        {
+          message.delete();
+        }
         // The help command is handled differently. Consider it to be, like, a shell builtin, like
         // alias.
-        if (entered_command === `help`)
+        else if (entered_command === `help`)
         {
           message.reply(`private messaging bot help to you.`);
           let command_name_list = ``;
@@ -239,11 +249,6 @@ client.on(`message`, message =>
           });
           message.author.send(`Here's the help for this bot:`, {embed: help_embed}).then(() =>
             message.delete());
-        }
-        // Restrict verification channel to the verify command.
-        else if (message.channel === state.verification_channel && entered_command !== `verify`)
-        {
-          message.delete();
         }
         else if (index >= 0)
         {
