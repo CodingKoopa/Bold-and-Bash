@@ -257,7 +257,6 @@ client.on(`message`, message =>
         }
         else
         {
-          common.SendErrorMessage(message, `Command not found. See: \`.help\`.`);
           ret = 1;
         }
 
