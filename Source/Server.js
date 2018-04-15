@@ -96,8 +96,8 @@ client.on(`guildMemberRemove`, () => state.stats.leaves += 1 );
 
 // Output the stats for state.stats every 24 hours, and unban where necessary.
 schedule.scheduleJob({
-  hour: 0,
-  minute: 0
+  hour: 23,
+  minute: 59
 }, () =>
 {
   common.SendPrivateInfoMessage(`Here are today's stats for ${(new Date()).toLocaleDateString()}! \
@@ -134,9 +134,9 @@ ${state.stats.warnings} warnings have been issued.`);
 
 // Post a JSON backup every week.
 schedule.scheduleJob({
-  hour: 0,
-  minute: 0,
-  dayOfWeek: 0
+  hour: 23,
+  minute: 59,
+  dayOfWeek: 6
 }, () =>
 {
   state.log_channel.send(`Here are the JSON backups for this week:`).then(message =>
