@@ -10,10 +10,17 @@ const callback = (message) =>
 {
   const role = state.guild.roles.find(role => role.name === `Verified`);
   if (role)
+  {
     message.member.addRole(role).catch(error =>
       common.SendPrivateErrorMessage(`Failed to give the verified role.`, error));
+  }
   else
+  {
     common.SendPrivateErrorMessage(`Failed to find the verified role.`);
+    return 1;
+  }
+
+  return 0;
 };
 
 module.exports.command = new Command(`verify`, DESCRIPTION, [], null, callback);

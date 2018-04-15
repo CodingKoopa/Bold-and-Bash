@@ -73,6 +73,7 @@ ${shared_err_str}`);
   // An error can occur if the URL is broken.
   state.showcase_channel.send(`New mod update by ${message.author}:`, {embed: mod_embed})
     .catch(error => common.SendErrorMessage(message, `\`\`\`css\n${error}\`\`\``));
+
   return 0;
 };
 

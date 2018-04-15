@@ -25,7 +25,10 @@ ${quote.username} (${quote.id})`);
   {
     common.SendErrorMessage(message, `No quotes found. To add quotes, use the \`AddQuote\` \
 command.`);
+    return 1;
   }
+
+  return 0;
 };
 
 module.exports.command = new Command(`randomquote`, DESCRIPTION, [], null, callback);

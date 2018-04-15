@@ -14,6 +14,8 @@ const callback = (message) =>
   const warnings = state.warnings.filter(x => x.id === user.id && !x.cleared);
   message.channel.send(`:page_facing_up: ${message.author}, ${user.username} (${user}) has \
 ${warnings.length} warning(s).`);
+
+  return 0;
 };
 
 module.exports.command = new Command(`warnings`, DESCRIPTION, arg, roles, callback);

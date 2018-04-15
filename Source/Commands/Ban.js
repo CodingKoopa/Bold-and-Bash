@@ -19,7 +19,7 @@ const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
 {
   // It's easier to grab the user from the message object than the args.
-  Ban(message, message.mentions.users.first(), args[1], args[2]);
+  return Ban(message, message.mentions.users.first(), args[1], args[2]);
 };
 
 // This is in its own function so that the warn command can call it.
@@ -68,6 +68,8 @@ function Ban(message, user, reason, length)
     data.WriteBans();
   },
   error => common.SendPrivateErrorMessage(`Failed to ban ${user_info}.`, error));
+
+  return 0;
 }
 
 module.exports = {

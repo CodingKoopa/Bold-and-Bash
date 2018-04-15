@@ -23,6 +23,8 @@ For more info, a reference for channel usage can be found in <#${config.welcome_
   {
     message.channel.send(`:arrow_up_down: This discussion ${shared_str}.`);
   }
+
+  return 0;
 };
 
 module.exports.command = new Command(`redir`, DESCRIPTION, args, null, callback);

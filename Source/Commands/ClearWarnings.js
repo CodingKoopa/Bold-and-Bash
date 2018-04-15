@@ -30,7 +30,10 @@ const callback = (message) =>
   else
   {
     common.SendPrivateErrorMessage(`Failed to clear warnings for ${user_info}.`);
+    return 1;
   }
+
+  return 0;
 };
 
 module.exports.command = new Command(`clearwarnings`, DESCRIPTION, arg, roles, callback);

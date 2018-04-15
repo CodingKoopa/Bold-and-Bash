@@ -40,7 +40,9 @@ const callback = (message, args) =>
   data.WriteWarnings();
   state.stats.warnings++;
   if (count >= 3)
-    require(`./Ban.js`).Ban(message, user, `third warning`, null);
+    return require(`./Ban.js`).Ban(message, user, `third warning`, null);
+
+  return 0;
 };
 
 module.exports.command = new Command(`warn`, DESCRIPTION, args, roles, callback);

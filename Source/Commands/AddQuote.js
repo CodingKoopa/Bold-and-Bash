@@ -21,6 +21,8 @@ const callback = (message, args) =>
   const user = message.mentions.users.first();
   state.quotes.push(new Quote(quote_text, user.id, user.username));
   data.WriteQuotes();
+
+  return 0;
 };
 
 module.exports.command = new Command(`addquote`, DESCRIPTION, args, roles, callback);
