@@ -127,6 +127,7 @@ ${passed_arguments.length}. ${see_help_message}`);
       catch (error)
       {
         common.SendErrorMessage(message, error);
+        return 1;
       }
     }
   }
