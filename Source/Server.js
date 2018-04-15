@@ -115,7 +115,7 @@ ${state.stats.warnings} warnings have been issued.`);
   const num_seconds = current_date.getTime();
   state.bans.forEach((ban, index, array) =>
   {
-    if (!ban.cleared && ban.unban_date <= num_seconds)
+    if (ban.unban_date !== null && !ban.cleared && ban.unban_date <= num_seconds)
     {
       common.SendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.

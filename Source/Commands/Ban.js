@@ -13,7 +13,7 @@ const DESCRIPTION = `Bans a user from the server.`;
 const args = [
   new Argument(`user`, `The user to be banned.`, true, true),
   new Argument(`reason`, `The reason why the user is being banned.`, false),
-  new Argument(`length`, `The number of days the user should be banned for.`, false, false)
+  new Argument(`length`, `The number of days the user should be banned for.`, false)
 ];
 const roles = require(`../Common.js`).STAFF_ROLES;
 const callback = (message, args) =>
@@ -51,7 +51,7 @@ function Ban(message, user, reason, length)
   message.guild.ban(user, {reason: reason}).then(() =>
   {
     let unban_date = null;
-    // Schedule an unBanning, if required.
+    // Schedule an unbanning, if required.
     if (length)
     {
       const date = new Date;
