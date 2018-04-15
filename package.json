@@ -2,7 +2,7 @@
   "name": "bold-and-bash",
   "version": "1.0.1",
   "description": "A Discord bot not unlike Bash.",
-  "author": "TheKoopaKingdom <thekoopakingdom@gmail.com>",
+  "author": "CodingKoopa <codingkoopa@gmail.com>",
   "scripts": {
     "test": "eslint .",
     "start-dev": "cross-env NODE_ENV=development node Source/Server.js",
