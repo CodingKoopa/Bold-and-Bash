@@ -31,20 +31,6 @@ class Command
     this.callback = callback;
   }
 
-  IsMentionMissing(message, passed_arguments)
-  {
-    const mentions = message.mentions.users.map(user => user.toString());
-    let mention_missing = false;
-    this.args.forEach((argument, index) =>
-    {
-      // If the argument expects a mention, make sure the passed argument is one.
-      if (argument.is_mention && passed_arguments[index] !== mentions[argument.mention_index])
-        // If we return here, it won't work properly because only an exception can break forEach().
-        mention_missing = true;
-    });
-    return mention_missing;
-  }
-
   // Used by the help command.
   IsExecutable(message)
   {
