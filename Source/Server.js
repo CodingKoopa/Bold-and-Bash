@@ -14,6 +14,10 @@ const state = require(`./State.js`);
 const data = require(`./Data.js`);
 
 logger.Info(`Bold and Bash Version ${require(`../package.json`).version} Starting.`);
+if (!fs.existsSync(`./Data/`))
+  fs.mkdirSync(`./Data/`);
+if (!fs.existsSync(`./Logs/`))
+  fs.mkdirSync(`./Logs/`);
 
 const client = new discord.Client();
 let command_list = [];
@@ -40,8 +44,6 @@ fs.readdirSync(`Source/Commands/`).forEach(file =>
 data.ReadWarnings();
 data.ReadBans();
 data.ReadQuotes();
-if (!fs.existsSync(`./Data/`))
-  fs.mkdirSync(`./Data/`);
 
 process.on(`unhandledRejection`, err =>
 {
