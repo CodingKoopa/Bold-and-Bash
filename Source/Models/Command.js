@@ -1,6 +1,7 @@
 'use strict';
 
 const common = require(`../Common.js`);
+const logger = require(`../Logger.js`);
 
 const RichEmbed = require(`discord.js`).RichEmbed;
 
@@ -114,16 +115,19 @@ ${passed_arguments.length}. ${see_help_message}`);
 ${passed_arguments.length}. ${see_help_message}`);
       return 1;
     }
-    else if (this.IsMentionMissing(message, passed_arguments))
-    {
-      common.SendErrorMessage(message, `Expected mention(s), but one or more were not found.`);
-      return 1;
-    }
     else
     {
-      if (this.callback(message, passed_arguments) === 0 && delete_message && message.deletable)
-        message.delete();
-      return 0;
+      logger.Silly(`Executing command.`);
+      try
+      {
+        if (this.callback(message, passed_arguments) === 0 && delete_message && message.deletable)
+          message.delete();
+        return 0;
+      }
+      catch (error)
+      {
+        common.SendErrorMessage(message, error);
+      }
     }
   }
 }
