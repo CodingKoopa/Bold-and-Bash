@@ -60,7 +60,7 @@ npm install
 ```
 5. Make a copy of the default configuration to be the development configuration:
 ```bash
-cp config/default.json config/production.json
+cp config/Default.json Config/Production.json
 ```
 6. Fill out the values in `config/production.json`. Here's some info about what they are:
 - `client_login_token` (String): The bot's token, from [here](https://discordapp.com/developers/applications/me).
@@ -84,12 +84,12 @@ If you are interested in working on the bot's code, follow these steps to get a 
 1. Follow [Discord Setup](#discord-setup) again, creating a separate Discord server, and separate bot account.
 2. Make a copy of your production configuration, for development:
 ```bash
-cp config/production.json config/development.json
+cp Config/Production.json Config/Development.json
 ```
 3. Edit the values of `config/development.json` to fit the new server, and new bot account.
 4. Directly run the bot from `Server.js` (This is faster than going through NPM.):
 ```bash
-clear && NODE_ENV=development node Source/Server.js
+clear && NODE_ENV=Development node Source/Server.js
 ```
 (Here, the `clear` isn't necessary, but is very helpful when constantly restarting the bot.)
 

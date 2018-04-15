@@ -29,7 +29,7 @@ function WriteJSON(path, json)
 
 function ReadWarnings()
 {
-  logger.Info(`Reading warnings.`);
+  logger.Debug(`Reading warnings.`);
   const json = LoadJSON(common.WARNINGS_PATH);
   if (json)
     state.warnings = json;
@@ -42,7 +42,7 @@ function WriteWarnings()
 
 function ReadBans()
 {
-  logger.Info(`Reading bans.`);
+  logger.Debug(`Reading bans.`);
   const json = LoadJSON(common.BANS_PATH);
   if (json)
     state.bans = json;
@@ -55,7 +55,7 @@ function WriteBans()
 
 function ReadQuotes()
 {
-  logger.Info(`Reading quotes.`);
+  logger.Debug(`Reading quotes.`);
   const json = LoadJSON(common.QUOTES_PATH);
   if (json)
     state.quotes = json;
