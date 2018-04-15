@@ -76,4 +76,4 @@ ${shared_err_str}`);
   return 0;
 };
 
-module.exports.command = new Command(`Showcase`, DESCRIPTION, args, null, callback);
+module.exports.command = new Command(`showcase`, DESCRIPTION, args, null, callback);

@@ -23,4 +23,4 @@ const callback = (message, args) =>
   data.WriteQuotes();
 };
 
-module.exports.command = new Command(`AddQuote`, DESCRIPTION, args, roles, callback);
+module.exports.command = new Command(`addquote`, DESCRIPTION, args, roles, callback);

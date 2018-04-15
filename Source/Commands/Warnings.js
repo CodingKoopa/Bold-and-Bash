@@ -16,4 +16,4 @@ const callback = (message) =>
 ${warnings.length} warning(s).`);
 };
 
-module.exports.command = new Command(`Warnings`, DESCRIPTION, arg, roles, callback);
+module.exports.command = new Command(`warnings`, DESCRIPTION, arg, roles, callback);

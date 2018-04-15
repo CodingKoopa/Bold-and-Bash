@@ -28,4 +28,4 @@ command.`);
   }
 };
 
-module.exports.command = new Command(`RandomQuote`, DESCRIPTION, [], null, callback);
+module.exports.command = new Command(`randomquote`, DESCRIPTION, [], null, callback);

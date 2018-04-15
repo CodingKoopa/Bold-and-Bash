@@ -16,4 +16,4 @@ const callback = (message) =>
     common.SendPrivateErrorMessage(`Failed to find the verified role.`);
 };
 
-module.exports.command = new Command(`Verify`, DESCRIPTION, [], null, callback);
+module.exports.command = new Command(`verify`, DESCRIPTION, [], null, callback);

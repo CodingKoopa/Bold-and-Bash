@@ -25,4 +25,4 @@ For more info, a reference for channel usage can be found in <#${config.welcome_
   }
 };
 
-module.exports.command = new Command(`Redir`, DESCRIPTION, args, null, callback);
+module.exports.command = new Command(`redir`, DESCRIPTION, args, null, callback);
