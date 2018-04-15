@@ -121,8 +121,7 @@ ${passed_arguments.length}. ${see_help_message}`);
     }
     else
     {
-      this.callback(message, passed_arguments);
-      if (delete_message && message.deletable)
+      if (this.callback(message, passed_arguments) === 0 && delete_message && message.deletable)
         message.delete();
       return 0;
     }
