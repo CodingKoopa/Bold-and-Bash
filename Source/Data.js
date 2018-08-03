@@ -27,6 +27,14 @@ function WriteJSON(path, json)
   fs.writeFileSync(path, json, `utf8`);
 }
 
+function ReadPlayingStatuses()
+{
+  logger.Debug(`Reading custom playing statuses.`);
+  const json = LoadJSON(common.PLAYING_STATUSES_PATH);
+  if (json)
+    state.playing_statuses = json;
+}
+
 function ReadWarnings()
 {
   logger.Debug(`Reading warnings.`);
@@ -67,6 +75,7 @@ function WriteQuotes()
 }
 
 module.exports = {
+  ReadPlayingStatuses,
   ReadWarnings,
   WriteWarnings,
   ReadBans,

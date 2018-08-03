@@ -47,7 +47,7 @@ class Command
   Execute(message, passed_arguments, delete_message = true)
   {
     const see_help_message =
-      `See \`${require(`config`).command_prefix}${this.name} --help\` for usage.`;
+      `See \`${process.env.BAB_PEFIX}${this.name} --help\` for usage.`;
     if (!this.IsExecutable(message))
     {
       common.SendPrivateInfoMessage(`${message.author.username} (${message.author}) attempted to \
@@ -59,7 +59,7 @@ ${common.PrintArray(this.roles)}.`);
     else if (passed_arguments[0] && passed_arguments[0].toLowerCase() === `--help`)
     {
       const description = `**Description**: ${this.description}\n`;
-      var usage = `**Usage**: \`${require(`config`).command_prefix}${this.name} [--help] `;
+      var usage = `**Usage**: \`${process.env.BAB_PEFIX}${this.name} [--help] `;
       // arguments is reserved.
       let argument_list = ``;
       this.args.map(argument =>

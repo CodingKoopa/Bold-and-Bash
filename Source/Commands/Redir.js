@@ -1,7 +1,5 @@
 'use strict';
 
-const config = require(`config`);
-
 const Command = require(`../Models/Command.js`);
 const Argument = require(`../Models/Argument.js`);
 
@@ -17,7 +15,8 @@ const callback = (message, args) =>
   {
     const user = message.mentions.users.first();
     message.channel.send(`:arrow_up_down: ${user} Hey there ${user.username}! This ${shared_str}. \
-For more info, a reference for channel usage can be found in <#${config.welcome_channel}>.`);
+For more info, a reference for channel usage can be found in \
+<#${process.env.BAB_WELCOME_CHANNEL_ID}>.`);
   }
   else
   {
