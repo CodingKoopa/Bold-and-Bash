@@ -7,6 +7,7 @@ var State = function()
   this.log_channel = null;
   this.verification_channel = null;
   this.showcase_channel = null;
+  this.playing_statuses = [];
   this.warnings = [];
   this.bans = [];
   this.quotes = [];

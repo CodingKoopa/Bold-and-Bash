@@ -1,10 +1,9 @@
 'use strict';
 
-const os = require(`os`);
+// const os = require(`os`);
 
-const ip = require(`ip`);
+// const ip = require(`ip`);
 const winston = require(`winston`);
-const config = require(`config`);
 require(`winston-daily-rotate-file`);
 require(`logdna`);
 
@@ -75,21 +74,21 @@ const logger = new winston.Logger(
     meta: true,
   });
 
-if (config.enable_logdna_logging && config.logdna_key)
-{
-  // Setup logging for LogDNA cloud logging.
-  logger.Add(winston.transports.Logdna, {
-    key: config.logdna_key,
-    level: `Info`,
-    ip: ip.address(),
-    hostname: os.hostname(),
-    app: `discord-bot`
-  });
-  logger.Info(`Started LogDNA winston transport.`);
-}
-else if (config.enableLogdna === true)
-{
-  throw `Attempted to enable LogDNA transport without a key!`;
-}
+// if (config.enable_logdna_logging && config.logdna_key)
+// {
+//   // Setup logging for LogDNA cloud logging.
+//   logger.Add(winston.transports.Logdna, {
+//     key: config.logdna_key,
+//     level: `Info`,
+//     ip: ip.address(),
+//     hostname: os.hostname(),
+//     app: `discord-bot`
+//   });
+//   logger.Info(`Started LogDNA winston transport.`);
+// }
+// else if (config.enableLogdna === true)
+// {
+//   throw `Attempted to enable LogDNA transport without a key!`;
+// }
 
 module.exports = logger;

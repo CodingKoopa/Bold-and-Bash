@@ -1,11 +1,12 @@
 'use strict';
 
+// Verify that the needed environment variables are set.
+require(`checkenv`).check();
+
 const fs = require(`fs`);
 const path = require(`path`);
 
 const discord = require(`discord.js`);
-process.env[`NODE_CONFIG_DIR`] = __dirname + `/../Config/`;
-const config = require(`config`);
 const schedule = require(`node-schedule`);
 
 const common = require(`./Common.js`);
@@ -16,11 +17,8 @@ const data = require(`./Data.js`);
 
 function SetPlayingStatus()
 {
-  if (config.playing_statuses)
-  {
-    client.user.setActivity(config.playing_statuses[common.GetRandomNumber(0,
-      config.playing_statuses.length - 1)]);
-  }
+  client.user.setActivity(state.playing_statuses[common.GetRandomNumber(0,
+    state.playing_statuses.length - 1)]);
 }
 
 function PadString(string, number)
@@ -73,6 +71,8 @@ logger.Info(`Reading data.`);
 data.ReadWarnings();
 data.ReadBans();
 data.ReadQuotes();
+if (process.env.BAB_CUSTOM_PLAYING_STATUSES_ENABLED === `true`)
+  data.ReadPlayingStatuses();
 
 
 // Load all command modules.
@@ -102,29 +102,30 @@ const client = new discord.Client();
 
 client.on(`ready`, () =>
 {
-  // Initalize state channels.
-  state.log_channel = client.channels.get(config.log_channel);
+  state.log_channel = client.channels.get(process.env.BAB_LOG_CHANNEL_ID);
   if (!state.log_channel)
   {
-    logger.Error(`Logging channel #${config.log_channel} not found.`);
+    logger.Error(`Logging channel #${process.env.BAB_LOG_CHANNEL_ID} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
-  state.showcase_channel = client.channels.get(config.showcase_channel);
+  state.showcase_channel = client.channels.get(process.env.BAB_SHOWCASE_CHANNEL_ID);
   if (!state.showcase_channel)
   {
-    logger.Error(`Showcase channel #${config.showcase_channel} not found.`);
+    logger.Error(`Showcase channel #${process.env.BAB_SHOWCASE_CHANNEL_ID} not found.`);
     throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
   }
-  state.verification_channel = client.channels.get(config.verification_channel);
+  state.verification_channel = client.channels.get(process.env.BAB_VERIFICATION_CHANNEL_ID);
   if (!state.verification_channel)
   {
-    logger.Error(`Verification channel #${config.verification_channel} not found.`);
+    logger.Error(`Verification channel #${process.env.BAB_VERIFICATION_CHANNEL_ID} not found.`);
     throw (`VERIFICATION_CHANNEL_NOT_FOUND`);
   }
   state.guild = state.log_channel.guild;
 
   logger.Info(`Bot is now online and connected to server.`);
-  SetPlayingStatus();
+
+  if (process.env.BAB_CUSTOM_PLAYING_STATUSES_ENABLED === `true`)
+    SetPlayingStatus();
 });
 
 client.on(`message`, message =>
@@ -148,7 +149,7 @@ client.on(`message`, message =>
     message_logger.Message(FormatMessage(message, `#${message.channel.name}`));
 
   // Handle commands.
-  if (message.content.startsWith(config.command_prefix))
+  if (message.content.startsWith(process.env.BAB_PEFIX))
   {
     // If the message starts with more than one of the command prefix, don't do anything.
     // For example: "...well ok then."
@@ -167,7 +168,7 @@ client.on(`message`, message =>
       {
         const split_message = command.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
 
-        const entered_command = split_message[0].slice(config.command_prefix.length).toLowerCase();
+        const entered_command = split_message[0].slice(process.env.BAB_PEFIX.length).toLowerCase();
         let args = split_message.slice(1, split_message.length);
         // Strip any quotes, they're not needed any more.
         args.forEach((arg, arg_index, arg_array) =>
@@ -256,7 +257,8 @@ ${state.stats.warnings} warnings have been issued.`);
   state.stats.leaves = 0;
   state.stats.warnings = 0;
 
-  SetPlayingStatus();
+  if (process.env.BAB_CUSTOM_PLAYING_STATUSES_ENABLED === `true`)
+    SetPlayingStatus();
 
   const current_date = new Date;
   const num_seconds = current_date.getTime();
@@ -268,8 +270,10 @@ ${state.stats.warnings} warnings have been issued.`);
       // Unban the user.
       state.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
-        client.users.get(ban.id).send(`You have been unbanned from the server
-**${state.guild.name}**. Here's the invite link: ${config.invite_link}.`).catch(error =>
+        let unban_message = `You have been unbanned from the server**${state.guild.name}**.`;
+        if (process.env.BAB_INVITE_LINK)
+          unban_message += ` Here's the invite link: ${process.env.BAB_INVITE_LINK}.`;
+        client.users.get(ban.id).send(unban_message).catch(error =>
           common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
             error));
         array[index].cleared = true;
@@ -300,13 +304,5 @@ schedule.scheduleJob({
 
 // Log into Discord.
 logger.Info(`Logging into Discord.`);
-if (config.client_login_token)
-{
-  client.login(config.client_login_token);
-  logger.Info(`Startup completed. Established connection to Discord.`);
-}
-else
-{
-  logger.Error(`Cannot establish connection to Discord. Client login token is not defined.`);
-  throw (`MISSING_CLIENT_LOGIN_TOKEN`);
-}
+client.login(process.env.BAB_TOKEN);
+logger.Info(`Startup completed. Established connection to Discord.`);

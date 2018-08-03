@@ -5,16 +5,15 @@
   "author": "CodingKoopa <codingkoopa@gmail.com>",
   "scripts": {
     "test": "eslint .",
-    "start-dev": "cross-env NODE_ENV=Development node Source/Server.js",
-    "start-prod": "cross-env NODE_ENV=Production node Source/Server.js"
+    "start": "node Source/Server.js"
   },
   "preferGlobal": true,
   "private": true,
   "analyze": true,
   "license": "GPL-2.0+",
   "dependencies": {
-    "config": "^1.30.0",
-    "cross-env": "^5.1.4",
+    "checkenv": "^1.2.2",
+    "cross-env": "^5.2.0",
     "discord.js": "^11.3.2",
     "ip": "^1.1.5",
     "logdna": "^1.4.2",
