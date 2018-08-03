@@ -1,9 +1,10 @@
 # Dependencies
 node_modules
 
-# Sensitive configuration files.
-Config/Production.json
-Config/Development.json
+# Installation specific configuration files.
+Config/Production.env
+Config/Development.env
+Config/PlayingStatuses.json
 
 # Sensitive data.
 Data/
