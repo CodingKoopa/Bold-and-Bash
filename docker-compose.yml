@@ -1,0 +1,16 @@
+# Use the most recent version of the Docker Compose syntax.
+version: "3"
+services:
+  discord:
+    # Use the latest stable dtaps.js image for the current architecture.
+    # image: registry.gitlab.com/codingkoopa/dtaps.js/${ARCH:-amd64}:stable
+    build: .
+    # Include an environment file, for the variables needed for the bot such as the API token.
+    env_file: Config/Development.env
+    # Always restart the container, if rebooting, or if the container exited with an error.
+    restart: always
+    volumes:
+      # Mount the data directory to the host.
+      - "./Data:/usr/src/app/Data"
+      # Mount the message log directory to the host.
+      - "./MessageLogs:/usr/src/app/MessageLogs"

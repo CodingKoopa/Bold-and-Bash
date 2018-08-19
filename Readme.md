@@ -112,7 +112,7 @@ Every command comes with an automatically generated help embed, similiar to a Ba
 ### Moderation
 The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
 
-Additionally, Bold and Brash logs messages to `Logs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
+Additionally, Bold and Brash logs messages to `MessageLogs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
 ```
 [info]    [7:21 PM]  Bold and Bash Version 0.0.1 Starting.
 [info]    [7:21 PM]  Loading Command Modules.
