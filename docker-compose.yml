@@ -10,5 +10,7 @@ services:
     # Always restart the container, if rebooting, or if the container exited with an error.
     restart: always
     volumes:
+      # Mount the data directory to the host.
       - "./Data:/usr/src/app/Data"
+      # Mount the message log directory to the host.
       - "./MessageLogs:/usr/src/app/MessageLogs"
