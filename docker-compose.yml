@@ -3,7 +3,7 @@ version: "3"
 services:
   discord:
     # Use the latest stable Bold and Bash image for the current architecture.
-    image: registry.gitlab.com/codingkoopa/bold-and-bash/${ARCH:-amd64}:stable
+    image: registry.gitlab.com/mk8mc/bold-and-bash/${ARCH:-amd64}:stable
     # Include an environment file, for the variables needed for the bot such as the API token.
     env_file: Config/Development.env
     # Always restart the container, if rebooting, or if the container exited with an error.

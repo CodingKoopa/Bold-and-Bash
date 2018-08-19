@@ -149,7 +149,7 @@ client.on(`message`, message =>
     message_logger.Message(FormatMessage(message, `#${message.channel.name}`));
 
   // Handle commands.
-  if (message.content.startsWith(process.env.BAB_PEFIX))
+  if (message.content.startsWith(process.env.BAB_PREFIX))
   {
     // If the message starts with more than one of the command prefix, don't do anything.
     // For example: "...well ok then."
@@ -168,7 +168,7 @@ client.on(`message`, message =>
       {
         const split_message = command.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
 
-        const entered_command = split_message[0].slice(process.env.BAB_PEFIX.length).toLowerCase();
+        const entered_command = split_message[0].slice(process.env.BAB_PREFIX.length).toLowerCase();
         let args = split_message.slice(1, split_message.length);
         // Strip any quotes, they're not needed any more.
         args.forEach((arg, arg_index, arg_array) =>
