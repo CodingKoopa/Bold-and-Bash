@@ -4,7 +4,7 @@
   "description": "A Discord bot not unlike Bash.",
   "author": "CodingKoopa <codingkoopa@gmail.com>",
   "scripts": {
-    "test": "eslint .",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
     "start": "node Source/Server.js"
   },
   "preferGlobal": true,
