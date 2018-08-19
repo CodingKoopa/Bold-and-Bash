@@ -64,8 +64,8 @@ process.on(`SIGINT`, () =>
 logger.Info(`Making sure data and log directories exist.`);
 if (!fs.existsSync(`./Data/`))
   fs.mkdirSync(`./Data/`);
-if (!fs.existsSync(`./Logs/`))
-  fs.mkdirSync(`./Logs/`);
+if (!fs.existsSync(`./MessageLogs/`))
+  fs.mkdirSync(`./MessageLogs/`);
 
 logger.Info(`Reading data.`);
 data.ReadWarnings();

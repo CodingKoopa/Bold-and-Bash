@@ -7,19 +7,6 @@ const winston = require(`winston`);
 require(`winston-daily-rotate-file`);
 require(`logdna`);
 
-// This is outside of the DailyRotateFile constructor because the log serialization only supports
-// the timestamp being a function, and not the level.
-function FormatLevel(level)
-{
-  // 7: The length of the longest level (verbose).
-  return `[` + level + `]` + ` `.repeat(7 - level.length);
-}
-
-function PadNumber(number)
-{
-  return number < 10 ? `0` + number : number;
-}
-
 winston.emitErrs = true;
 const logger = new winston.Logger(
   {
@@ -44,28 +31,6 @@ const logger = new winston.Logger(
         {
           level: `Silly`,
           colorize: true
-        }),
-      new winston.transports.DailyRotateFile(
-        {
-          formatter: function(options)
-          {
-            return FormatLevel(options.level) + ` ` + options.timestamp() + ` ` + options.message;
-          },
-          timestamp: function()
-          {
-            const date = new Date();
-            const hours = PadNumber(date.getHours());
-            const minutes = PadNumber(date.getMinutes());
-            const am_pm = hours < 13 ? `AM` : `PM`;
-            const str = `[${hours % 12 || 12}:${minutes} ${am_pm}]`;
-            // 10: The length of the longest time ([AA:BB CC]).
-            return str + ` `.repeat(10 - str.length);
-          },
-          json: false,
-          level: `Debug`,
-          something: `test`,
-          filename: `Logs/log`,
-          prepend: true
         })
     ],
     handleExceptions: true,

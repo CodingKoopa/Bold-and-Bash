@@ -20,7 +20,7 @@ const logger = new winston.Logger(
           },
           json: false,
           level: `Message`,
-          filename: `Logs/Messages.log`,
+          filename: `MessageLogs/Messages.log`,
           prepend: true
         })
     ],
