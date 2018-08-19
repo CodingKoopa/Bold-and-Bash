@@ -76,8 +76,7 @@ function SendPrivateErrorMessage(message_text, error_details)
 
 const STAFF_ROLES = [`Admins`, `Moderators`];
 
-const PLAYING_STATUSES_PATH = `./Config/PlayingStatuses.json`;
-
+const PLAYING_STATUSES_PATH = `./Data/PlayingStatuses.json`;
 const WARNINGS_PATH = `./Data/Warnings.json`;
 const BANS_PATH = `./Data/Bans.json`;
 const QUOTES_PATH = `./Data/Quotes.json`;
