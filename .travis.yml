@@ -1,4 +1,0 @@
-language: node_js
-node_js: "node"
-
-# Travis will, by default, run the test script in package.json.
