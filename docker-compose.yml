@@ -9,3 +9,6 @@ services:
     env_file: Config/Development.env
     # Always restart the container, if rebooting, or if the container exited with an error.
     restart: always
+    volumes:
+      - "./Data:/usr/src/app/Data"
+      - "./MessageLogs:/usr/src/app/MessageLogs"

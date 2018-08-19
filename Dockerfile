@@ -29,5 +29,7 @@ COPY package.json env.json ./
 COPY Source/ ./Source
 # Copy the custom playing statuses to the Config directory.
 COPY Config/PlayingStatuses.json ./Config/
+# Create a mount point for the Data and MessageLogs diretory.
+VOLUME ./Data/ ./MessageLogs/
 # Configure the container to start the server when ran.
 ENTRYPOINT ["npm", "run", "start"]
