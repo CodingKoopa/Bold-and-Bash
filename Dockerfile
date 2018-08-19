@@ -27,8 +27,9 @@ COPY --from=install-dependencies /usr/src/app-deps ./
 COPY package.json env.json ./
 # Copy the app source code to the working directory.
 COPY Source/ ./Source
-# Copy the custom playing statuses to the Config directory.
-COPY Config/PlayingStatuses.json ./Config/
+# Copy the app configuration to the working directory. Only the playing statuses JSON is needed,
+# but files can't be conditionally added.
+COPY Config/ ./Config
 # Create a mount point for the Data and MessageLogs diretory.
 VOLUME ./Data/ ./MessageLogs/
 # Configure the container to start the server when ran.
