@@ -10,6 +10,10 @@ services:
     restart: always
     volumes:
       # Mount the data directory to the host.
-      - "./Data:/usr/src/app/Data"
+      - data-storage:/usr/src/app/Data:rw
       # Mount the message log directory to the host.
-      - "./MessageLogs:/usr/src/app/MessageLogs"
+      - message-log-storage:/usr/src/app/MessageLogs:rw
+
+volumes:
+  data-storage:
+  message-log-storage:
