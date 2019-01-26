@@ -28,6 +28,6 @@ COPY package.json env.json ./
 # Copy the app source code to the working directory.
 COPY Source/ ./Source
 # Create a mount point for the Data and MessageLogs diretory.
-VOLUME ./Data/ ./MessageLogs/
+VOLUME /usr/src/app/Data/ /usr/src/app/MessageLogs/
 # Configure the container to start the server when ran.
 ENTRYPOINT ["npm", "run", "start"]
