@@ -112,7 +112,7 @@ Every command comes with an automatically generated help embed, similiar to a Ba
 ### Moderation
 The `ban` and `warn` commands ban or warn users for a reason. The former supports banning a user for a number of days, for temporary suspensions. The latter supports automatically permenantly banning someone when they have been warned 3 times.
 
-Additionally, Bold and Brash logs messages to `MessageLogs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
+Additionally, Bold and Bash logs messages to `MessageLogs/Date.Messages.log`, so if you need to see what someone said in a deleted message, it can be found here. Logs are also padded to make them easier to look at. Here's an excerpt from the non-messages log:
 ```
 [info]    [7:21 PM]  Bold and Bash Version 0.0.1 Starting.
 [info]    [7:21 PM]  Loading Command Modules.
@@ -121,14 +121,14 @@ Additionally, Bold and Brash logs messages to `MessageLogs/Date.Messages.log`, s
 And here's an excerpt from the messages log (Featuring @Hexexpeck):
 ```
 [#general    ] Koopa        (168559677913694208): Hey <@202614166689677312> can you say something?
-[#general    ] Koopa        (168559677913694208): I'm getting an example of the message log for the Bold & Brash readme.
+[#general    ] Koopa        (168559677913694208): I'm getting an example of the message log for the Bold & Bash readme.
 [#general    ] Hexexpeck    (202614166689677312): test 1
 [#general    ] Koopa        (168559677913694208): Thanks~
 [#verificatio] Koopa        (168559677913694208): And just for good measure, here's a message in another channel.
 ```
 
 ### Verification
-In compliance with [section 2.4 of the Discord Developer Terms of Service](https://discordapp.com/developers/docs/legal#2-license-accounts-and-restrictions), Bold and Brash gets permission from all users before retaining chat logs. In order for a user to send messages in a server, they must run the `verify` command to have the bot give them the `Verified` role that gives them the permission. By running this command, users give permission to the bot owner to keep their "end user data".
+In compliance with [section 2.4 of the Discord Developer Terms of Service](https://discordapp.com/developers/docs/legal#2-license-accounts-and-restrictions), Bold and Bash gets permission from all users before retaining chat logs. In order for a user to send messages in a server, they must run the `verify` command to have the bot give them the `Verified` role that gives them the permission. By running this command, users give permission to the bot owner to keep their "end user data".
 
 This system does have pros outside of the legal stuff though. By making users have to look for a command before particiating in a community, they have to at least take a quick look at the rules.
 
