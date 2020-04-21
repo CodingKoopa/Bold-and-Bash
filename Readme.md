@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="https://gitlab.com/mk8mc/web/bold-and-bash/-/raw/master/Docs/BoldAndBash.png" alt="Logo" height="200" />
-</p>
 # Bold and Bash
 Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http://discord.gg/K3ERBFC), based off of [CitraBot](https://github.com/citra-emu/discord-bot). It shares some functionality with the [Bash](https://www.gnu.org/software/bash/) shell, as the name implies. Some examples of said functionality are the help commands, analogous to a command's manpage, and the stringing of commands together with `&&`.
 
@@ -8,8 +5,8 @@ Bold and Bash is a Discord bot made for the [Mario Kart 8 Modding Central](http:
 
 ### Prerequisites
 - [Git](https://git-scm.com/) is required to clone this repository.
-- [Docker](https://www.docker.com/) is required to run LionBot in a containerized environment.
-- [Node.js](https://nodejs.org/) is required, alternatively to Docker, to run LionBot directly on the host.
+- [Docker](https://www.docker.com/) is required to run Bold and Bash in a containerized environment.
+- [Node.js](https://nodejs.org/) is required, alternatively to Docker, to run Bold and Bash directly on the host.
 
 ### Instructions
 In this section, for Docker instructions, there will be two code samples:
@@ -31,7 +28,7 @@ Which one of these two you follow depends on whether or not you use Docker Compo
   - `Send Text Messages` to respond to commands.
   - `Manage Messages` to delete entered commands that ended successfully, and clean up the verification channel.
 - The `Verified` role. The permissions should have everything except for `Send Messages` **disabled**, with `Send Messages` itself **enabled**.
-1. Make 3 text channels in addition to the default `#general` channel (The names are up to you.):
+4. Make 3 text channels in addition to the default `#general` channel (The names are up to you.):
 - The welcome channel. This contains info about the server. The permissions are up to you.
 - The verification channel. This is where people will enter the `verify` command to give themselves the permission to send messages. The permissions must be:
   - `@everyone` is granted the `Read Messages` and `Send Messages` permissions.
@@ -43,9 +40,9 @@ Which one of these two you follow depends on whether or not you use Docker Compo
 - The log channel. This is where the bot reports events like warns or bans that are of interest to the staff. The permissions must be:
   - `@everyone` is denied the `Read Messages` permission.
   - `Admins`, `Moderators`, and the bot have the `Read Messages` permission.
-4. Make a bot user using [this](https://discordapp.com/developers/docs/intro) guide.
-5. Invite the bot to the server using [this](https://discordapp.com/developers/docs/topics/oauth2#bot-authorization-flow) guide. For the permissions, just use `0`, because we already have a role with the bot's permissions.
-6. Give the bot role to the newly invited bot.
+5. Make a bot user using [this](https://discordapp.com/developers/docs/intro) guide.
+6. Invite the bot to the server using [this](https://discordapp.com/developers/docs/topics/oauth2#bot-authorization-flow) guide. For the permissions, just use `0`, because we already have a role with the bot's permissions.
+7. Give the bot role to the newly invited bot.
 
 #### Bot Setup
 1. Open up a terminal or command prompt.
@@ -70,13 +67,19 @@ BAB_INVITE_LINK=http://discord.gg/fortnite
 ```
 
 ##### Bot Setup with Docker
-1. Run the bot (read the following steps before running this!):
+In this section, there will be two code samples for each step:
+- A Bash command for use with with the Docker CLI.
+- A [Docker Compose](https://docs.docker.com/compose/overview/) `yml` configuration, with `version: "3.7"`.
+
+Which one of these two you follow depends on whether or not you use Docker Compose in your setup. **Either way, the Docker excerpts should be combined into a final command or `yml`.**
+
+1. Run the bot (see the steps after this before running this!):
 ```bash
 docker run --env-file .env registry.gitlab.com/mk8mc/web/bold-and-bash/amd64:stable
 ```
 ```yml
 services:
-  lionbot:
+  bold-and-bash:
     image: registry.gitlab.com/mk8mc/web/bold-and-bash/amd64:stable
     env_file: /opt/bold-and-bash/.env
 ```
@@ -86,7 +89,7 @@ docker run --restart on-failure
 ```
 ```yml
 services:
-  lionbot:
+  bold-and-bash:
     restart: on-failure
 ```
 3. Use the `Data` mount point to create a volume:
@@ -95,7 +98,7 @@ docker run --mount type=volume,source=bab-data,target=/usr/src/app/Data
 ```
 ```yml
 services:
-  lionbot:
+  bold-and-bash:
     volumes:
       - type: volume
         source: bab-data
@@ -164,5 +167,5 @@ In a modding server, generally people will have mods to share. However, in a cha
 
 ![Mod Showcase Screenshot](Docs/ModShowcase.png)
 
-# License
-GNU General Public License v2.0
+## License
+Bold and Bash is licensed under the GNU General Public License v2.0.
