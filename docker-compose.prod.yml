@@ -1,6 +1,0 @@
-# Use the most recent version of the Docker Compose syntax.
-version: "3"
-services:
-  discord:
-    # Include the production environment file with different keys.
-    env_file: Config/Production.env
