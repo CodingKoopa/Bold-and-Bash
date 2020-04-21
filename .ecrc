@@ -1,5 +1,6 @@
 {
   "exclude": [
-    "\\.xcf$"
+    "\\.xcf$",
+    "License.txt"
   ]
 }
