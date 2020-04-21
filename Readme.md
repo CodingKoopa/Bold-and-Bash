@@ -128,6 +128,30 @@ npm install
 npm run start
 ```
 
+#### Building
+Bold and Bash Docker images are automatically built by [GitLab CI/CD](https://docs.gitlab.com/ee/ci/) and uploaded to the [GitLab Container Registry](https://docs.gitlab.com/ee/user/packages/container_registry/), but it can be built manually:
+```sh
+docker build . -t bold-and-bash
+```
+```yml
+services:
+  bold-and-bash:
+    build: .
+```
+
+## Contributing
+If you are interested in working on the bot's code, follow these steps to get a development environment up and running:
+1. Follow [Discord Setup](#discord-setup) again, creating a separate Discord server, and separate bot account.
+2. Create a new environment file with the development bot account info.
+3. It's recommended to start the bot using `npm`, and the Bash function above:
+```bash
+export-env .env && clear && npm run start
+```
+4. When you've made your changes, use [ESLint](https://eslint.org/) to check them for errors:
+```bash
+npm run lint
+```
+
 ## Features
 A full list of commands be found by running the `help` command.
 
