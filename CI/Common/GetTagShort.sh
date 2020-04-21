@@ -12,4 +12,4 @@ else
   SHORT_TAG=$SHORT_TAG$CI_COMMIT_SHA
 fi
 
-echo $SHORT_TAG
+echo "$SHORT_TAG"
