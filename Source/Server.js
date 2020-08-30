@@ -166,7 +166,7 @@ client.on(`message`, message =>
     {
       commands.forEach((command, command_index, command_array) =>
       {
-        const split_message = command.match(/([\w|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
+        const split_message = command.match(/([\w|!|.|@|#|<|>|:|/|(|)|-]+)|("[^"]+")/g);
 
         const entered_command = split_message[0].slice(process.env.BAB_PREFIX.length).toLowerCase();
         let args = split_message.slice(1, split_message.length);
