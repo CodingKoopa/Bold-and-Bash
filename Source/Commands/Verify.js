@@ -8,10 +8,10 @@ const Command = require(`../Models/Command.js`);
 const DESCRIPTION = `Gives you the \`Verified\` role.`;
 const callback = (message) =>
 {
-  const role = state.guild.roles.find(role => role.name === `Verified`);
+  const role = state.guild.roles.cache.find(role => role.name === `Verified`);
   if (role)
   {
-    message.member.addRole(role).catch(error =>
+    message.member.roles.add(role).catch(error =>
       common.SendPrivateErrorMessage(`Failed to give the verified role.`, error));
   }
   else

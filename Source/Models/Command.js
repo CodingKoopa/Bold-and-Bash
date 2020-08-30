@@ -3,7 +3,7 @@
 const common = require(`../Common.js`);
 const logger = require(`../Logger.js`);
 
-const RichEmbed = require(`discord.js`).RichEmbed;
+const MessageEmbed = require(`discord.js`).MessageEmbed;
 
 class Command
 {
@@ -35,7 +35,8 @@ class Command
   IsExecutable(message)
   {
     // If there are roles to fulfill, and the user's roles contain the command's.
-    if (this.roles && common.FindArray(message.member.roles.map(role => role.name), this.roles))
+    if (this.roles && common.FindArray(message.member.roles.cache.map(role => role.name),
+      this.roles))
       return true;
     // If there are no roles to fulfill.
     else if (!this.roles)
@@ -76,7 +77,7 @@ ${common.PrintArray(this.roles)}.`);
       });
       // Close the mini code block.
       usage += `\``;
-      const help_embed = new RichEmbed(
+      const help_embed = new MessageEmbed(
         {
           title: `\`${this.name}\` Command Help`,
           description: `${description}${usage}\n${argument_list}`

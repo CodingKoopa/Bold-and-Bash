@@ -5,7 +5,7 @@ const valid_url = require(`valid-url`);
 const common = require(`../Common.js`);
 const state = require(`../State.js`);
 
-const RichEmbed = require(`discord.js`).RichEmbed;
+const MessageEmbed = require(`discord.js`).MessageEmbed;
 
 const Command = require(`../Models/Command.js`);
 const Argument = require(`../Models/Argument.js`);
@@ -54,7 +54,7 @@ ${shared_err_str}`);
     return 1;
   }
 
-  const mod_embed = new RichEmbed(
+  const mod_embed = new MessageEmbed(
     {
       title: args[0],
       description: args[1],

@@ -48,7 +48,7 @@ function Ban(message, user, reason, length)
 
   // Do the Banning.
   message.channel.send(ban_message);
-  message.guild.ban(user, {reason: reason}).then(() =>
+  message.guild.members.ban(user, {reason: reason}).then(() =>
   {
     let unban_date = null;
     // Schedule an unbanning, if required.

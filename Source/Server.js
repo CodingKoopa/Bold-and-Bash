@@ -102,19 +102,19 @@ const client = new discord.Client();
 
 client.on(`ready`, () =>
 {
-  state.log_channel = client.channels.get(process.env.BAB_LOG_CHANNEL_ID);
+  state.log_channel = client.channels.cache.get(process.env.BAB_LOG_CHANNEL_ID);
   if (!state.log_channel)
   {
     logger.Error(`Logging channel #${process.env.BAB_LOG_CHANNEL_ID} not found.`);
     throw (`LOG_CHANNEL_NOT_FOUND`);
   }
-  state.showcase_channel = client.channels.get(process.env.BAB_SHOWCASE_CHANNEL_ID);
+  state.showcase_channel = client.channels.cache.get(process.env.BAB_SHOWCASE_CHANNEL_ID);
   if (!state.showcase_channel)
   {
     logger.Error(`Showcase channel #${process.env.BAB_SHOWCASE_CHANNEL_ID} not found.`);
     throw (`SHOWCASE_CHANNEL_NOT_FOUND`);
   }
-  state.verification_channel = client.channels.get(process.env.BAB_VERIFICATION_CHANNEL_ID);
+  state.verification_channel = client.channels.cache.get(process.env.BAB_VERIFICATION_CHANNEL_ID);
   if (!state.verification_channel)
   {
     logger.Error(`Verification channel #${process.env.BAB_VERIFICATION_CHANNEL_ID} not found.`);
@@ -199,7 +199,7 @@ client.on(`message`, message =>
             if (command.IsExecutable(message))
               command_name_list += `\`${command.name}\`: ${command.description}\n`;
           });
-          const help_embed = new discord.RichEmbed({
+          const help_embed = new discord.MessageEmbed({
             title: `Bold and Bash Help`,
             description: command_name_list
           });
@@ -268,12 +268,12 @@ ${state.stats.warnings} warnings have been issued.`);
     {
       common.SendPrivateInfoMessage(`Unbanning ${ban.username}.`);
       // Unban the user.
-      state.guild.unban(ban.id, `Scheduled unbanning.`).then(() =>
+      state.guild.members.unban(ban.id, `Scheduled unbanning.`).then(() =>
       {
         let unban_message = `You have been unbanned from the server**${state.guild.name}**.`;
         if (process.env.BAB_INVITE_LINK)
           unban_message += ` Here's the invite link: ${process.env.BAB_INVITE_LINK}.`;
-        client.users.get(ban.id).send(unban_message).catch(error =>
+        client.users.cache.get(ban.id).send(unban_message).catch(error =>
           common.SendPrivateErrorMessage(`Failed to send unban message to ${ban.username}.`,
             error));
         array[index].cleared = true;
