@@ -1,4 +1,4 @@
-# define the Docker in Docker anchor.
+# Define the Docker in Docker anchor.
 .dind: &dind
   variables:
     # Set the Docker host to the network connection to the dind service instead of the usual socket.
@@ -23,9 +23,8 @@ analysis:ec:
   stage: analyze
   # Use the latest ec Docker image.
   image: mstruebing/editorconfig-checker:latest
-  script:
-    # Check that all text complies with the EditorConfig file.
-    - ec
+  # Check that all text complies with the EditorConfig file.
+  script: ec
 
 analysis:shfmt:
   # Add to the analysis stage.
@@ -34,43 +33,22 @@ analysis:shfmt:
   image: mvdan/shfmt:latest-alpine
   rules:
     - changes:
-        - CI/**/*.sh
-  script:
-    # Check that all Bash code has proper formatting.
-    - shfmt -d CI
+        # Watch for changes in the CI scripts.
+        - "CI/**/*.sh"
+  # Check that all Bash code has proper formatting.
+  script: shfmt -d .
 
 analysis:shellcheck:
   # Add to the analysis stage.
   stage: analyze
-  # Use the latest stable shellchecl Docker image.
+  # Use the latest stable ShellCheck Docker image.
   image: koalaman/shellcheck-alpine:stable
   rules:
     - changes:
-        - CI/**/*.sh
-  script:
-    # Check that all Bash code is proper.
-    - shellcheck -x CI/**/*.sh
-
-# Define the ESLint linting job.
-analysis:eslint:
-  # Add to the analysis stage.
-  stage: analyze
-  # Run in the official Node image, to access NPM to install dependencies.
-  image: node
-  cache:
-    # Tie the cache to "package.json".
-    key:
-      files:
-        - package.json
-    paths:
-      # Cache the NPM dependencies.
-      - node_modules/
-  rules:
-    - changes:
-        - Source/*.js
-        - Source/**/*.js
-  # Run the ESLint lint script.
-  script: CI/Analyze/ESLint.sh
+        # Watch for changes in the CI scripts.
+        - "CI/**/*.sh"
+  # Check that all Bash code is proper.
+  script: shellcheck -x **/*.sh
 
 # Define the Docker image building anchor. Since there's already a Docker in Docker anchor, this
 # should only define elements needed for building.
@@ -79,11 +57,10 @@ analysis:eslint:
   # Any Docker image building will be a part of the package building stage, so add it.
   stage: build
   artifacts:
-    paths:
-      # Save the built image.
-      - Build/
+    # Save the built image.
+    paths: [Build/]
   # Run the Docker build script.
-  script: CI/Build/Docker.sh
+  script: CI/build.sh
 
 # Define the Docker AMD64 image building job.
 build:docker:amd64:
@@ -122,7 +99,7 @@ build:docker:arm64v8:
     # Make sure tags are deployed.
     - tags
   # Run the deploying script.
-  script: ./CI/Deploy/Docker.sh
+  script: ./CI/deploy.sh
 
 # Define the Docker AMD64 image deploying job.
 deploy:docker:amd64:
@@ -130,9 +107,8 @@ deploy:docker:amd64:
   variables:
     # Set the target architecture to AMD64. This will be able to run on most desktop platforms.
     TARGET_ARCH: amd64
-  dependencies:
-    # Add the Docker AMD64 built image as a dependency.
-    - build:docker:amd64
+  # Require the AMD64 build job.
+  needs: ["build:docker:amd64"]
 
 # Define the Docker ARMv7 image deploying job.
 deploy:docker:arm32v7:
@@ -140,16 +116,14 @@ deploy:docker:arm32v7:
   variables:
     # Set the target architecture to ARMv7 32 bit.
     TARGET_ARCH: arm32v7
-  dependencies:
-    # Add the Docker ARMv7 built image as a dependency.
-    - build:docker:arm32v7
+  # Require the ARMv7 build job.
+  needs: ["build:docker:arm32v7"]
 
 # Define the Docker ARMv8 image deploying job.
 deploy:docker:arm64v8:
   <<: *docker_deploy
   variables:
-    # Set the target architecture to ARMv7 32 bit.
+    # Set the target architecture to ARMv8.
     TARGET_ARCH: arm64v8
-  dependencies:
-    # Add the Docker ARMv7 built image as a dependency.
-    - build:docker:arm64v8
+  # Require the ARMv8 build job.
+  needs: ["build:docker:arm64v8"]
